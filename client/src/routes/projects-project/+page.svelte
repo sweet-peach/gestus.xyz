@@ -1,0 +1,387 @@
+<script>
+let showLogoutButton = false;
+
+function handleMouseEnter() {
+  showLogoutButton = true;
+}
+
+function handleMouseLeave() {
+  showLogoutButton = false;
+}
+</script>
+
+<!-- ADMIN VIEW -->
+<section class="sect-principal-admin">
+    <section class="sect-izq">
+        <div>
+            <i class="fa-solid fa-box-archive"></i>
+            <h3>Projects</h3>
+        </div>
+        
+        <div>
+            <i class="fa-solid fa-users"></i>
+            <h3>Users</h3>
+        </div>
+        
+        <div>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h3>Logs</h3>
+        </div>
+    </section>
+    <section class="sect-derecha">
+        <header>
+            <div class="div-header">
+                <h2>Projects / Project</h2>
+            </div>
+                <div class="div-header div-buscador">
+                    <div class="search-container">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" placeholder="Buscador de proyectos" class="search-input">
+                      </div>
+
+                    <div class="div-p-user" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+                        <p class="p-user">Usuario</p>
+                        <button class="button-hover {showLogoutButton ? 'visible' : 'hidden'}">Cerrar sesión</button>
+                    </div>
+                </div>
+        </header>
+
+        <section class="files-info-options">
+            <div class="vision-project">
+                <button class="button-highlight">Proyecto</button>
+                <button class="button-highlight">Archivos</button>
+                <button class="button-highlight">Estadisticas</button>
+            </div>
+    
+            <div class="general-project">
+                <div class="project-info">
+                    <div class="name-act">
+                        <p class="p-project">Proyecto</p>
+                        <p>Ultima actualización...</p>
+                    </div>
+                    <div class="project-status">
+                        <div class="status">
+                            <i class="fa-solid fa-circle"></i>
+                            <p>Activo</p>
+                        </div>
+                        <div class="closing-in">
+                        <p>Se cierra en...</p>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear"></i>
+            </div>
+
+            <div class="general-info">
+                <div class="info">
+                    <h2>Fecha de creacion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Inicio de ejecucion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Fin de ejecucion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Rango</h2>
+                    <p>10</p>
+                </div>
+                <div class="info">
+                    <h2>Fase</h2>
+                    <p>Activa</p>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+
+<!-- MODIFIER VIEW -->
+<section class="sect-principal-modifier">
+    <section class="sect-derecha">
+        <header>
+            <div class="div-header">
+                <h2>Projects / Project</h2>
+            </div>
+                <div class="div-header div-buscador">
+                    <div class="search-container">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" placeholder="Buscador de proyectos" class="search-input">
+                      </div>
+
+                    <div class="div-p-user" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+                        <p class="p-user">Usuario</p>
+                        <button class="button-hover {showLogoutButton ? 'visible' : 'hidden'}">Cerrar sesión</button>
+                    </div>
+                </div>
+        </header>
+
+        <section class="files-info-options">
+            <div class="vision-project">
+                <button class="button-highlight">Proyecto</button>
+                <button class="button-highlight">Archivos</button>
+                <button class="button-highlight">Estadisticas</button>
+            </div>
+    
+            <div class="general-project">
+                <div class="project-info">
+                    <div class="name-act">
+                        <p class="p-project">Proyecto</p>
+                        <p>Ultima actualización...</p>
+                    </div>
+                    <div class="project-status">
+                        <div class="status">
+                            <i class="fa-solid fa-circle"></i>
+                            <p>Activo</p>
+                        </div>
+                        <div class="closing-in">
+                        <p>Se cierra en...</p>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear"></i>
+            </div>
+
+            <div class="general-info">
+                <div class="info">
+                    <h2>Fecha de creacion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Inicio de ejecucion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Fin de ejecucion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Rango</h2>
+                    <p>10</p>
+                </div>
+                <div class="info">
+                    <h2>Fase</h2>
+                    <p>Activa</p>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+
+<!-- USER VIEW -->
+<section class="sect-principal-user">
+    <section class="sect-derecha">
+        <header>
+            <div class="div-header">
+                <h2>Projects / Project</h2>
+            </div>
+                <div class="div-header div-buscador">
+                    <div class="search-container">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" placeholder="Buscador de proyectos" class="search-input">
+                      </div>
+
+                    <div class="div-p-user" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+                        <p class="p-user">Usuario</p>
+                        <button class="button-hover {showLogoutButton ? 'visible' : 'hidden'}">Cerrar sesión</button>
+                    </div>
+                </div>
+        </header>
+
+        <section class="files-info-options">
+            <div class="vision-project">
+                <button class="button-highlight">Proyecto</button>
+                <button class="button-highlight">Archivos</button>
+                <button class="button-highlight">Estadisticas</button>
+            </div>
+    
+            <div class="general-project">
+                <div class="project-info">
+                    <div class="name-act">
+                        <p class="p-project">Proyecto</p>
+                        <p>Ultima actualización...</p>
+                    </div>
+                    <div class="project-status">
+                        <div class="status">
+                            <i class="fa-solid fa-circle"></i>
+                            <p>Activo</p>
+                        </div>
+                        <div class="closing-in">
+                        <p>Se cierra en...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="general-info">
+                <div class="info">
+                    <h2>Fecha de creacion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Inicio de ejecucion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Fin de ejecucion</h2>
+                    <p>1/2/2020</p>
+                </div>
+                <div class="info">
+                    <h2>Rango</h2>
+                    <p>10</p>
+                </div>
+                <div class="info">
+                    <h2>Fase</h2>
+                    <p>Activa</p>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+<style>
+    
+    .sect-principal-user .general-project{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sect-principal-user .project-info{
+        width: auto;
+    }
+    .sect-principal-user header{
+        width: 100%;
+    }
+    .sect-principal-user .files-info-options{
+        width: 100%;
+    }
+    .sect-principal-user .files-info-options{
+        width: 100%;
+    }
+    .sect-principal-user .sect-derecha{
+        width: 80%;
+    }
+    .sect-principal-user{
+        justify-content: center;
+    }
+
+
+
+
+    .sect-principal-modifier, .sect-principal-modifier header{
+        width: 100%;
+    }
+    .sect-principal-modifier .files-info-options{
+        width: 100%;
+    }
+    .sect-principal-modifier .sect-derecha{
+        width: 80%;
+    }
+    .sect-principal-modifier{
+        justify-content: center;
+    }
+
+    .sect-izq{
+        padding: 40px 0px;
+        gap: 30px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 10%;
+        height: 100vh;
+    }
+    .sect-izq i{
+        font-size: 40px;
+        padding: 10px;
+        opacity: .7;
+    }
+    .sect-izq > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .sect-derecha{
+        width: 90%;
+    }
+
+    h2{
+        padding: 20px 0;
+    }
+    .info{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .p-project{
+        font-weight: bolder;
+        font-size: 20px;
+        margin-bottom: .5%;
+    }
+   .fa-circle{
+        color: var(--color-primary);
+    }
+   .fa-gear{
+        font-size: 20px;
+        opacity: .5;
+    }
+    .general-project{
+        margin-top: 40px;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .project-info{
+        height: 10vh;
+        width: 100%;
+    }
+    .project-status, .status{
+
+        display: flex;
+    }
+    .status{
+        width: 120px;
+        gap: 10px;
+        align-items: center;
+    }
+    .project-status{
+        margin-top: 10px;
+    }
+    .button-highlight {
+        border: none;
+        background-color: transparent; 
+        border-bottom: 2px solid transparent;
+        color: #000;
+        padding: 10px 20px; 
+        font-size: 16px;
+        cursor: pointer; 
+        transition: border-bottom-color 0.3s;
+    }
+
+    .button-highlight:hover {
+        border-bottom-color: var(--color-primary); 
+
+    }
+    .vision-project{
+        padding-bottom: 30px;
+    }
+    .vision-project > button{
+        padding: 20px 50px;
+    }
+    .files-info-options{
+        
+        width: 80%;
+    }
+    :global(body){
+        width: 100%;
+        height: 100%;
+    }
+    .sect-principal-admin, .sect-principal-modifier, .sect-principal-user{
+        display: flex;
+    }
+    
+
+</style>
