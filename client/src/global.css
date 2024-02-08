@@ -38,7 +38,7 @@ body {
     transition: opacity 0.3s;
     padding: 10px;
     position: absolute;
-    top: 60px;
+    top: 40px;
 }
 
 .button-hover.visible {
@@ -69,10 +69,10 @@ body {
   }
 
   .div-header{
-    width: 30%;
+    width: 20%;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 
