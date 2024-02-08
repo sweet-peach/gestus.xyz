@@ -20,6 +20,9 @@ public class FileModel {
     String path;
     Date date;
     @ManyToOne
+    @JoinColumn(name = "project_id")
+    private ProjectModel project;
+    @ManyToOne
     @JoinColumn(name = "parent_id")
     private FileModel parent;
 }

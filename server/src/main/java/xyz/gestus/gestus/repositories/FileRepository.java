@@ -5,4 +5,5 @@ import xyz.gestus.gestus.models.FileModel;
 
 public interface FileRepository extends JpaRepository<FileModel,Long> {
     public boolean existsByPath(String path);
+    public FileModel findByIdAndProjectId(Long parentId, Long projectId);
 }

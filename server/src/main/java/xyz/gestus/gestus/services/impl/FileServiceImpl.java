@@ -3,11 +3,13 @@ package xyz.gestus.gestus.services.impl;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.gestus.gestus.dto.DirRequestDto;
 import xyz.gestus.gestus.dto.FileRequestDto;
 import xyz.gestus.gestus.dto.FileResponseDto;
 import xyz.gestus.gestus.exceptions.DirectoryAlreadyExistsException;
 import xyz.gestus.gestus.exceptions.ProjectNotFoundException;
+import xyz.gestus.gestus.exceptions.UploadFailException;
 import xyz.gestus.gestus.models.FileModel;
 import xyz.gestus.gestus.models.ProjectModel;
 import xyz.gestus.gestus.repositories.FileRepository;
@@ -15,6 +17,7 @@ import xyz.gestus.gestus.repositories.ProjectRepository;
 import xyz.gestus.gestus.services.FileService;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,6 +50,7 @@ public class FileServiceImpl implements FileService {
         ensureDirectoryExists(baseDir);
         return baseDir.toString();
     }
+
     private void ensureDirectoryExists(Path path) {
         try {
             Files.createDirectories(path);
@@ -62,35 +66,92 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileResponseDto createDir(Long projectId, DirRequestDto dirRequestDto) {
-        if (!projectRepository.existsById(projectId)) {
-            throw new ProjectNotFoundException("Project not found");
-        }
+        ProjectModel project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
-        String filePath = constructFilePath(dirRequestDto);
+        FileModel parentFile = fileRepository.findByIdAndProjectId(dirRequestDto.getParentId(), projectId);
+
+        String fileName = dirRequestDto.getName();
+        String filePath = constructFilePath(parentFile,fileName);
+
         if (fileRepository.existsByPath(filePath)) {
             throw new DirectoryAlreadyExistsException("Directory already exists");
         }
 
-        FileModel fileToCreate = buildFileModel(dirRequestDto, filePath);
+        FileModel fileToCreate = buildFileModel(fileName, parentFile, filePath);
+        fileToCreate.setProject(project);
+
         ensureDirectoryExists(Paths.get(storageDirectory, projectId.toString(), filePath));
         FileModel createdFile = fileRepository.save(fileToCreate);
 
         return mapEntityToResponse(createdFile);
     }
 
+    @Override
+    public FileResponseDto uploadFile(Long projectId, Long parentId, MultipartFile file) {
+        ProjectModel projectModel = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+
+        FileModel parentFile = fileRepository.findByIdAndProjectId(parentId,projectId);
+
+        String fileName = file.getOriginalFilename();
+        String filePath = constructFilePath(parentFile,fileName);
+
+        if (fileRepository.existsByPath(filePath)) {
+            throw new DirectoryAlreadyExistsException("Directory already exists");
+        }
+
+        Path absolutePath = Paths.get(storageDirectory + File.separator + projectId.toString() + File.separator + filePath);
+
+        try {
+            file.transferTo(absolutePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UploadFailException("An error occurred while downloading the file");
+        }
+
+        FileModel fileToCreate = new FileModel();
+        fileToCreate.setName(file.getOriginalFilename());
+        fileToCreate.setType(file.getContentType());
+        fileToCreate.setSize(file.getSize());
+        fileToCreate.setPath(filePath);
+        fileToCreate.setDate(new Date());
+        fileToCreate.setParent(parentFile);
+
+        FileModel createdFile = fileRepository.save(fileToCreate);
+        return mapEntityToResponse(createdFile);
+    }
+
+    private String constructFilePath(FileModel parentFile, String fileName) {
+        if (parentFile == null) {
+            return fileName;
+        } else {
+            return parentFile.getPath() + File.separator + fileName;
+        }
+    }
+
+
     private String constructFilePath(DirRequestDto dirRequestDto) {
+        if (dirRequestDto.getParentId() == null) {
+            return dirRequestDto.getName();
+        }
         return fileRepository.findById(dirRequestDto.getParentId())
                 .map(parentFile -> parentFile.getPath() + File.separator + dirRequestDto.getName())
                 .orElse(dirRequestDto.getName());
     }
 
-    private FileModel buildFileModel(DirRequestDto dirRequestDto, String filePath) {
+    private String constructFilePath(Long parentId, String fileName) {
+        return fileRepository.findById(parentId)
+                .map(parentFile -> parentFile.getPath() + File.separator + fileName)
+                .orElse(fileName);
+    }
+
+    private FileModel buildFileModel(String fileName, FileModel parentFile, String filePath) {
         FileModel fileModel = new FileModel();
-        fileModel.setName(dirRequestDto.getName());
+        fileModel.setName(fileName);
         fileModel.setType(DIRECTORY_TYPE);
         fileModel.setSize(0L);
         fileModel.setDate(new Date());
         fileModel.setPath(filePath);
+        fileModel.setParent(parentFile);
         return fileModel;
     }
 
