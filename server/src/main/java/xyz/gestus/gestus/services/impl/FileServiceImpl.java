@@ -23,6 +23,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -93,7 +94,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileResponseDto uploadFile(Long projectId, Long parentId, MultipartFile file) {
-        ProjectModel projectModel = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+        ProjectModel projectModel = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         FileModel parentFile = fileRepository.findByIdAndProjectId(parentId,projectId);
 
@@ -134,10 +136,10 @@ public class FileServiceImpl implements FileService {
     @Override
     public void deleteFileRecursively(Long projectId, Long fileId) {
         ProjectModel projectModel = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException("Project not found with id: " + projectId));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         FileModel file = fileRepository.findById(fileId)
-                .orElseThrow(() -> new FileNotFoundException("File not found with id: " + fileId));
+                .orElseThrow(() -> new FileNotFoundException("File not found"));
 
         FileModel parent = file.getParent();
         if(parent != null){
@@ -145,6 +147,44 @@ public class FileServiceImpl implements FileService {
         }
 
         deleteFileAndChildren(file, projectId);
+    }
+
+    @Override
+    public List<FileResponseDto> getFilesByProject(Long projectId) {
+        ProjectModel projectModel = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+
+        List<FileModel> files = fileRepository.findByProjectId(projectId);
+
+        List<FileResponseDto> formattedFiles = new ArrayList<>();
+        for(FileModel file: files){
+            formattedFiles.add(mapEntityToResponse(file));
+        }
+
+        return formattedFiles;
+    }
+
+    @Override
+    public List<FileResponseDto> getFilesOfProjectByParentId(Long projectId, Long parentId) {
+        ProjectModel projectModel = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+
+        List<FileModel> files = fileRepository.findAllByParentIdAndProjectId(parentId,projectId);
+        List<FileResponseDto> formattedFiles = new ArrayList<>();
+        for(FileModel file: files){
+            formattedFiles.add(mapEntityToResponse(file));
+        }
+        return formattedFiles;
+    }
+
+    @Override
+    public FileResponseDto getFileByIdAndProjectId(Long fileId, Long projectId) {
+        FileModel fileModel = fileRepository.findByIdAndProjectId(fileId,projectId);
+        if(fileModel == null){
+            throw new FileNotFoundException("File not found");
+        }
+
+        return mapEntityToResponse(fileModel);
     }
 
     private void deleteFileAndChildren(FileModel file, Long projectId) {
