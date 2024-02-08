@@ -2,6 +2,7 @@ package xyz.gestus.gestus.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import xyz.gestus.gestus.annotations.ValidRole;
 import xyz.gestus.gestus.models.Role;
 
 import java.util.List;

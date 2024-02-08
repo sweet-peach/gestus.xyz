@@ -1,7 +1,8 @@
-package xyz.gestus.gestus.validation;
+package xyz.gestus.gestus.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import xyz.gestus.gestus.validation.RoleValidator;
 
 import java.lang.annotation.*;
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.gestus.gestus.annotations.Log;
 import xyz.gestus.gestus.dto.LoginResponseDto;
 import xyz.gestus.gestus.dto.LoginRequestDto;
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
@@ -42,6 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
+    @Log(name = "User logged in")
     public ResponseEntity<LoginResponseDto> loginUser(@Valid @RequestBody
                                                       LoginRequestDto loginRequestDto) {
         Authentication authentication = authenticationManager.authenticate(

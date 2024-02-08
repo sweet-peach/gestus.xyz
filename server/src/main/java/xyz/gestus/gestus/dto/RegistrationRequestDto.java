@@ -3,7 +3,7 @@ package xyz.gestus.gestus.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import xyz.gestus.gestus.validation.ValidRole;
+import xyz.gestus.gestus.annotations.ValidRole;
 
 @Data
 public class RegistrationRequestDto {
