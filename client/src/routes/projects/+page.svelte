@@ -1,4 +1,31 @@
 <script>
+import Modal from "../../Modal.svelte";
+
+let title = 'Crear nuevo proyecto'; // Define modalTitle here
+
+let modalStep = 0;
+
+function openModal() {
+  modalStep = 1; // Abre el primer modal
+}
+
+function nextModal() {
+        if (modalStep < 3) {
+            modalStep++;
+        } else {
+            closeModal(); // Llama a closeModal cuando estás en el último paso
+        }
+    }
+
+    function prevModal() {
+  if (modalStep > 1) {
+    modalStep--;
+  }
+}
+function closeModal() {
+  modalStep = 0; // Restablece para cerrar los modales
+}
+
 let showLogoutButton = false;
 
 function handleMouseEnter() {
@@ -8,7 +35,15 @@ function handleMouseEnter() {
 function handleMouseLeave() {
   showLogoutButton = false;
 }
+
+
 </script>
+
+<!-- MODAL -->
+
+
+<Modal isOpen={modalStep > 0} step={modalStep} title={title} closeModal={closeModal} nextModal={nextModal} prevModal={prevModal} />
+
 
 <!-- ADMIN VIEW -->
 <section class="sect-principal-admin">
@@ -49,7 +84,7 @@ function handleMouseLeave() {
         
         <section class="config">
             <div class="div-config">
-                <button>Crear nuevo proyecto</button>
+                <button on:click={openModal}>Crear nuevo proyecto</button>
                 <select name="" id="" placeholder="Ordenar por">
                     <option hidden selected>Ordenar por</option>
                     <option value="">1</option>
@@ -222,6 +257,7 @@ function handleMouseLeave() {
 </section>
 
 <style>
+    
     .p-project{
         font-weight: bolder;
         font-size: 20px;
