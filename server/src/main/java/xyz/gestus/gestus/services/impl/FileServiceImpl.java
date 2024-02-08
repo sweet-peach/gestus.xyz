@@ -27,7 +27,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void createProjectDir(String string) {
-
+    public void createProjectDir(String dirName) {
+        Path projectPath = Paths.get(storageDirectory, dirName);
+        File projectDirectory = new File(projectPath.toString());
+        if(!projectDirectory.exists()){
+            projectDirectory.mkdirs();
+        }
     }
 }

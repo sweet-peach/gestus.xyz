@@ -20,5 +20,5 @@ public class ProjectResponseDto {
     private String auditor;
     private String code;
     private Boolean inCooperation;
-    private List<Integer> keywords;
+    private List<KeywordResponseDto> keywords;
 }
