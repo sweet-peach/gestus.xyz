@@ -1,9 +1,9 @@
 package xyz.gestus.gestus.dto;
 
-import java.util.Date;
-import java.util.List;
+import lombok.Data;
 
-public class FileRequest {
+@Data
+public class FileRequestDto {
     private String name;
     private String type;
     private Long parentId;

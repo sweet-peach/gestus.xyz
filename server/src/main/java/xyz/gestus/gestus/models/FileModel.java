@@ -3,6 +3,7 @@ package xyz.gestus.gestus.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,16 @@ public class FileModel {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private FileModel parent;
-    @OneToMany(mappedBy = "parent")
-    private List<FileModel> childs;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FileModel> childs = new ArrayList<>();;
+
+    public void addChild(FileModel child) {
+        childs.add(child);
+        child.setParent(this);
+    }
+
+    public void removeChild(FileModel child) {
+        childs.remove(child);
+        child.setParent(null);
+    }
 }
