@@ -12,7 +12,7 @@ import xyz.gestus.gestus.dto.FileResponseDto;
 import xyz.gestus.gestus.services.FileService;
 
 @RestController
-@RequestMapping("/api/project/")
+@RequestMapping("/api/project/{projectId}/files")
 public class FileController {
 
     private FileService fileService;
@@ -22,17 +22,23 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @PostMapping("/{projectId}")
+    @PostMapping
     public ResponseEntity<FileResponseDto> createDir(@PathVariable Long projectId, @Valid @RequestBody DirRequestDto dirRequest){
         return new ResponseEntity<>(fileService.createDir(projectId, dirRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{projectId}/upload")
+    @PostMapping("/upload")
     public ResponseEntity<FileResponseDto> uploadFile(@PathVariable Long projectId,
                                                       @RequestParam("file")MultipartFile file,
                                                       @RequestParam("parentId") Long parentId){
 
 
         return ResponseEntity.ok(fileService.uploadFile(projectId,parentId,file));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteFile(@PathVariable Long projectId, @RequestParam(name = "id", required = true) Long fileId){
+        fileService.deleteFileRecursively(projectId, fileId);
+        return ResponseEntity.ok("File deleted");
     }
 }

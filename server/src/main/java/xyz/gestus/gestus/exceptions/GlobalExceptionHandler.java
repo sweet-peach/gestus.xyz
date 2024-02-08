@@ -44,6 +44,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<ErrorObject> handleFileNotFound(FileNotFoundException exception, WebRequest request){
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(HttpStatus.CONFLICT.value());
+        errorObject.setMessage(exception.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(UploadFailException.class)
     public ResponseEntity<ErrorObject> handleUploadFail(UploadFailException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();

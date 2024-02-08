@@ -11,4 +11,5 @@ public interface FileService {
     public FileResponseDto createDir(Long projectId, DirRequestDto dirRequest);
     public FileResponseDto uploadFile(Long projectId, Long parentId, MultipartFile file);
 
+    public void deleteFileRecursively(Long projectId, Long fileId);
 }

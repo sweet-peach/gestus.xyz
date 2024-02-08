@@ -8,6 +8,7 @@ import xyz.gestus.gestus.dto.DirRequestDto;
 import xyz.gestus.gestus.dto.FileRequestDto;
 import xyz.gestus.gestus.dto.FileResponseDto;
 import xyz.gestus.gestus.exceptions.DirectoryAlreadyExistsException;
+import xyz.gestus.gestus.exceptions.FileNotFoundException;
 import xyz.gestus.gestus.exceptions.ProjectNotFoundException;
 import xyz.gestus.gestus.exceptions.UploadFailException;
 import xyz.gestus.gestus.models.FileModel;
@@ -83,6 +84,10 @@ public class FileServiceImpl implements FileService {
         ensureDirectoryExists(Paths.get(storageDirectory, projectId.toString(), filePath));
         FileModel createdFile = fileRepository.save(fileToCreate);
 
+        if(parentFile != null){
+            parentFile.addChild(createdFile);
+        }
+
         return mapEntityToResponse(createdFile);
     }
 
@@ -115,10 +120,50 @@ public class FileServiceImpl implements FileService {
         fileToCreate.setPath(filePath);
         fileToCreate.setDate(new Date());
         fileToCreate.setParent(parentFile);
+        fileToCreate.setProject(projectModel);
 
         FileModel createdFile = fileRepository.save(fileToCreate);
+
+        if(parentFile != null){
+            parentFile.addChild(createdFile);
+        }
+
         return mapEntityToResponse(createdFile);
     }
+
+    @Override
+    public void deleteFileRecursively(Long projectId, Long fileId) {
+        ProjectModel projectModel = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found with id: " + projectId));
+
+        FileModel file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException("File not found with id: " + fileId));
+
+        FileModel parent = file.getParent();
+        if(parent != null){
+            parent.removeChild(parent);
+        }
+
+        deleteFileAndChildren(file, projectId);
+    }
+
+    private void deleteFileAndChildren(FileModel file, Long projectId) {
+        List<FileModel> childFiles = file.getChilds();
+        for (FileModel child : childFiles) {
+            deleteFileAndChildren(child, projectId);
+        }
+
+        fileRepository.delete(file);
+
+        Path absolutePath = Paths.get(storageDirectory, projectId.toString(), file.getPath());
+
+        try {
+            Files.deleteIfExists(absolutePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file on disk: " + absolutePath, e);
+        }
+    }
+
 
     private String constructFilePath(FileModel parentFile, String fileName) {
         if (parentFile == null) {
