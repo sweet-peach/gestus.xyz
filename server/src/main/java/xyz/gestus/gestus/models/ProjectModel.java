@@ -30,7 +30,7 @@ public class ProjectModel {
     String auditor;
     String code;
     @Column(name = "in_cooperation")
-    Boolean icCooperation;
+    Boolean inCooperation;
 
     @ManyToMany
     @JoinTable(

@@ -1,13 +1,20 @@
 package xyz.gestus.gestus.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import xyz.gestus.gestus.dto.LoginRequestDto;
+import xyz.gestus.gestus.dto.LoginResponseDto;
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
 import xyz.gestus.gestus.models.Role;
 import xyz.gestus.gestus.models.UserModel;
 import xyz.gestus.gestus.repositories.UserRepository;
+import xyz.gestus.gestus.security.JwtTokenProvider;
 import xyz.gestus.gestus.services.UserService;
 
 @Service
@@ -15,11 +22,30 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(JwtTokenProvider tokenProvider, UserRepository userRepository,PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager) {
+        this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
+
+    @Override
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequestDto.getEmail(),
+                        loginRequestDto.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.generateToken(authentication);
+
+        return new LoginResponseDto(jwt);
     }
 
     @Override

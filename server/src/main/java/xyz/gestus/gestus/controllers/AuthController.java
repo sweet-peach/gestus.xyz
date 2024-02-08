@@ -24,16 +24,10 @@ import xyz.gestus.gestus.services.impl.UserServiceImpl;
 @RequestMapping("/api/auth/")
 public class AuthController {
     private UserServiceImpl userService;
-    private AuthenticationManager authenticationManager;
-    private JwtTokenProvider tokenProvider;
-    private UserRepository userRepository;
 
     @Autowired
-    public AuthController(UserRepository userRepository, AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider tokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
+    public AuthController(UserServiceImpl userService) {
         this.userService = userService;
-        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("registration")
@@ -46,16 +40,6 @@ public class AuthController {
     @Log(name = "User logged in")
     public ResponseEntity<LoginResponseDto> loginUser(@Valid @RequestBody
                                                       LoginRequestDto loginRequestDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.getEmail(),
-                        loginRequestDto.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
-
-        return ResponseEntity.ok(new LoginResponseDto(jwt));
+        return ResponseEntity.ok(userService.login(loginRequestDto));
     }
 }
