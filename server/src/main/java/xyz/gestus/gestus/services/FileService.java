@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface FileService {
     public void createProjectDir(String projectId);
+    public void deleteProjectDir(Long projectId);
     public FileResponseDto createDir(Long projectId, DirRequestDto dirRequest);
     public FileResponseDto uploadFile(Long projectId, Long parentId, MultipartFile file);
 

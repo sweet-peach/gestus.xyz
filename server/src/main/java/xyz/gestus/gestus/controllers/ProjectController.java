@@ -27,8 +27,10 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDto>> getProjects(@RequestParam(name = "keywords") List<Long> keywordsId) {
-        return new ResponseEntity<>(projectService.getProjectsByKeywords(keywordsId),HttpStatus.FOUND);
+    public ResponseEntity<List<ProjectResponseDto>> getProjects(
+            @RequestParam(name = "keywords") List<Long> keywordsId,
+            @RequestParam(required = false) String name) {
+        return new ResponseEntity<>(projectService.getProjectsByKeywordsAndName(keywordsId, name), HttpStatus.FOUND);
     }
 
     @PostMapping
@@ -42,5 +44,11 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectRequestDto projectRequestDto) {
         ProjectResponseDto createdProject = projectService.updateProject(projectId, projectRequestDto);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<String> deleteProject(@PathVariable(value = "projectId") Long projectId) {
+        projectService.deleteProject(projectId);
+        return new ResponseEntity<>("Project deleted", HttpStatus.CREATED);
     }
 }

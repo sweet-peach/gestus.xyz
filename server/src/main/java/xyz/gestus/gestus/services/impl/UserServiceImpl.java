@@ -8,15 +8,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import xyz.gestus.gestus.dto.LoginRequestDto;
-import xyz.gestus.gestus.dto.LoginResponseDto;
-import xyz.gestus.gestus.dto.RegistrationRequestDto;
-import xyz.gestus.gestus.dto.UserResponseDto;
+import xyz.gestus.gestus.dto.*;
 import xyz.gestus.gestus.models.Role;
 import xyz.gestus.gestus.models.UserModel;
 import xyz.gestus.gestus.repositories.UserRepository;
 import xyz.gestus.gestus.security.JwtTokenProvider;
 import xyz.gestus.gestus.services.UserService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -71,6 +71,16 @@ public class UserServiceImpl implements UserService {
         return mapEntityToResponse(user);
     }
 
+    @Override
+    public List<UserResponseDto> getUsers() {
+        List<UserModel> userModels = userRepository.findAll();
+
+        List<UserModel> users = userRepository.findAll();
+        return users.stream()
+                .map(this::mapEntityToResponse)
+                .collect(Collectors.toList());
+    }
+
     private UserResponseDto mapEntityToResponse(UserModel userModel) {
         UserResponseDto response = new UserResponseDto();
         response.setId(userModel.getId());
@@ -79,5 +89,26 @@ public class UserServiceImpl implements UserService {
         response.setEmail(userModel.getEmail());
         response.setRole(userModel.getRole().toString());
         return response;
+    }
+
+    public UserResponseDto updateUser(Long userId, UserUpdateDto updateDto) {
+        return userRepository.findById(userId).map(user -> {
+            updateDto.getFirstName().ifPresent(user::setFirstName);
+            updateDto.getLastName().ifPresent(user::setLastName);
+            updateDto.getEmail().ifPresent(user::setEmail);
+            updateDto.getPassword().ifPresent(password -> user.setPassword(passwordEncoder.encode(password)));
+            updateDto.getRole().ifPresent(user::setRole);
+
+            UserModel updatedUser = userRepository.save(user);
+            return mapEntityToResponse(updatedUser);
+        }).orElseThrow(() -> new UsernameNotFoundException("User not found with id " + userId));
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UsernameNotFoundException("User not found with id: " + userId);
+        }
+        userRepository.deleteById(userId);
     }
 }

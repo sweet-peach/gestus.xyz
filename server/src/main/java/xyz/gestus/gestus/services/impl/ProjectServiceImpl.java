@@ -3,15 +3,15 @@ package xyz.gestus.gestus.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import xyz.gestus.gestus.dto.KeywordRequestDto;
-import xyz.gestus.gestus.dto.KeywordResponseDto;
-import xyz.gestus.gestus.dto.ProjectRequestDto;
-import xyz.gestus.gestus.dto.ProjectResponseDto;
+import xyz.gestus.gestus.dto.*;
 import xyz.gestus.gestus.exceptions.ProjectNotFoundException;
+import xyz.gestus.gestus.models.FileModel;
 import xyz.gestus.gestus.models.KeywordModel;
 import xyz.gestus.gestus.models.ProjectModel;
+import xyz.gestus.gestus.repositories.FileRepository;
 import xyz.gestus.gestus.repositories.KeywordRepository;
 import xyz.gestus.gestus.repositories.ProjectRepository;
+import xyz.gestus.gestus.services.FileService;
 import xyz.gestus.gestus.services.ProjectService;
 
 import java.util.ArrayList;
@@ -25,11 +25,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     ProjectRepository projectRepository;
     KeywordRepository keywordRepository;
+    FileRepository fileRepository;
+    FileService fileService;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository, KeywordRepository keywordRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, KeywordRepository keywordRepository, FileRepository fileRepository, FileService fileService) {
         this.projectRepository = projectRepository;
         this.keywordRepository = keywordRepository;
+        this.fileRepository = fileRepository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -62,12 +66,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectResponseDto> getProjectsByKeywords(List<Long> keywordsId) {
+    public List<ProjectResponseDto> getProjectsByKeywordsAndName(List<Long> keywordsId, String name) {
         if (CollectionUtils.isEmpty(keywordsId)) {
             return Collections.emptyList();
         }
 
-        List<ProjectModel> projects = projectRepository.findByKeywordsId(keywordsId);
+        List<ProjectModel> projects = projectRepository.findByKeywordsIdAndNameContaining(keywordsId, name);
         List<ProjectResponseDto> formattedProjects = new ArrayList<>();
         for (ProjectModel project : projects) {
             formattedProjects.add(mapEntityToResponse(project));
@@ -75,6 +79,21 @@ public class ProjectServiceImpl implements ProjectService {
 
         return formattedProjects;
     }
+
+    @Override
+    public void deleteProject(Long projectId) {
+        ProjectModel project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+
+        List<FileModel> files = fileRepository.findByProjectId(project.getId());
+        for(FileModel file : files){
+            fileService.deleteFileRecursively(projectId,file.getId());
+        }
+
+        project.getKeywords().forEach(keyword -> keyword.getProjects().remove(project));
+        fileService.deleteProjectDir(projectId);
+        projectRepository.delete(project);
+    }
+
 
     private ProjectModel mapToEntityByRequest(ProjectModel project, ProjectRequestDto projectRequest) {
         project.setExecutionStart(projectRequest.getExecutionStart());

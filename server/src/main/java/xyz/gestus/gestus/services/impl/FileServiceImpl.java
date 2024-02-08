@@ -53,6 +53,8 @@ public class FileServiceImpl implements FileService {
         return baseDir.toString();
     }
 
+
+
     private void ensureDirectoryExists(Path path) {
         try {
             Files.createDirectories(path);
@@ -65,6 +67,17 @@ public class FileServiceImpl implements FileService {
     public void createProjectDir(String projectId) {
         ensureDirectoryExists(constructPath(storageDirectory, projectId));
     }
+
+    @Override
+    public void deleteProjectDir(Long projectId) {
+        Path projectPath = Paths.get(storageDirectory + File.separator + projectId);
+        try {
+            Files.deleteIfExists(projectPath);
+        } catch (IOException e) {}
+
+    }
+
+
 
     @Override
     public FileResponseDto createDir(Long projectId, DirRequestDto dirRequestDto) {

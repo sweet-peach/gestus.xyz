@@ -11,6 +11,8 @@ public interface ProjectService {
     public ProjectResponseDto updateProject(Long projectId,ProjectRequestDto projectRequest);
 
     public List<ProjectResponseDto> getProjects();
-    public List<ProjectResponseDto> getProjectsByKeywords(List<Long> keywordsId);
+    public List<ProjectResponseDto> getProjectsByKeywordsAndName(List<Long> keywordsId, String name);
+
+    public void deleteProject(Long projectId);
 
 }
