@@ -2,6 +2,7 @@ package xyz.gestus.gestus.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import xyz.gestus.gestus.dto.KeywordRequestDto;
 import xyz.gestus.gestus.dto.KeywordResponseDto;
 import xyz.gestus.gestus.dto.ProjectRequestDto;
@@ -14,6 +15,7 @@ import xyz.gestus.gestus.repositories.ProjectRepository;
 import xyz.gestus.gestus.services.ProjectService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,15 +25,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     ProjectRepository projectRepository;
     KeywordRepository keywordRepository;
+
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository,KeywordRepository keywordRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, KeywordRepository keywordRepository) {
         this.projectRepository = projectRepository;
         this.keywordRepository = keywordRepository;
     }
 
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto projectRequest) {
-        ProjectModel project = mapToEntityByRequest(new ProjectModel(),projectRequest);
+        ProjectModel project = mapToEntityByRequest(new ProjectModel(), projectRequest);
         project.setCreationDate(new Date());
         project.setUpdateDate(new Date());
 
@@ -42,8 +45,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponseDto updateProject(Long projectId, ProjectRequestDto projectRequest) {
-        ProjectModel project = projectRepository.findById(projectId).orElseThrow(()-> new ProjectNotFoundException("Project not found"));
-        ProjectModel updatedProject = mapToEntityByRequest(project,projectRequest);
+        ProjectModel project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+        ProjectModel updatedProject = mapToEntityByRequest(project, projectRequest);
         ProjectModel savedProject = projectRepository.save(updatedProject);
         return mapEntityToResponse(savedProject);
     }
@@ -52,13 +55,28 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectResponseDto> getProjects() {
         List<ProjectModel> projects = projectRepository.findAll();
         List<ProjectResponseDto> formattedProjects = new ArrayList<>();
-        for(ProjectModel project : projects){
+        for (ProjectModel project : projects) {
             formattedProjects.add(mapEntityToResponse(project));
         }
         return formattedProjects;
     }
 
-    private ProjectModel mapToEntityByRequest(ProjectModel project,ProjectRequestDto projectRequest){
+    @Override
+    public List<ProjectResponseDto> getProjectsByKeywords(List<Long> keywordsId) {
+        if (CollectionUtils.isEmpty(keywordsId)) {
+            return Collections.emptyList();
+        }
+
+        List<ProjectModel> projects = projectRepository.findByKeywordsId(keywordsId);
+        List<ProjectResponseDto> formattedProjects = new ArrayList<>();
+        for (ProjectModel project : projects) {
+            formattedProjects.add(mapEntityToResponse(project));
+        }
+
+        return formattedProjects;
+    }
+
+    private ProjectModel mapToEntityByRequest(ProjectModel project, ProjectRequestDto projectRequest) {
         project.setExecutionStart(projectRequest.getExecutionStart());
         project.setExecutionEnd(projectRequest.getExecutionEnd());
         project.setRating(projectRequest.getRating());
@@ -79,7 +97,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-    private ProjectResponseDto mapEntityToResponse(ProjectModel projectModel){
+    private ProjectResponseDto mapEntityToResponse(ProjectModel projectModel) {
         ProjectResponseDto projectResponseDto = new ProjectResponseDto();
         projectResponseDto.setId(projectModel.getId());
         projectResponseDto.setName(projectModel.getName());
@@ -98,7 +116,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<KeywordResponseDto> keywords = projectModel.getKeywords().stream()
                 .map(keyword -> new KeywordResponseDto(keyword.getId(), keyword.getName()))
                 .collect(Collectors.toList());
-        
+
         projectResponseDto.setKeywords(keywords);
 
         return projectResponseDto;

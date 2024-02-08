@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import xyz.gestus.gestus.dto.ProjectRequestDto;
 import xyz.gestus.gestus.dto.ProjectResponseDto;
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
+import xyz.gestus.gestus.models.ProjectModel;
+import xyz.gestus.gestus.repositories.ProjectRepository;
 import xyz.gestus.gestus.services.FileService;
 import xyz.gestus.gestus.services.ProjectService;
 
@@ -19,14 +21,14 @@ public class ProjectController {
     private FileService fileService;
     private ProjectService projectService;
 
-    public ProjectController(FileService fileService, ProjectService projectService) {
+    public ProjectController(FileService fileService, ProjectService projectService, ProjectRepository projectRepository) {
         this.fileService = fileService;
         this.projectService = projectService;
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDto>> getProjects(){
-        return new ResponseEntity<>(projectService.getProjects(),HttpStatus.FOUND);
+    public ResponseEntity<List<ProjectResponseDto>> getProjects(@RequestParam(name = "keywords") List<Long> keywordsId) {
+        return new ResponseEntity<>(projectService.getProjectsByKeywords(keywordsId),HttpStatus.FOUND);
     }
 
     @PostMapping

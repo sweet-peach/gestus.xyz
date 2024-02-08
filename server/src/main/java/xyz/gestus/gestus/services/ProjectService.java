@@ -2,6 +2,7 @@ package xyz.gestus.gestus.services;
 
 import xyz.gestus.gestus.dto.ProjectRequestDto;
 import xyz.gestus.gestus.dto.ProjectResponseDto;
+import xyz.gestus.gestus.models.ProjectModel;
 
 import java.util.List;
 
@@ -10,5 +11,6 @@ public interface ProjectService {
     public ProjectResponseDto updateProject(Long projectId,ProjectRequestDto projectRequest);
 
     public List<ProjectResponseDto> getProjects();
+    public List<ProjectResponseDto> getProjectsByKeywords(List<Long> keywordsId);
 
 }
