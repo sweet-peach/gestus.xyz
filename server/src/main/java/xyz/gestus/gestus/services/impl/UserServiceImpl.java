@@ -43,10 +43,16 @@ public class UserServiceImpl implements UserService {
                 )
         );
 
+        UserModel userModel = userRepository.findByEmail(loginRequestDto.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
+        LoginResponseDto responseDto = new LoginResponseDto();
+        responseDto.setAccessToken(jwt);
+        responseDto.setUserResponseDto(mapEntityToResponse(userModel));
 
-        return new LoginResponseDto(jwt);
+        return responseDto;
     }
 
     @Override
