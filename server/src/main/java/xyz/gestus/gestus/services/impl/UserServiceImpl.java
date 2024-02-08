@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
         LoginResponseDto responseDto = new LoginResponseDto();
-        responseDto.setAccessToken(jwt);
-        responseDto.setUserResponseDto(mapEntityToResponse(userModel));
+        responseDto.setToken(jwt);
+        responseDto.setUser(mapEntityToResponse(userModel));
 
         return responseDto;
     }
