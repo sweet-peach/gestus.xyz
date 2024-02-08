@@ -104,3 +104,9 @@ header{
     justify-content: center;
     align-items: center;
 }
+
+/* En tu archivo CSS global o en un <style> tag */
+.no-scroll {
+    overflow: hidden;
+  }
+  
