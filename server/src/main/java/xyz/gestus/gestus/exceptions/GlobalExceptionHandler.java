@@ -44,4 +44,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(UploadFailException.class)
+    public ResponseEntity<ErrorObject> handleUploadFail(UploadFailException exception, WebRequest request){
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorObject.setMessage(exception.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
