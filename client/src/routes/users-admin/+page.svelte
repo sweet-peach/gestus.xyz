@@ -6,7 +6,10 @@
         <h2>Usuarios</h2>
     </div>
         <div class="div-header div-buscador">
-            <input type="text" name="" id="" placeholder="Buscador de proyectos">
+            <div class="search-container">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscador de proyectos" class="search-input">
+              </div>
             <p>Usuario</p>
         </div>    
 </header>
@@ -30,30 +33,7 @@
     .fa-ellipsis-vertical{
         font-size: 25px;
     }
-    .div-header{
-        width: 20%;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-    header{
-        width: 100%;
-        padding-top: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 50px;
-    }
-
-    .div-header input{
-        border-radius: 25px;
-        border: none;
-        padding: 10px;
-    }
-
-    .div-buscador{
-        margin-right: 50px;
-    }
+    
     .info-user{
         display: flex;
         align-items: center;

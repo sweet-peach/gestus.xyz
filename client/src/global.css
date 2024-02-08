@@ -28,3 +28,79 @@ body {
     --color-background: #fff;
     --color-secondary-background: #C7CBD2;
 }
+
+.button-hover {
+    border-radius: 20px;
+    background: red;
+    border: none;
+    opacity: 0;
+    color: black;
+    transition: opacity 0.3s;
+    padding: 10px;
+    position: absolute;
+    top: 60px;
+}
+
+.button-hover.visible {
+    opacity: 1;
+}
+
+.button-hover.hidden {
+    opacity: 0;
+}
+
+.search-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .search-container input[type="text"] {
+    width: 250px;
+  }
+  
+  .search-container i.fa-search {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #aaa;
+    pointer-events: none;
+  }
+
+  .div-header{
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
+
+header{
+    width: 90%;
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 40px;
+}
+
+.div-header input{
+    border-radius: 25px;
+    border: none;
+    padding: 10px;
+    outline: none;
+}
+
+.div-buscador{
+    margin-right: 50px;
+}
+
+
+.div-p-user{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

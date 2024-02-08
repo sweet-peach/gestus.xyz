@@ -48,7 +48,7 @@
     }
     .div-inputs{
         height: 60%;
-        width: 100%;
+        width: 80%;
     }
     .div-inputs > * {
         margin-bottom: 20px;
@@ -72,8 +72,9 @@
         font-size: 20px;
     }
     input{
-        border: 1px solid #EEE;
+        outline: none;
+        border: .5px solid rgba(0, 0, 0, 0.144);
         padding: 10px;
-        border-radius: 23px;
+        border-radius: 10px;
     }
 </style>

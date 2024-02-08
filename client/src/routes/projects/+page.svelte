@@ -34,7 +34,10 @@ function handleMouseLeave() {
                 <h2>Projects</h2>
             </div>
                 <div class="div-header div-buscador">
-                    <input type="text" name="" id="" placeholder="Buscador de proyectos">
+                    <div class="search-container">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" placeholder="Buscador de proyectos" class="search-input">
+                      </div>
                     <div class="div-p-user" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
                         <p class="p-user">Usuario</p>
                         <button class="button-hover {showLogoutButton ? 'visible' : 'hidden'}">Cerrar sesión</button>
@@ -76,26 +79,6 @@ function handleMouseLeave() {
 
 </section>
 <style>
-
-.button-hover {
-    background: none;
-    border: none;
-    opacity: 0;
-    color: red;
-    transition: opacity 0.3s;
-    padding: 10px;
-    position: absolute;
-    top: 40px;
-    }
-
-    .button-hover.visible {
-        opacity: 1;
-    }
-
-    .button-hover.hidden {
-        opacity: 0;
-    }
-
     .p-project{
         font-weight: bolder;
         font-size: 20px;
@@ -162,29 +145,6 @@ function handleMouseLeave() {
     .fa-bars{
         font-size: 25px;
         margin-left: 200px;
-    }
-    .div-header{
-        width: 20%;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-    header{
-        width: 100%;
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .div-header input{
-        border-radius: 25px;
-        border: none;
-        padding: 10px;
-    }
-
-    .div-buscador{
-        margin-right: 50px;
     }
 
 
