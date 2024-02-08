@@ -10,8 +10,10 @@ import xyz.gestus.gestus.dto.RegistrationRequestDto;
 import xyz.gestus.gestus.services.FileService;
 import xyz.gestus.gestus.services.ProjectService;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/project/")
+@RequestMapping("/api/project")
 public class ProjectController {
 
     private FileService fileService;
@@ -20,6 +22,11 @@ public class ProjectController {
     public ProjectController(FileService fileService, ProjectService projectService) {
         this.fileService = fileService;
         this.projectService = projectService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjectResponseDto>> getProjects(){
+        return new ResponseEntity<>(projectService.getProjects(),HttpStatus.FOUND);
     }
 
     @PostMapping

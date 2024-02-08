@@ -13,6 +13,7 @@ import xyz.gestus.gestus.repositories.KeywordRepository;
 import xyz.gestus.gestus.repositories.ProjectRepository;
 import xyz.gestus.gestus.services.ProjectService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +46,16 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectModel updatedProject = mapToEntityByRequest(project,projectRequest);
         ProjectModel savedProject = projectRepository.save(updatedProject);
         return mapEntityToResponse(savedProject);
+    }
+
+    @Override
+    public List<ProjectResponseDto> getProjects() {
+        List<ProjectModel> projects = projectRepository.findAll();
+        List<ProjectResponseDto> formattedProjects = new ArrayList<>();
+        for(ProjectModel project : projects){
+            formattedProjects.add(mapEntityToResponse(project));
+        }
+        return formattedProjects;
     }
 
     private ProjectModel mapToEntityByRequest(ProjectModel project,ProjectRequestDto projectRequest){
