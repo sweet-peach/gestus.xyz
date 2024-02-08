@@ -1,4 +1,4 @@
-package xyz.gestus.gestus.services.impl;
+package xyz.gestus.gestus.services;
 
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
 

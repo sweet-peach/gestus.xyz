@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.gestus.gestus.dto.LoginResponseDto;
 import xyz.gestus.gestus.dto.LoginRequestDto;
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
+import xyz.gestus.gestus.repositories.UserRepository;
 import xyz.gestus.gestus.security.JwtTokenProvider;
 import xyz.gestus.gestus.services.impl.UserServiceImpl;
 
@@ -24,18 +25,19 @@ public class AuthController {
     private UserServiceImpl userService;
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider tokenProvider;
+    private UserRepository userRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider tokenProvider) {
+    public AuthController(UserRepository userRepository, AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
         this.userService = userService;
         this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("registration")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequestDto registrationRequestDto) {
-        userService.register(registrationRequestDto);
-
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequestDto registerRequestDto) {
+        userService.register(registerRequestDto);
         return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
     }
 

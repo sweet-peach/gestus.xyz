@@ -6,6 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import xyz.gestus.gestus.models.Role;
 import xyz.gestus.gestus.models.UserModel;
 import xyz.gestus.gestus.repositories.UserRepository;
 
@@ -42,7 +43,7 @@ public class InitialDataLoader {
             UserModel newUser = new UserModel();
             newUser.setEmail(email);
             newUser.setPassword(passwordEncoder.encode(password));
-            newUser.setRole("ADMIN");
+            newUser.setRole(Role.ADMIN);
             userRepository.save(newUser);
         }
     }

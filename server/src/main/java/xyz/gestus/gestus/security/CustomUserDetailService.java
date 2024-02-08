@@ -14,6 +14,7 @@ import xyz.gestus.gestus.repositories.UserRepository;
 import java.util.Collection;
 import java.util.Collections;
 
+
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
@@ -32,6 +33,7 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthority(UserModel user) {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+        String role = user.getRole().toString();
+        return Collections.singletonList(new SimpleGrantedAuthority(role));
     }
 }
