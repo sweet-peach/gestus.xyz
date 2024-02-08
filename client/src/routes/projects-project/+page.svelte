@@ -369,7 +369,7 @@ function handleMouseLeave() {
         padding-bottom: 30px;
     }
     .vision-project > button{
-        padding: 20px 50px;
+        padding: 20px 40px;
     }
     .files-info-options{
         
