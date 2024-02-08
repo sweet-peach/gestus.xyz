@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import xyz.gestus.gestus.dto.LoginRequestDto;
 import xyz.gestus.gestus.dto.LoginResponseDto;
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
+import xyz.gestus.gestus.dto.UserResponseDto;
 import xyz.gestus.gestus.models.Role;
 import xyz.gestus.gestus.models.UserModel;
 import xyz.gestus.gestus.repositories.UserRepository;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public UserServiceImpl(JwtTokenProvider tokenProvider, UserRepository userRepository,PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager) {
+    public UserServiceImpl(JwtTokenProvider tokenProvider, UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(RegistrationRequestDto registerDto) {
-        if(userRepository.existsByEmail(registerDto.getEmail())){
+        if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new UsernameNotFoundException("A username associated with this email already exists");
         }
 
@@ -62,5 +63,21 @@ public class UserServiceImpl implements UserService {
         userModel.setRole(Role.valueOf(registerDto.getRole()));
 
         userRepository.save(userModel);
+    }
+
+    @Override
+    public UserResponseDto getUserByEmail(String email) {
+        UserModel user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return mapEntityToResponse(user);
+    }
+
+    private UserResponseDto mapEntityToResponse(UserModel userModel) {
+        UserResponseDto response = new UserResponseDto();
+        response.setId(userModel.getId());
+        response.setFirstName(userModel.getFirstName());
+        response.setLastName(userModel.getLastName());
+        response.setEmail(userModel.getEmail());
+        response.setRole(userModel.getRole().toString());
+        return response;
     }
 }
