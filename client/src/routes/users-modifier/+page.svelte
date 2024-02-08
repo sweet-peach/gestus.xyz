@@ -32,12 +32,9 @@
 </div>
 
 <style>
-    :global(html,body){
+    :global(body){
         width: 100%;
         height: 100%;
-    }
-    :global(body){
-        background: var(--color-primary-background);
     }
     .fa-ellipsis-vertical{
         font-size: 25px;
@@ -50,7 +47,7 @@
     }
     header{
         width: 100%;
-        margin-top: 10px;
+        padding-top: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;

@@ -1,50 +1,163 @@
 <script>
+let showLogoutButton = false;
 
+function handleMouseEnter() {
+  showLogoutButton = true;
+}
+
+function handleMouseLeave() {
+  showLogoutButton = false;
+}
 </script>
 
+<section class="sect-principal">
+    <section class="sect-izq">
+        <div>
+            <i class="fa-solid fa-box-archive"></i>
+            <h3>Projects</h3>
+        </div>
+        
+        <div>
+            <i class="fa-solid fa-users"></i>
+            <h3>Users</h3>
+        </div>
+        
+        <div>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h3>Logs</h3>
+        </div>
+    </section>
+    <section class="sect-derecha">
+        <header>
+            <div class="div-header">
+                <i class="fa-solid fa-bars"></i>
+                <h2>Projects</h2>
+            </div>
+                <div class="div-header div-buscador">
+                    <input type="text" name="" id="" placeholder="Buscador de proyectos">
+                    <div class="div-p-user" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+                        <p class="p-user">Usuario</p>
+                        <button class="button-hover {showLogoutButton ? 'visible' : 'hidden'}">Cerrar sesión</button>
+                    </div>
+                </div>    
+        </header>
+        
+        
+        <section class="config">
+            <div class="div-config">
+                <button>Crear nuevo proyecto</button>
+                <select name="" id="" placeholder="Ordenar por">
+                    <option hidden selected>Ordenar por</option>
+                    <option value="">1</option>
+                    <option value="">2</option>
+                </select>
+            </div>
+        </section>
+        
+        <div class="general-project">
+            <div class="project-info">
+                <div class="name-act">
+                    <p class="p-project">Proyecto</p>
+                    <p>Ultima actualización...</p>
+                </div>
+                <div class="project-status">
+                    <div class="status">
+                        <i class="fa-solid fa-circle"></i>
+                        <p>Activo</p>
+                    </div>
+                    <div class="closing-in">
+                    <p>Se cierra en...</p>
+                    </div>
+                </div>
+            </div>
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+    </section>
 
-
-
-<header>
-    <div class="div-header">
-        <i class="fa-solid fa-bars"></i>
-        <h2>Projects</h2>
-    </div>
-        <div class="div-header div-buscador">
-            <input type="text" name="" id="" placeholder="Buscador de proyectos">
-            <p>Usuario</p>
-        </div>    
-</header>
-
-
-<section class="config">
-    <div class="div-config">
-        <button>Crear nuevo proyecto</button>
-        <select name="" id="" placeholder="Ordenar por">
-            <option hidden selected>Ordenar por</option>
-            <option value="">1</option>
-            <option value="">2</option>
-        </select>
-    </div>
 </section>
-
-<div class="info-user">
-    <div class="name-rol">
-        <p class="p-project">Proyecto</p>
-        <p class="p-update">Ultima actualizacion...</p>
-    </div>
-    <div class="ellipsis">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-    </div>
-</div>
 <style>
+
+.button-hover {
+    background: none;
+    border: none;
+    opacity: 0;
+    color: red;
+    transition: opacity 0.3s;
+    padding: 10px;
+    position: absolute;
+    top: 40px;
+    }
+
+    .button-hover.visible {
+        opacity: 1;
+    }
+
+    .button-hover.hidden {
+        opacity: 0;
+    }
+
+    .p-project{
+        font-weight: bolder;
+        font-size: 20px;
+        margin-bottom: .5%;
+    }
+    .sect-principal{
+        display: flex;
+    }
+    .sect-izq{
+        padding: 40px 0px;
+        gap: 30px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 10%;
+        height: 100vh;
+        border-right: 1px solid;
+    }
+    .sect-izq i{
+        font-size: 30px;
+        padding: 10px;
+    }
+    .sect-izq > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .sect-derecha{
+        width: 90%;
+    }
+    .fa-ellipsis-vertical{
+        font-size: 40px;
+    }
+    .general-project{
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .project-info{
+        height: 10vh;
+        width: 80%;
+    }
+    .project-status, .status{
+
+        display: flex;
+    }
+    .status{
+        width: 120px;
+        gap: 10px;
+        align-items: center;
+    }
+    .project-status{
+        margin-top: 10px;
+    }
+    .fa-circle{
+        color: var(--color-primary);
+    }
     :global(html,body){
-        margin-top: 20px;
         width: 100%;
         height: 100%;
-    }
-    :global(body){
-        background: var(--color-primary-background);
     }
     .fa-bars{
         font-size: 25px;
@@ -99,30 +212,5 @@
         background: #EEE;
         padding: 15px 25px;
     }
-    .info-user{
-        margin-top: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-    .info-user div{
-        width: 35%;
-    }
-    .info-user div p{
-        font-size: 20px;
-    }
-    .name-rol{
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-    .ellipsis{
-        font-size: 30px;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .p-project{
-        font-weight: bold;
-    }
+    
 </style>
