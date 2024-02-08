@@ -1,5 +1,5 @@
 <script>
-import Modal from "../../Modal.svelte";
+import Modal from "../../ModalProjects.svelte";
 
 let title = 'Crear nuevo proyecto'; // Define modalTitle here
 

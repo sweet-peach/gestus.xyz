@@ -1,6 +1,52 @@
 <script>
+import Modal from "../../ModalAddUser.svelte";
+import Dropdown from '../../Dropdown.svelte'; // Importa el componente de dropdown personalizado
+
+let title = 'Añadir usuario'; // Define modalTitle here
+
+let modalStep = 0;
+
+function openModal() {
+  modalStep = 1; // Abre el primer modal
+}
+
+function nextModal() {
+        if (modalStep < 3) {
+            modalStep++;
+        } else {
+            closeModal(); // Llama a closeModal cuando estás en el último paso
+        }
+    }
+
+    function prevModal() {
+  if (modalStep > 1) {
+    modalStep--;
+  }
+}
+function closeModal() {
+  modalStep = 0; // Restablece para cerrar los modales
+}
+
+let showLogoutButton = false;
+
+function handleMouseEnter() {
+  showLogoutButton = true;
+}
+
+function handleMouseLeave() {
+  showLogoutButton = false;
+}
+
 
 </script>
+
+<!-- MODAL -->
+
+
+<Modal isOpen={modalStep > 0} step={modalStep} title={title} closeModal={closeModal} nextModal={nextModal} prevModal={prevModal} />
+
+
+<Modal></Modal>
 <section class="sect-principal">
     <section class="sect-izq">
         <div>
@@ -31,6 +77,9 @@
                 <p>Usuario</p>
             </div>    
     </header>
+    <div class="div-button">
+        <button class="button-adduser" on:click={openModal}>Añadir usuario</button>
+    </div>
 
     <div class="info-user">
         <div class="name-rol">
@@ -38,14 +87,19 @@
             <p class="p-rol">Rol</p>
         </div>
         <div class="ellipsis">
-            <i class="fa-solid fa-ellipsis-vertical"></i>
         </div>
     </div>
 
     </section>
 </section>
 <style>
-
+    .button-adduser{
+        padding: 15px 20px;
+        border: none;
+        border-radius: 15px;
+        background-color: var(--color-primary);
+        font-weight: bold;
+    }
 .sect-principal{
     display: flex;
 }
