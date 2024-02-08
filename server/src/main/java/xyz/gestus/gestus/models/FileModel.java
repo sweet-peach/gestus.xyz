@@ -22,16 +22,4 @@ public class FileModel {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private FileModel parent;
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FileModel> childs = new ArrayList<>();;
-
-    public void addChild(FileModel child) {
-        childs.add(child);
-        child.setParent(this);
-    }
-
-    public void removeChild(FileModel child) {
-        childs.remove(child);
-        child.setParent(null);
-    }
 }
