@@ -1,6 +1,4 @@
 <script>
-
-
     import {onMount} from "svelte";
     import {getFilesByProjectId} from "$lib/services/fileService.js";
     import {files} from "$lib/stores/appStore.js";
@@ -14,9 +12,9 @@
 
 <div class="files-wrapper">
     <div class="files-navigation">
-        <div class="navigator">Project</div>
-        <div class="navigator">Files</div>
-        <div class="navigator">Statistics</div>
+        <div class="navigator button-highlight">Project</div>
+        <div class="navigator button-highlight">Files</div>
+        <div class="navigator button-highlight">Statistics</div>
     </div>
     <div class="files-actions">
         <div class="left-actions">
@@ -69,7 +67,9 @@
 </div>
 
 <style lang="scss">
+
   .file-list {
+    padding: 10px 0;
     display: grid;
     grid-template-columns: 1fr 4fr repeat(3, 1fr);
 
@@ -94,6 +94,7 @@
   }
 
   .file-header {
+    padding: 20px 0;
     display: grid;
     grid-template-columns: 1fr 4fr repeat(3, 1fr);
 
@@ -111,6 +112,27 @@
       justify-self: center;
     }
   }
+  .files-navigation{
+    padding-bottom: 20px;
+    display: flex;
+  }
+
+  .button-highlight {
+  border: none;
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
+  color: #000;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-highlight:hover {
+  border-bottom-color: var(--color-primary);
+}
+.primary-button{
+    padding: 20px 50px;
+}
 </style>
 
 
