@@ -1,7 +1,7 @@
 <script>
-import Modal from "../../ModalAddUser.svelte";
-import Dropdown from '../../Dropdown.svelte'; // Importa el componente de dropdown personalizado
-import Navbar from "../../navbar.svelte";
+import Modal from "../../../ModalAddUser.svelte";
+import Dropdown from '../../../Dropdown.svelte'; // Importa el componente de dropdown personalizado
+import Navbar from "../../../components/Navbar.svelte";
 let title = 'Añadir usuario'; // Define modalTitle here
 
 let modalStep = 0;

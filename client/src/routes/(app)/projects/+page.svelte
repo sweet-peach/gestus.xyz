@@ -1,6 +1,6 @@
 <script>
-import Modal from "../../ModalProjects.svelte";
-import Navbar from "../../navbar.svelte";
+import Modal from "../../../ModalProjects.svelte";
+import Navbar from "../../../components/Navbar.svelte";
 let title = 'Crear nuevo proyecto'; // Define modalTitle here
 let userRole= "";
 let modalStep = 0;
@@ -51,24 +51,6 @@ function handleMouseLeave() {
 <section class="sect-principal-admin">
     <Navbar/>
     <section class="sect-derecha">
-        <header>
-            <div class="div-header">
-                <i class="fa-solid fa-bars"></i>
-                <h2>Projects</h2>
-            </div>
-                <div class="div-header div-buscador">
-                    <div class="search-container">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="text" placeholder="Buscador de proyectos" class="search-input">
-                      </div>
-                    <div class="div-p-user" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
-                        <p class="p-user">Usuario</p>
-                        <button class="button-hover {showLogoutButton ? 'visible' : 'hidden'}">Cerrar sesión</button>
-                    </div>
-                </div>    
-        </header>
-        
-        
         <section class="config">
             <div class="div-config">
                 <button on:click={openModal}>Crear nuevo proyecto</button>
@@ -165,7 +147,6 @@ function handleMouseLeave() {
 {:else}
 
 <section class="sect-principal-user">
-    <Navbar/>
     <section class="sect-derecha">
         <header>
             <div class="div-header">

@@ -1,5 +1,5 @@
 <script>
-import Navbar from "../../navbar.svelte";
+import Navbar from "../../../components/Navbar.svelte";
 let showLogoutButton = false;
 
 function handleMouseEnter() {
@@ -32,7 +32,7 @@ function handleMouseLeave() {
                 </div>
         </header>
 
-        <section class="files-info-options">
+        <section class="user-info">
             <div class="general-user-info">
                 <div class="user-info">
                     <div class="name-act">
@@ -47,24 +47,12 @@ function handleMouseLeave() {
                 <button class="button-highlight">Estadisticas</button>
             </div>
     
-            
-
-            <div class="general-info">
-                <div class="info">
-                    <h2>Numero de acciones este mes</h2>
-                    <p>400</p>
-                </div>
-                <div class="info">
-                    <h2>Numero de archivos este mes</h2>
-                    <p>120</p>
-                </div>
-                <div class="info">
-                    <h2>Espacio ocupado total</h2>
-                    <p>20GB</p>
-                </div>
-                <div class="info">
-                    <h2>Extensión más frecuente</h2>
-                    <p>.exe</p>
+            <div class="general-project">
+                <div class="project-info">
+                    <div class="name-act">
+                        <p class="p-project">Subió archivo...</p>
+                        <p>Fecha</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -72,24 +60,8 @@ function handleMouseLeave() {
 </section>
 
 <style>
-    .p-project{
-        font-weight: bolder;
-        font-size: 20px;
-        margin-bottom: 2%;
-    }
-    .general-user-info{
-        justify-content: space-between;
-    }
-    .general-user-info i {
-        font-size: 30px;
-    }
+    
 
-.general-user-info{
-        margin-top: 40px;
-        margin-bottom: 40px;
-        display: flex;
-        align-items: center;
-    }
 
     
     .sect-derecha{
@@ -99,11 +71,28 @@ function handleMouseLeave() {
     h2{
         padding: 20px 0;
     }
-    .info{
-        justify-content: space-between;
+    .p-project{
+        font-weight: bolder;
+        font-size: 20px;
+        margin-bottom: .5%;
+    }
+
+    .general-project, .general-user-info{
+        margin-top: 40px;
+        margin-bottom: 40px;
         display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 20px;
+    }
+    .project-info{
+        height: 10vh;
+        width: 100%;
+    }
+    .general-user-info{
+        justify-content: space-between;
+    }
+    .general-user-info i {
+        font-size: 30px;
     }
 
     .button-highlight {
@@ -127,9 +116,9 @@ function handleMouseLeave() {
     .vision-project > button{
         padding: 20px 40px;
     }
-    .files-info-options{
+    .user-info{
         
-        width: 90%;
+        width: 80%;
     }
     :global(body){
         width: 100%;

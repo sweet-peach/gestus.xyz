@@ -1,6 +1,5 @@
 <script>
-import Navbar from "../../navbar.svelte";
-
+import Navbar from "../../../components/Navbar.svelte";
 let showLogoutButton = false;
 
 function handleMouseEnter() {
@@ -34,6 +33,15 @@ function handleMouseLeave() {
         </header>
 
         <section class="files-info-options">
+            <div class="general-user-info">
+                <div class="user-info">
+                    <div class="name-act">
+                        <p class="p-project">Hugo</p>
+                        <p>Lector</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
             <div class="vision-project">
                 <button class="button-highlight">Logs</button>
                 <button class="button-highlight">Estadisticas</button>
@@ -64,6 +72,25 @@ function handleMouseLeave() {
 </section>
 
 <style>
+    .p-project{
+        font-weight: bolder;
+        font-size: 20px;
+        margin-bottom: 2%;
+    }
+    .general-user-info{
+        justify-content: space-between;
+    }
+    .general-user-info i {
+        font-size: 30px;
+    }
+
+.general-user-info{
+        margin-top: 40px;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+    }
+
     
     .sect-derecha{
         width: 90%;

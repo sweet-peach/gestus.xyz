@@ -1,46 +1,62 @@
 import {user} from "./stores/userStore.js";
 import axios from "axios";
 
-export async function auth() {
-    console.log("auth")
-    const token = localStorage.getItem('token');
+// src/lib/auth.js
+
+import Cookies from 'js-cookie';
+
+export function saveToken(token) {
+    Cookies.set('token', token, { expires: 7 }); // Сохраняем токен на 7 дней
+}
+
+export function getToken() {
+    return Cookies.get('token');
+}
+
+export async function authenticate(request) {
+    const token = getToken(); // Пытаемся получить токен из куков клиента или сервера
+    console.log(token);
     if (!token) {
-        console.log("no token")
-        return; // Токен не найден
+        return false;
     }
 
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth`, {
-            method: 'GET',
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
 
-        console.log(response);
+        if (res.ok) {
+            const userData = await res.json();
 
-        if (!response.ok) {
-            localStorage.removeItem("token");
-            throw new Error('Authorization failed');
+            user.set(userData);
+            return true;
+        } else {
+            Cookies.remove('token');
+            user.set(null);
+            return false;
         }
-
-        const userData = await response.json();
-        return user.set(userData.data);
     } catch (error) {
-        console.error('Error during authentication:', error);
+        console.error('Authentication error:', error);
+        return false;
     }
+}
+
+export function logout() {
+    Cookies.remove('jwt');
+    user.set(null);
+    window.location.href = '/login';
 }
 
 export async function login(email, password) {
     try {
-        console.log(email);
-        console.log(password);
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
             email,
             password
         })
-        user.set(response.data.user)
-        localStorage.setItem('token', response.data.token)
+        user.set(response.data.user);
+        saveToken(response.data.token);
     } catch (e) {
         alert(e);
     }

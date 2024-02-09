@@ -1,5 +1,6 @@
 <script>
-import Navbar from "../../navbar.svelte";
+import Navbar from "../../../components/Navbar.svelte";
+
 let showLogoutButton = false;
 
 function handleMouseEnter() {
@@ -32,16 +33,7 @@ function handleMouseLeave() {
                 </div>
         </header>
 
-        <section class="user-info">
-            <div class="general-user-info">
-                <div class="user-info">
-                    <div class="name-act">
-                        <p class="p-project">Hugo</p>
-                        <p>Lector</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-            </div>
+        <section class="files-info-options">
             <div class="vision-project">
                 <button class="button-highlight">Logs</button>
                 <button class="button-highlight">Estadisticas</button>
@@ -50,7 +42,7 @@ function handleMouseLeave() {
             <div class="general-project">
                 <div class="project-info">
                     <div class="name-act">
-                        <p class="p-project">Subió archivo...</p>
+                        <p class="p-project">Hugo subió...</p>
                         <p>Fecha</p>
                     </div>
                 </div>
@@ -77,7 +69,7 @@ function handleMouseLeave() {
         margin-bottom: .5%;
     }
 
-    .general-project, .general-user-info{
+    .general-project{
         margin-top: 40px;
         margin-bottom: 40px;
         display: flex;
@@ -87,12 +79,6 @@ function handleMouseLeave() {
     .project-info{
         height: 10vh;
         width: 100%;
-    }
-    .general-user-info{
-        justify-content: space-between;
-    }
-    .general-user-info i {
-        font-size: 30px;
     }
 
     .button-highlight {
@@ -116,7 +102,7 @@ function handleMouseLeave() {
     .vision-project > button{
         padding: 20px 40px;
     }
-    .user-info{
+    .files-info-options{
         
         width: 80%;
     }

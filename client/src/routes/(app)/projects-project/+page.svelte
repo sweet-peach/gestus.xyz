@@ -1,5 +1,5 @@
 <script>
-import Navbar from "../../navbar.svelte";
+import Navbar from "../../../components/Navbar.svelte";
 let showLogoutButton = false;
 
 function handleMouseEnter() {

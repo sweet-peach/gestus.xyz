@@ -27,10 +27,24 @@ body {
     --color-light: #ecf0f1;
     --color-text-light: #777;
 
+    --border-color:#D8D8D8;
+
+    --icon-color:#888888;
+    --selected-icon-color:#000;
+    --secondary-text-color:#888888;
+    --selected-secondary-text-color:#000;
+
     --color-primary: #CDFF3E;
     --color-text: #000;
     --color-background: #fff;
     --color-secondary-background: #C7CBD2;
+    --ternary-background-color: #EEEEEE;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    background-color: transparent;
 }
 
 .button-hover {

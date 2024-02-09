@@ -1,5 +1,7 @@
 <script>
     import {login} from "$lib/auth.js";
+    import {onMount} from "svelte";
+    import {redirect} from "@sveltejs/kit";
     let email = "";
     let password = "";
 

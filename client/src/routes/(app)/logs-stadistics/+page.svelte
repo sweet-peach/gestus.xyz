@@ -1,5 +1,5 @@
 <script>
-import Navbar from "../../navbar.svelte";
+import Navbar from "../../../components/Navbar.svelte";
 
 let showLogoutButton = false;
 
@@ -39,12 +39,24 @@ function handleMouseLeave() {
                 <button class="button-highlight">Estadisticas</button>
             </div>
     
-            <div class="general-project">
-                <div class="project-info">
-                    <div class="name-act">
-                        <p class="p-project">Hugo subió...</p>
-                        <p>Fecha</p>
-                    </div>
+            
+
+            <div class="general-info">
+                <div class="info">
+                    <h2>Numero de acciones este mes</h2>
+                    <p>400</p>
+                </div>
+                <div class="info">
+                    <h2>Numero de archivos este mes</h2>
+                    <p>120</p>
+                </div>
+                <div class="info">
+                    <h2>Espacio ocupado total</h2>
+                    <p>20GB</p>
+                </div>
+                <div class="info">
+                    <h2>Extensión más frecuente</h2>
+                    <p>.exe</p>
                 </div>
             </div>
         </section>
@@ -53,9 +65,6 @@ function handleMouseLeave() {
 
 <style>
     
-
-
-    
     .sect-derecha{
         width: 90%;
     }
@@ -63,22 +72,11 @@ function handleMouseLeave() {
     h2{
         padding: 20px 0;
     }
-    .p-project{
-        font-weight: bolder;
-        font-size: 20px;
-        margin-bottom: .5%;
-    }
-
-    .general-project{
-        margin-top: 40px;
-        margin-bottom: 40px;
+    .info{
+        justify-content: space-between;
         display: flex;
-        justify-content: center;
         align-items: center;
-    }
-    .project-info{
-        height: 10vh;
-        width: 100%;
+        gap: 20px;
     }
 
     .button-highlight {
@@ -104,7 +102,7 @@ function handleMouseLeave() {
     }
     .files-info-options{
         
-        width: 80%;
+        width: 90%;
     }
     :global(body){
         width: 100%;
