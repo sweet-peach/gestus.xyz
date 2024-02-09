@@ -28,9 +28,12 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<List<ProjectResponseDto>> getProjects(
-            @RequestParam(name = "keywords") List<Long> keywordsId,
-            @RequestParam(required = false) String name) {
-        return new ResponseEntity<>(projectService.getProjectsByKeywordsAndName(keywordsId, name), HttpStatus.FOUND);
+            @RequestParam(required = false) List<Long> keywords,
+            @RequestParam(required = false) String query) {
+        if(keywords.isEmpty()){
+            return new ResponseEntity<>(projectService.getProjectsByName(query), HttpStatus.FOUND);
+        }
+        return new ResponseEntity<>(projectService.getProjectsByKeywordsAndName(keywords, query), HttpStatus.FOUND);
     }
 
     @PostMapping

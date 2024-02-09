@@ -12,6 +12,7 @@ public interface ProjectService {
 
     public List<ProjectResponseDto> getProjects();
     public List<ProjectResponseDto> getProjectsByKeywordsAndName(List<Long> keywordsId, String name);
+    public List<ProjectResponseDto> getProjectsByName(String name);
 
     public void deleteProject(Long projectId);
 

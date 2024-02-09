@@ -81,6 +81,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public List<ProjectResponseDto> getProjectsByName(String name) {
+        List<ProjectModel> projects = projectRepository.findByNameContaining(name);
+        List<ProjectResponseDto> formattedProjects = new ArrayList<>();
+        for (ProjectModel project : projects) {
+            formattedProjects.add(mapEntityToResponse(project));
+        }
+
+        return formattedProjects;
+    }
+
+    @Override
     public void deleteProject(Long projectId) {
         ProjectModel project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 

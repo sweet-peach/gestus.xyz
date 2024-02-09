@@ -10,4 +10,7 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<ProjectModel,Long> {
     @Query("SELECT p FROM ProjectModel p JOIN p.keywords k WHERE k.id IN :keywordsId AND LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     List<ProjectModel> findByKeywordsIdAndNameContaining(@Param("keywordsId") List<Long> keywordsId, @Param("name") String name);
+
+    @Query("SELECT p FROM ProjectModel p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<ProjectModel> findByNameContaining(@Param("name") String name);
 }
