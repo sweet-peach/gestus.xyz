@@ -1,8 +1,8 @@
 <script>
 import Modal from "../../ModalProjects.svelte";
-
+import Navbar from "../../navbar.svelte";
 let title = 'Crear nuevo proyecto'; // Define modalTitle here
-
+let userRole= "";
 let modalStep = 0;
 
 function openModal() {
@@ -46,23 +46,10 @@ function handleMouseLeave() {
 
 
 <!-- ADMIN VIEW -->
+{#if userRole === 'ADMIN'}
+
 <section class="sect-principal-admin">
-    <section class="sect-izq">
-        <div>
-            <i class="fa-solid fa-box-archive"></i>
-            <h3>Projects</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-users"></i>
-            <h3>Users</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <h3>Logs</h3>
-        </div>
-    </section>
+    <Navbar/>
     <section class="sect-derecha">
         <header>
             <div class="div-header">
@@ -116,24 +103,11 @@ function handleMouseLeave() {
 </section>
 
 <!-- MODIFIER VIEW-->
+{:else if userRole === 'MODIFIER'}
 
 <section class="sect-principal-modifier">
-    <section class="sect-izq">
-        <div>
-            <i class="fa-solid fa-box-archive"></i>
-            <h3>Projects</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-users"></i>
-            <h3>Users</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <h3>Logs</h3>
-        </div>
-    </section>
+    <Navbar/>
+
     <section class="sect-derecha">
         <header>
             <div class="div-header">
@@ -188,24 +162,10 @@ function handleMouseLeave() {
 
 
 <!-- USER VIEW -->
+{:else}
 
 <section class="sect-principal-user">
-    <section class="sect-izq">
-        <div>
-            <i class="fa-solid fa-box-archive"></i>
-            <h3>Projects</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-users"></i>
-            <h3>Users</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <h3>Logs</h3>
-        </div>
-    </section>
+    <Navbar/>
     <section class="sect-derecha">
         <header>
             <div class="div-header">
@@ -255,6 +215,7 @@ function handleMouseLeave() {
         </div>
     </section>
 </section>
+{/if}
 
 <style>
     

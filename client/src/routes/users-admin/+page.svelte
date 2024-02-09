@@ -1,7 +1,7 @@
 <script>
 import Modal from "../../ModalAddUser.svelte";
 import Dropdown from '../../Dropdown.svelte'; // Importa el componente de dropdown personalizado
-
+import Navbar from "../../navbar.svelte";
 let title = 'Añadir usuario'; // Define modalTitle here
 
 let modalStep = 0;
@@ -48,22 +48,7 @@ function handleMouseLeave() {
 
 <Modal></Modal>
 <section class="sect-principal">
-    <section class="sect-izq">
-        <div>
-            <i class="fa-solid fa-box-archive"></i>
-            <h3>Projects</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-users"></i>
-            <h3>Users</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <h3>Logs</h3>
-        </div>
-    </section>
+    <Navbar/>
     <section class="sect-derecha">
     <header>
         <div class="div-header">
@@ -103,26 +88,7 @@ function handleMouseLeave() {
 .sect-principal{
     display: flex;
 }
-.sect-izq{
-        padding: 40px 0px;
-        gap: 30px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        width: 10%;
-        height: 100vh;
-    }
-    .sect-izq i{
-        font-size: 40px;
-        padding: 10px;
-        opacity: .7;
-    }
-    .sect-izq > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
+
     .sect-derecha{
         width: 90%;
         padding-top: 30px;

@@ -1,6 +1,7 @@
 <script>
+import Navbar from "../../navbar.svelte";
 let showLogoutButton = false;
-
+let userRole = "";
 function handleMouseEnter() {
   showLogoutButton = true;
 }
@@ -10,23 +11,10 @@ function handleMouseLeave() {
 }
 </script>
 <!-- ADMIN VIEW -->
+{#if userRole === 'ADMIN'}
+
 <section class="sect-principal-admin">
-    <section class="sect-izq">
-        <div>
-            <i class="fa-solid fa-box-archive"></i>
-            <h3>Projects</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-users"></i>
-            <h3>Users</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <h3>Logs</h3>
-        </div>
-    </section>
+    <Navbar></Navbar>
     <section class="sect-derecha">
 
         <header>
@@ -82,6 +70,8 @@ function handleMouseLeave() {
 </section>
 
 <!-- MODIFIER VIEW -->
+{:else if userRole === 'MODIFIER'}
+
 <section class="sect-principal-modifier">
     
     <section class="sect-derecha">
@@ -140,6 +130,8 @@ function handleMouseLeave() {
 
 
 <!-- USER VIEW -->
+{:else}
+
 <section class="sect-principal-user">
     
     <section class="sect-derecha">
@@ -194,6 +186,7 @@ function handleMouseLeave() {
         </section>
     </section>
 </section>
+{/if}
 
 <style>
 
@@ -230,26 +223,7 @@ function handleMouseLeave() {
         justify-content: center;
     }
 
-.sect-izq{
-        padding: 40px 0px;
-        gap: 30px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        width: 10%;
-        height: 100vh;
-    }
-    .sect-izq i{
-        font-size: 40px;
-        padding: 10px;
-        opacity: .7;
-    }
-    .sect-izq > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
+
     .sect-derecha{
         padding-left: 30px;
         width: 90%;
@@ -342,9 +316,6 @@ function handleMouseLeave() {
     }
     .sect-principal-modifier, .sect-principal-admin, .sect-principal-user{
         display: flex;
-    }
-    .sect-principal-modifier, .sect-principal-admin{
-        display: none;
     }
 
 </style>

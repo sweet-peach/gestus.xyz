@@ -1,4 +1,5 @@
 <script>
+import Navbar from "../../navbar.svelte";
 let showLogoutButton = false;
 
 function handleMouseEnter() {
@@ -12,22 +13,7 @@ function handleMouseLeave() {
 
 <!-- ADMIN VIEW -->
 <section class="sect-principal-admin">
-    <section class="sect-izq">
-        <div>
-            <i class="fa-solid fa-box-archive"></i>
-            <h3>Projects</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-users"></i>
-            <h3>Users</h3>
-        </div>
-        
-        <div>
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <h3>Logs</h3>
-        </div>
-    </section>
+    <Navbar/>
     <section class="sect-derecha">
         <header>
             <div class="div-header">
@@ -105,26 +91,7 @@ function handleMouseLeave() {
         align-items: center;
     }
 
-    .sect-izq{
-        padding: 40px 0px;
-        gap: 30px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        width: 10%;
-        height: 100vh;
-    }
-    .sect-izq i{
-        font-size: 40px;
-        padding: 10px;
-        opacity: .7;
-    }
-    .sect-izq > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
+    
     .sect-derecha{
         width: 90%;
     }
