@@ -53,18 +53,18 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody ProjectRequestDto projectRequestDto) {
         ProjectResponseDto createdProject = projectService.createProject(projectRequestDto);
         fileService.createProjectDir(createdProject.getId().toString());
-        return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdProject, HttpStatus.OK);
     }
 
     @PutMapping("/{projectId}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectRequestDto projectRequestDto) {
         ProjectResponseDto createdProject = projectService.updateProject(projectId, projectRequestDto);
-        return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdProject, HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectId}")
     public ResponseEntity<String> deleteProject(@PathVariable(value = "projectId") Long projectId) {
         projectService.deleteProject(projectId);
-        return new ResponseEntity<>("Project deleted", HttpStatus.CREATED);
+        return new ResponseEntity<>("Project deleted", HttpStatus.OK);
     }
 }

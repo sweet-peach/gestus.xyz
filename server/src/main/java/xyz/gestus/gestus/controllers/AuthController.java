@@ -31,14 +31,14 @@ public class AuthController {
     @PostMapping("registration")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequestDto registerRequestDto) {
         userService.register(registerRequestDto);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<UserResponseDto> authorize() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return new ResponseEntity<>(userService.getUserByEmail(userEmail), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.getUserByEmail(userEmail), HttpStatus.OK);
     }
 
     @PostMapping("login")

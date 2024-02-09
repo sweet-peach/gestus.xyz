@@ -25,7 +25,7 @@ public class KeywordsController {
 
     @PostMapping
     public ResponseEntity<KeywordResponseDto> createKeyword(@Valid @RequestBody KeywordRequestDto requestDto){
-        return new ResponseEntity<>(keywordService.createKeyword(requestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(keywordService.createKeyword(requestDto), HttpStatus.OK);
     }
 
 }

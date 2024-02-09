@@ -26,7 +26,7 @@ public class FileController {
 
     @PostMapping
     public ResponseEntity<FileResponseDto> createDir(@PathVariable Long projectId, @Valid @RequestBody DirRequestDto dirRequest){
-        return new ResponseEntity<>(fileService.createDir(projectId, dirRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(fileService.createDir(projectId, dirRequest), HttpStatus.OK);
     }
 
 

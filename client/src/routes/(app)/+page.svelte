@@ -59,22 +59,20 @@
             <div class="project">
                 <div class="text-box">
                     <h2>{name}</h2>
-                    <p>Last update {getTimePassed(updateDate)} ago</p>
+                    <p class="p-last">Last update {getTimePassed(updateDate)} ago</p>
                 </div>
                 <div class="project-description-box">
                     <div class="project-description">
                         {#if isActive}
-                            <div class="circle green">
-                            </div>
+                            <i class="fa-solid fa-circle green"></i>
                             <p>Active</p>
                         {:else }
-                            <div class="circle red">
-                            </div>
+                            <i class="fa-solid fa-circle red"></i>
                             <p>Closed</p>
                         {/if}
                     </div>
                     <div class="project-description">
-                        It closes in {getTimeUntil(executionEnd)}
+                        It closes in: {getTimeUntil(executionEnd)}
                     </div>
                 </div>
             </div>
@@ -84,12 +82,28 @@
 
 
 <style>
+    .p-last{
+        padding: 15px 0;
+    }
     .project {
         padding: 20px 0;
         border-bottom: 1px solid var(--border-color);
     }
-
+    .project-description{
+        width: max-content;
+        display: flex;
+        padding-right: 20px;
+    }
     .project-description-box {
         display: flex;
+    }
+    .green{
+        color: var(--color-primary);
+    }
+    .red{
+        color: red;
+    }
+    i{
+        padding-right: 10px;
     }
 </style>

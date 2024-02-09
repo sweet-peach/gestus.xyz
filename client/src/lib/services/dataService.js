@@ -16,7 +16,7 @@ export function getTimePassed(specificDate) {
     } else if (daysPassed > 0) {
         return `${daysPassed} days`;
     } else if (hoursPassed > 0) {
-        return `${hoursPassed} hours`;
+        return `${hoursPassed} hour(s)`;
     } else if (minutesPassed > 0) {
         return `${minutesPassed} minutes`;
     } else {
