@@ -1,12 +1,13 @@
 <script>
-    import {login} from "$lib/auth.js";
-    import {onMount} from "svelte";
-    import {redirect} from "@sveltejs/kit";
+    import {login, logout} from "$lib/auth.js";
     let email = "";
     let password = "";
 
-    function handleLoginButtonClick(){
-        login(email,password);
+    async function handleLoginButtonClick(){
+        const isAuthorized = await login(email,password);
+        if(isAuthorized){
+            location.reload();
+        }
     }
 
 </script>

@@ -12,7 +12,6 @@
         <a class="primary-button" href="/">Go to main page</a>
     </div>
 </div>
-<!--<h1>asda{$page.status}: {$page.error.message}</h1>-->
 
 <style lang="scss">
   .error-wrapper {

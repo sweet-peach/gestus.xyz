@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html{
+html {
     margin: 0;
     padding: 0;
 }
 
-html,head,body{
+html, head, body {
     height: 100%;
 }
 
@@ -27,17 +27,19 @@ body {
     --color-light: #ecf0f1;
     --color-text-light: #777;
 
-    --border-color:#D8D8D8;
+    --border-color: #D8D8D8;
 
-    --icon-color:#888888;
-    --selected-icon-color:#000;
-    --secondary-text-color:#888888;
-    --selected-secondary-text-color:#000;
+    --icon-color: #888888;
+    --selected-icon-color: #000;
+    --secondary-text-color: #888888;
+    --selected-secondary-text-color: #000;
 
     --color-primary: #CDFF3E;
     --color-text: #000;
     --color-background: #fff;
+    --background-color: #fff;
     --color-secondary-background: #C7CBD2;
+    --secondary-background-color: #C7CBD2;
     --ternary-background-color: #EEEEEE;
 }
 
@@ -70,13 +72,13 @@ a {
 .search-container {
     position: relative;
     display: inline-block;
-  }
+}
 
-  .search-container input[type="text"] {
+.search-container input[type="text"] {
     width: 250px;
-  }
-  
-  .search-container i.fa-search {
+}
+
+.search-container i.fa-search {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -84,47 +86,45 @@ a {
     font-size: 20px;
     color: #aaa;
     pointer-events: none;
-  }
+}
 
-  .div-header{
+.div-header {
     width: 20%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+.user-actions{
+    background: var(--background-color);
+    margin-top: 10px;
+    right: 0;
+    padding: 5px;
+    position: absolute;
+    width: 200px;
+    top: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
 
-
-header{
-    width: 90%;
-    padding-top: 10px;
+.user-action{
+    padding: 15px;
+    gap: 15px;
     display: flex;
+    white-space: nowrap;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 40px;
+    justify-content: start;
+    border-radius: 6px;
+
+    cursor: pointer;
 }
-
-.div-header input{
-    border-radius: 25px;
-    border: none;
-    padding: 10px;
-    outline: none;
+.user-action:hover{
+    background: var(--ternary-background-color);
 }
-
-.div-buscador{
-    margin-right: 50px;
+.user-action p{
+    font-weight: 500;
 }
-
-
-.div-p-user{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* En tu archivo CSS global o en un <style> tag */
 .no-scroll {
     overflow: hidden;
-  }
+}
   

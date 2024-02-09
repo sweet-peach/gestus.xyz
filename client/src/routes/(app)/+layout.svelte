@@ -1,6 +1,7 @@
 <script>
     import Navbar from "../../components/Navbar.svelte";
     import {getContext} from "svelte";
+    import Header from "../../components/Header.svelte";
 
     const user = getContext("user");
     console.log($user)
@@ -10,23 +11,8 @@
     {#if $user.role === "ADMIN"}
         <Navbar/>
     {/if}
-    <div>
-        <header>
-            <div class="div-header">
-                <i class="fa-solid fa-bars"></i>
-                <h2>Projects</h2>
-            </div>
-            <div class="div-header div-buscador">
-                <div class="search-container">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" placeholder="Buscador de proyectos" class="search-input">
-                </div>
-                <div class="div-p-user" >
-                    <p class="p-user">Usuario</p>
-                    <button class="button-hover">Cerrar sesión</button>
-                </div>
-            </div>
-        </header>
+    <div class="content-wrapper">
+        <Header></Header>
         <slot></slot>
     </div>
 </div>
@@ -36,5 +22,8 @@
         height: 100%;
         padding: 25px;
         display: flex;
+    }
+    .content-wrapper{
+        width: 100%;
     }
 </style>
