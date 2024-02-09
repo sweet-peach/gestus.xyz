@@ -25,8 +25,7 @@ public class CustomErrorController implements ErrorController {
         }
 
         ErrorObject errorObject = new ErrorObject();
-        errorObject.setTimestamp(new Date());
-        errorObject.setStatusCode(httpStatus.value());
+        errorObject.setCode(httpStatus.value());
         errorObject.setMessage(request.getAttribute(RequestDispatcher.ERROR_MESSAGE).toString());
 
         return new ResponseEntity<>(errorObject, httpStatus);

@@ -15,9 +15,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorObject> handleUserAlreadyExists(UserAlreadyExistsException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
 
-        errorObject.setStatusCode(HttpStatus.CONFLICT.value());
+        errorObject.setCode(HttpStatus.CONFLICT.value());
         errorObject.setMessage(exception.getMessage());
-        errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
     }
@@ -26,9 +25,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorObject> handleUserAlreadyExists(ProjectNotFoundException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
 
-        errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorObject.setCode(HttpStatus.NOT_FOUND.value());
         errorObject.setMessage(exception.getMessage());
-        errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
     }
@@ -37,9 +35,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorObject> handleDirectoryAlreadyExists(DirectoryAlreadyExistsException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
 
-        errorObject.setStatusCode(HttpStatus.CONFLICT.value());
+        errorObject.setCode(HttpStatus.CONFLICT.value());
         errorObject.setMessage(exception.getMessage());
-        errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
     }
@@ -48,9 +45,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorObject> handleFileNotFound(FileNotFoundException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
 
-        errorObject.setStatusCode(HttpStatus.CONFLICT.value());
+        errorObject.setCode(HttpStatus.CONFLICT.value());
         errorObject.setMessage(exception.getMessage());
-        errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.CONFLICT);
     }
@@ -59,9 +55,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorObject> handleUploadFail(UploadFailException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
 
-        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorObject.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorObject.setMessage(exception.getMessage());
-        errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -70,9 +65,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorObject> handleUploadFail(DownloadFailException exception, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
 
-        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorObject.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorObject.setMessage(exception.getMessage());
-        errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
     }
