@@ -1,6 +1,8 @@
 <script>
 
 
+    import {getTimePassed, getTimeUntil} from "$lib/services/dataService.js";
+
     let title = 'Crear nuevo proyecto'; // Define modalTitle here
     let userRole = "";
     let modalStep = 0;
@@ -40,34 +42,54 @@
     import {onMount} from "svelte";
     import {getProjects} from "$lib/services/projectService.js";
 
+    let projects = [];
     onMount(async () => {
-        await getProjects([], "")
+        projects = await getProjects([], "");
+        console.log(projects);
     })
+
 </script>
 
 <div class="project-wrapper">
     <header class="config-box">
         <button class="primary-button" on:click={openModal}>Crear nuevo proyecto</button>
     </header>
-
-    <div class="general-project">
-        <div class="project-info">
-            <div class="name-act">
-                <p class="p-project">Proyecto</p>
-                <p>Ultima actualización...</p>
-            </div>
-            <div class="project-status">
-                <div class="status">
-                    <i class="fa-solid fa-circle"></i>
-                    <p>Activo</p>
+    {#each projects as {name, isActive, updateDate, executionEnd}, i}
+        <div class="projects-box">
+            <div class="project">
+                <div class="text-box">
+                    <h2>{name}</h2>
+                    <p>Last update {getTimePassed(updateDate)} ago</p>
                 </div>
-                <div class="closing-in">
-                    <p>Se cierra en...</p>
+                <div class="project-description-box">
+                    <div class="project-description">
+                        {#if isActive}
+                            <div class="circle green">
+                            </div>
+                            <p>Active</p>
+                        {:else }
+                            <div class="circle red">
+                            </div>
+                            <p>Closed</p>
+                        {/if}
+                    </div>
+                    <div class="project-description">
+                        It closes in {getTimeUntil(executionEnd)}
+                    </div>
                 </div>
             </div>
         </div>
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-    </div>
+    {/each}
 </div>
 
-.config-box{getProjects()}
+
+<style>
+    .project {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .project-description-box {
+        display: flex;
+    }
+</style>
