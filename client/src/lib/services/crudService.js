@@ -1,5 +1,3 @@
-import {getToken} from "$lib/services/authService.js";
-import axios from "axios";
 
 class Crud{
 
