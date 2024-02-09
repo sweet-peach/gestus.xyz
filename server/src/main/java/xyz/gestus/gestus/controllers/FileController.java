@@ -46,10 +46,10 @@ public class FileController {
     }
     @GetMapping
     public ResponseEntity<List<FileResponseDto>> getFilesOfProjectById(@PathVariable Long projectId, @RequestParam(name = "parent", required = false) Long parentId){
-        return new ResponseEntity<>(fileService.getFilesOfProjectByParentId(projectId,parentId),HttpStatus.FOUND);
+        return new ResponseEntity<>(fileService.getFilesOfProjectByParentId(projectId,parentId),HttpStatus.OK);
     }
     @GetMapping("{fileId}")
     public ResponseEntity<FileResponseDto> getFile(@PathVariable Long projectId, @PathVariable Long fileId){
-        return new ResponseEntity<>(fileService.getFileByIdAndProjectId(projectId, fileId),HttpStatus.FOUND);
+        return new ResponseEntity<>(fileService.getFileByIdAndProjectId(projectId, fileId),HttpStatus.OK);
     }
 }

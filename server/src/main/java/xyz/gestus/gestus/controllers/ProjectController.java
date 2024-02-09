@@ -44,9 +44,9 @@ public class ProjectController {
         if(query == null) query = "";
 
         if(keywords.isEmpty()){
-            return new ResponseEntity<>(projectService.getProjectsByName(query), HttpStatus.FOUND);
+            return new ResponseEntity<>(projectService.getProjectsByName(query), HttpStatus.OK);
         }
-        return new ResponseEntity<>(projectService.getProjectsByKeywordsAndName(keywords, query), HttpStatus.FOUND);
+        return new ResponseEntity<>(projectService.getProjectsByKeywordsAndName(keywords, query), HttpStatus.OK);
     }
 
     @PostMapping
