@@ -92,39 +92,7 @@ function handleMouseLeave() {
                 </div>
         </header>
 
-        <section class="files-info-options">
-            <div class="vision-project">
-                <button class="button-highlight">Proyecto</button>
-                <button class="button-highlight">Archivos</button>
-                <button class="button-highlight">Estadisticas</button>
-            </div>
-    
-            <div class="options">
-                <div class="options-buttons">                
-                    <button class="button-new"><i class="fa-solid fa-plus"></i>Nuevo</button>
-                    <select name="" id="" placeholder="Ordenar por">
-                        <option hidden selected>Ordenar por</option>
-                        <option value="">1</option>
-                        <option value="">2</option>
-                    </select>
-                </div>
-                <div class="options-icons">
-                    <i class="fa-solid fa-border-all"></i>
-                    <i class="fa-solid fa-list"></i>
-                </div>
-            </div>
-            <div class="files">
-                <div class="file">
-                    <i class="fa-regular fa-folder-open"></i>
-                    <p>My folder</p>
-                </div>
-                <div class="info-file">
-                    <p>2024-21....</p>
-                    <p>450MB</p>
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-            </div>
-        </section>
+
     </section>
 </section>
 

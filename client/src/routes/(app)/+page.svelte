@@ -45,6 +45,9 @@
     let projects = [];
     onMount(async () => {
         projects = await getProjects([], "");
+        if(projects == null){
+            projects = []
+        }
         console.log(projects);
     })
 

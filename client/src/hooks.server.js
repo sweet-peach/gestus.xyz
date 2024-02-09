@@ -17,7 +17,11 @@ export async function handle ({event, resolve}) {
         headers: {
             'Authorization': `Bearer ${token}`
         }
-    });
+    })
+    ;
+    if (token && event.params) {
+        event.params.token = token;
+    }
 
     if(response.ok){
         event.locals.user = await response.json();
