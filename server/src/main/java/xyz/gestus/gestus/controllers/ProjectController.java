@@ -27,12 +27,19 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResponseDto> getProject(@PathVariable Long projectId){
+        return new ResponseEntity<>(projectService.gerProjectById(projectId),HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<ProjectResponseDto>> getProjects(
             @RequestParam(required = false) List<Long> keywords,
             @RequestParam(required = false) String query) {
 
+        System.out.println(keywords);
         //TODO TO CHANGE
+        System.out.println(query);
+
         if(keywords == null) keywords = new ArrayList<>();
         if(query == null) query = "";
 

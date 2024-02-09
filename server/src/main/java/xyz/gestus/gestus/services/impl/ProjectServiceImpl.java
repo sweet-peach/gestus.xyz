@@ -92,6 +92,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ProjectResponseDto gerProjectById(Long id) {
+        ProjectModel model = projectRepository.findById(id).orElseThrow(()-> new ProjectNotFoundException("Project not found"));
+
+        return mapEntityToResponse(model);
+    }
+
+    @Override
     public void deleteProject(Long projectId) {
         ProjectModel project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
