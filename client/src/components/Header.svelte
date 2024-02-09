@@ -1,7 +1,7 @@
 <script>
-    import {page} from "$lib/stores/appStore.js";
+    import {page} from "$lib/services/appStore.js";
     import {getContext, onDestroy, onMount} from "svelte";
-    import {logout} from "$lib/auth.js";
+    import {logout} from "$lib/services/authService.js";
 
     const user = getContext("user");
     const username = String($user.email).toString().split("@")[0];

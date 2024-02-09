@@ -1,5 +1,5 @@
 <script>
-    import {login, logout} from "$lib/auth.js";
+    import {login, logout} from "$lib/services/authService.js";
     let email = "";
     let password = "";
 

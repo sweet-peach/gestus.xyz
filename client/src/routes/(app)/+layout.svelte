@@ -4,7 +4,6 @@
     import Header from "../../components/Header.svelte";
 
     const user = getContext("user");
-    console.log($user)
 </script>
 
 <div class="page-wrapper">

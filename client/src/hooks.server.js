@@ -1,6 +1,6 @@
 import {user} from "$lib/stores/userStore.js";
 
-export const handle = async ({event, resolve}) => {
+export async function handle ({event, resolve}) {
     const token = event.cookies.get('token');
 
     console.log("Hook triggered");

@@ -1,6 +1,9 @@
 <script>
 import Modal from "../../../ModalProjects.svelte";
 import Navbar from "../../../components/Navbar.svelte";
+import {onMount} from "svelte";
+import {getProjects} from "$lib/services/projectService.js";
+
 let title = 'Crear nuevo proyecto'; // Define modalTitle here
 let userRole= "";
 let modalStep = 0;

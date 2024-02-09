@@ -127,4 +127,12 @@ a {
 .no-scroll {
     overflow: hidden;
 }
+
+.primary-button{
+    outline: none;
+    border: none;
+    color: #fff;
+    padding: 20px;
+    background: var(--color-primary);
+}
   

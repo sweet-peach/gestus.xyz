@@ -12,6 +12,7 @@ import xyz.gestus.gestus.repositories.ProjectRepository;
 import xyz.gestus.gestus.services.FileService;
 import xyz.gestus.gestus.services.ProjectService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,11 @@ public class ProjectController {
     public ResponseEntity<List<ProjectResponseDto>> getProjects(
             @RequestParam(required = false) List<Long> keywords,
             @RequestParam(required = false) String query) {
+
+        //TODO TO CHANGE
+        if(keywords == null) keywords = new ArrayList<>();
+        if(query == null) query = "";
+
         if(keywords.isEmpty()){
             return new ResponseEntity<>(projectService.getProjectsByName(query), HttpStatus.FOUND);
         }

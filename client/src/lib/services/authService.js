@@ -1,4 +1,4 @@
-import {user} from "./stores/userStore.js";
+import {user} from "../stores/userStore.js";
 import axios from "axios";
 
 import Cookies from 'js-cookie';
