@@ -1,5 +1,6 @@
 package xyz.gestus.gestus.services;
 
+import jakarta.annotation.Resource;
 import xyz.gestus.gestus.dto.*;
 import xyz.gestus.gestus.models.UserModel;
 
@@ -15,4 +16,6 @@ public interface UserService {
     UserResponseDto updateUser(Long userId, UserUpdateDto updateDto);
 
     void deleteUser(Long userId);
+
+    List<Object[]> findTop5UsersWithMostLogs();
 }

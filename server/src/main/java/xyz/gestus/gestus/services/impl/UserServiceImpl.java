@@ -1,6 +1,8 @@
 package xyz.gestus.gestus.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import xyz.gestus.gestus.dto.*;
 import xyz.gestus.gestus.models.Role;
 import xyz.gestus.gestus.models.UserModel;
+import xyz.gestus.gestus.repositories.LogRepository;
 import xyz.gestus.gestus.repositories.UserRepository;
 import xyz.gestus.gestus.security.JwtTokenProvider;
 import xyz.gestus.gestus.services.UserService;
@@ -26,9 +29,11 @@ public class UserServiceImpl implements UserService {
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider tokenProvider;
 
+    private LogRepository logRepository;
     @Autowired
-    public UserServiceImpl(JwtTokenProvider tokenProvider, UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    public UserServiceImpl(LogRepository logRepository, JwtTokenProvider tokenProvider, UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.tokenProvider = tokenProvider;
+        this.logRepository = logRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -116,5 +121,11 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found with id: " + userId);
         }
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public List<Object[]> findTop5UsersWithMostLogs() {
+        Pageable pageable = PageRequest.of(0, 5);
+        return logRepository.findTopUsersWithMostLogs(pageable);
     }
 }

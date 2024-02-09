@@ -29,6 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("registration")
+    @Log(name = "A user has registered a new user")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequestDto registerRequestDto) {
         userService.register(registerRequestDto);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);

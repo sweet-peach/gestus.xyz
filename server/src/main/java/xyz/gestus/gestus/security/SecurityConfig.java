@@ -53,7 +53,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/registration").hasAuthority(Role.ADMIN.toString())
+                        .requestMatchers("/api/logs/**").hasAuthority(Role.ADMIN.toString())
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.PUT).hasAuthority(Role.MODIFIER.toString())
+                        .requestMatchers(HttpMethod.DELETE).hasAuthority(Role.MODIFIER.toString())
+                        .requestMatchers(HttpMethod.POST).hasAuthority(Role.MODIFIER.toString())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((exception) ->

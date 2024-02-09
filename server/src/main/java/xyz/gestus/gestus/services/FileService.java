@@ -1,5 +1,6 @@
 package xyz.gestus.gestus.services;
 
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.gestus.gestus.dto.DirRequestDto;
 import xyz.gestus.gestus.dto.FileRequestDto;
@@ -16,6 +17,7 @@ public interface FileService {
     public FileResponseDto uploadFile(Long projectId, Long parentId, MultipartFile file);
 
     public void deleteFileRecursively(Long projectId, Long fileId);
+    Resource downloadFile(Long projectId, Long fileId);
 
     public List<FileResponseDto> getFilesByProject(Long projectId);
     public List<FileResponseDto> getFilesOfProjectByParentId(Long projectId, Long parentId);

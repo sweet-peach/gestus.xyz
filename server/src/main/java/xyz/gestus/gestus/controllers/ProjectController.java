@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.gestus.gestus.annotations.Log;
 import xyz.gestus.gestus.dto.ProjectRequestDto;
 import xyz.gestus.gestus.dto.ProjectResponseDto;
 import xyz.gestus.gestus.dto.RegistrationRequestDto;
@@ -50,6 +51,7 @@ public class ProjectController {
     }
 
     @PostMapping
+    @Log(name = "A user has created a project")
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody ProjectRequestDto projectRequestDto) {
         ProjectResponseDto createdProject = projectService.createProject(projectRequestDto);
         fileService.createProjectDir(createdProject.getId().toString());
@@ -57,12 +59,14 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}")
+    @Log(name = "A user has updated the project")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectRequestDto projectRequestDto) {
         ProjectResponseDto createdProject = projectService.updateProject(projectId, projectRequestDto);
         return new ResponseEntity<>(createdProject, HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectId}")
+    @Log(name = "A user has deleted the project")
     public ResponseEntity<String> deleteProject(@PathVariable(value = "projectId") Long projectId) {
         projectService.deleteProject(projectId);
         return new ResponseEntity<>("Project deleted", HttpStatus.OK);

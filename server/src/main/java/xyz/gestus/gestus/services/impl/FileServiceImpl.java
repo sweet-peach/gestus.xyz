@@ -2,15 +2,15 @@ package xyz.gestus.gestus.services.impl;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.gestus.gestus.dto.DirRequestDto;
 import xyz.gestus.gestus.dto.FileRequestDto;
 import xyz.gestus.gestus.dto.FileResponseDto;
-import xyz.gestus.gestus.exceptions.DirectoryAlreadyExistsException;
-import xyz.gestus.gestus.exceptions.FileNotFoundException;
-import xyz.gestus.gestus.exceptions.ProjectNotFoundException;
-import xyz.gestus.gestus.exceptions.UploadFailException;
+import xyz.gestus.gestus.exceptions.*;
 import xyz.gestus.gestus.models.FileModel;
 import xyz.gestus.gestus.models.ProjectModel;
 import xyz.gestus.gestus.repositories.FileRepository;
@@ -19,6 +19,7 @@ import xyz.gestus.gestus.services.FileService;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,7 +55,6 @@ public class FileServiceImpl implements FileService {
     }
 
 
-
     private void ensureDirectoryExists(Path path) {
         try {
             Files.createDirectories(path);
@@ -73,10 +73,10 @@ public class FileServiceImpl implements FileService {
         Path projectPath = Paths.get(storageDirectory + File.separator + projectId);
         try {
             Files.deleteIfExists(projectPath);
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
 
     }
-
 
 
     @Override
@@ -86,7 +86,7 @@ public class FileServiceImpl implements FileService {
         FileModel parentFile = fileRepository.findByIdAndProjectId(dirRequestDto.getParentId(), projectId);
 
         String fileName = dirRequestDto.getName();
-        String filePath = constructFilePath(parentFile,fileName);
+        String filePath = constructFilePath(parentFile, fileName);
 
         if (fileRepository.existsByPath(filePath)) {
             throw new DirectoryAlreadyExistsException("Directory already exists");
@@ -98,7 +98,7 @@ public class FileServiceImpl implements FileService {
         ensureDirectoryExists(Paths.get(storageDirectory, projectId.toString(), filePath));
         FileModel createdFile = fileRepository.save(fileToCreate);
 
-        if(parentFile != null){
+        if (parentFile != null) {
             parentFile.addChild(createdFile);
         }
 
@@ -110,10 +110,10 @@ public class FileServiceImpl implements FileService {
         ProjectModel projectModel = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
-        FileModel parentFile = fileRepository.findByIdAndProjectId(parentId,projectId);
+        FileModel parentFile = fileRepository.findByIdAndProjectId(parentId, projectId);
 
         String fileName = file.getOriginalFilename();
-        String filePath = constructFilePath(parentFile,fileName);
+        String filePath = constructFilePath(parentFile, fileName);
 
         if (fileRepository.existsByPath(filePath)) {
             throw new DirectoryAlreadyExistsException("Directory already exists");
@@ -139,7 +139,7 @@ public class FileServiceImpl implements FileService {
 
         FileModel createdFile = fileRepository.save(fileToCreate);
 
-        if(parentFile != null){
+        if (parentFile != null) {
             parentFile.addChild(createdFile);
         }
 
@@ -155,11 +155,31 @@ public class FileServiceImpl implements FileService {
                 .orElseThrow(() -> new FileNotFoundException("File not found"));
 
         FileModel parent = file.getParent();
-        if(parent != null){
+        if (parent != null) {
             parent.removeChild(parent);
         }
 
         deleteFileAndChildren(file, projectId);
+    }
+
+    @Override
+    public Resource downloadFile(Long projectId, Long fileId) {
+        System.out.println(fileId);
+        System.out.println(projectId);
+        FileModel fileModel = fileRepository.findByIdAndProjectId(fileId, projectId);
+        if (fileModel == null) {
+            new FileNotFoundException("File not found");
+        }
+
+        Path filePath = Paths.get(storageDirectory, projectId.toString(), fileModel.getPath()).normalize();
+        System.out.println(filePath);
+        Resource resource = new FileSystemResource(filePath);
+
+        if (!resource.exists() || !resource.isReadable()) {
+            throw new FileNotFoundException("File not found " + fileId);
+        }
+
+        return resource;
     }
 
     @Override
@@ -170,7 +190,7 @@ public class FileServiceImpl implements FileService {
         List<FileModel> files = fileRepository.findByProjectId(projectId);
 
         List<FileResponseDto> formattedFiles = new ArrayList<>();
-        for(FileModel file: files){
+        for (FileModel file : files) {
             formattedFiles.add(mapEntityToResponse(file));
         }
 
@@ -182,9 +202,9 @@ public class FileServiceImpl implements FileService {
         ProjectModel projectModel = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
-        List<FileModel> files = fileRepository.findAllByParentIdAndProjectId(parentId,projectId);
+        List<FileModel> files = fileRepository.findAllByParentIdAndProjectId(parentId, projectId);
         List<FileResponseDto> formattedFiles = new ArrayList<>();
-        for(FileModel file: files){
+        for (FileModel file : files) {
             formattedFiles.add(mapEntityToResponse(file));
         }
         return formattedFiles;
@@ -192,8 +212,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileResponseDto getFileByIdAndProjectId(Long fileId, Long projectId) {
-        FileModel fileModel = fileRepository.findByIdAndProjectId(fileId,projectId);
-        if(fileModel == null){
+        FileModel fileModel = fileRepository.findByIdAndProjectId(fileId, projectId);
+        if (fileModel == null) {
             throw new FileNotFoundException("File not found");
         }
 

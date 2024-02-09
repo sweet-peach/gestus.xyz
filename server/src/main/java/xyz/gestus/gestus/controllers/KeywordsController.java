@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.gestus.gestus.annotations.Log;
 import xyz.gestus.gestus.dto.KeywordRequestDto;
 import xyz.gestus.gestus.dto.KeywordResponseDto;
 import xyz.gestus.gestus.services.KeywordService;
@@ -24,6 +25,7 @@ public class KeywordsController {
     }
 
     @PostMapping
+    @Log(name = "A user has created a keyword")
     public ResponseEntity<KeywordResponseDto> createKeyword(@Valid @RequestBody KeywordRequestDto requestDto){
         return new ResponseEntity<>(keywordService.createKeyword(requestDto), HttpStatus.OK);
     }
