@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import xyz.gestus.gestus.exceptions.ErrorObject;
-
-import java.util.Date;
-import java.util.Map;
+import xyz.gestus.gestus.core.ErrorObject;
 
 @Controller
 public class CustomErrorController implements ErrorController {

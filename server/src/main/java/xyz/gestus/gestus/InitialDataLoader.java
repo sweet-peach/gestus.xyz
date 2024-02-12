@@ -1,14 +1,12 @@
 package xyz.gestus.gestus;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import xyz.gestus.gestus.models.Role;
-import xyz.gestus.gestus.models.UserModel;
-import xyz.gestus.gestus.repositories.UserRepository;
+import xyz.gestus.gestus.core.user.Role;
+import xyz.gestus.gestus.core.user.User;
+import xyz.gestus.gestus.core.user.UserRepository;
 
 import java.util.Optional;
 
@@ -38,9 +36,9 @@ public class InitialDataLoader {
     }
 
     private void createAdminUserIfNotFound(String email, String password) {
-        Optional<UserModel> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
-            UserModel newUser = new UserModel();
+            User newUser = new User();
             newUser.setEmail(email);
             newUser.setPassword(passwordEncoder.encode(password));
             newUser.setRole(Role.ADMIN);

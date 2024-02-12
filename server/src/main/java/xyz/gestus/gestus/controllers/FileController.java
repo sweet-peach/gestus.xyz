@@ -10,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.gestus.gestus.annotations.Log;
-import xyz.gestus.gestus.dto.DirRequestDto;
-import xyz.gestus.gestus.dto.FileRequestDto;
-import xyz.gestus.gestus.dto.FileResponseDto;
-import xyz.gestus.gestus.services.FileService;
+import xyz.gestus.gestus.feature.project.file.dto.DirRequestDto;
+import xyz.gestus.gestus.feature.project.file.dto.FileResponseDto;
+import xyz.gestus.gestus.feature.project.file.service.FileService;
 
 import java.util.List;
 

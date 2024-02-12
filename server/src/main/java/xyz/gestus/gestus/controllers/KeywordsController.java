@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.gestus.gestus.annotations.Log;
-import xyz.gestus.gestus.dto.KeywordRequestDto;
-import xyz.gestus.gestus.dto.KeywordResponseDto;
-import xyz.gestus.gestus.services.KeywordService;
+import xyz.gestus.gestus.feature.keyword.dto.KeywordRequestDto;
+import xyz.gestus.gestus.feature.keyword.dto.KeywordResponseDto;
+import xyz.gestus.gestus.feature.keyword.service.KeywordService;
 
 @RestController
 @RequestMapping("/api/keywords")
