@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-function createAxiosClient(token = null) {
+export function createAxiosClient(token) {
+    console.log("Create");
     const client = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
         headers: {
             'Content-Type': 'application/json',
         },
     });
+
 
     if (token) {
         client.interceptors.request.use(config => {
@@ -29,16 +31,13 @@ function createAxiosClient(token = null) {
             } else if (error.request) {
                 // The request was made, but no response was received
                 console.error('No Response error:', error.request);
-                throw { message: 'No response was received' };
+                throw {message: 'No response was received'};
             } else {
                 // Error in setting the query
                 console.error('Request Setup error:', error.message);
-                throw { message: error.message };
+                throw {message: error.message};
             }
         }
     );
-
     return client;
 }
-
-export default createAxiosClient;
