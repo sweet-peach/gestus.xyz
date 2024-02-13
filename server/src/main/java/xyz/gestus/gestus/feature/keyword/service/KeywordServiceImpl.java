@@ -2,8 +2,8 @@ package xyz.gestus.gestus.feature.keyword.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.gestus.gestus.feature.keyword.dto.KeywordRequestDto;
-import xyz.gestus.gestus.feature.keyword.dto.KeywordResponseDto;
+import xyz.gestus.gestus.feature.keyword.dto.KeywordRequest;
+import xyz.gestus.gestus.feature.keyword.dto.KeywordResponse;
 import xyz.gestus.gestus.feature.keyword.Keyword;
 import xyz.gestus.gestus.feature.keyword.KeywordRepository;
 
@@ -18,17 +18,17 @@ public class KeywordServiceImpl implements KeywordService {
     }
 
     @Override
-    public KeywordResponseDto createKeyword(KeywordRequestDto requestDto) {
+    public KeywordResponse createKeyword(KeywordRequest requestDto) {
         Keyword newKeyword = new Keyword();
         newKeyword.setName(requestDto.getName());
 
         Keyword createdKeyword = keywordRepository.save(newKeyword);
 
-        return null;
+        return mapEntityToResponse(createdKeyword);
     }
 
-    private KeywordResponseDto mapEntityToResponse(Keyword keywordModel){
-        KeywordResponseDto response = new KeywordResponseDto();
+    private KeywordResponse mapEntityToResponse(Keyword keywordModel){
+        KeywordResponse response = new KeywordResponse();
         response.setId(keywordModel.getId());
         response.setName(keywordModel.getName());
 

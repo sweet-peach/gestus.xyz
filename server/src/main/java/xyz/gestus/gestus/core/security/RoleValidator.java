@@ -2,8 +2,8 @@ package xyz.gestus.gestus.core.security;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import xyz.gestus.gestus.annotations.ValidRole;
-import xyz.gestus.gestus.core.user.Role;
+import xyz.gestus.gestus.core.annotations.ValidRole;
+import xyz.gestus.gestus.feature.user.Role;
 
 import java.util.List;
 import java.util.stream.Collectors;

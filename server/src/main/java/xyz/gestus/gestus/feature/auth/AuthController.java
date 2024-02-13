@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import xyz.gestus.gestus.annotations.Log;
-import xyz.gestus.gestus.feature.auth.dto.LoginResponseDto;
-import xyz.gestus.gestus.feature.auth.dto.LoginRequestDto;
-import xyz.gestus.gestus.feature.auth.dto.RegistrationRequestDto;
-import xyz.gestus.gestus.core.user.dto.UserResponseDto;
-import xyz.gestus.gestus.core.user.service.UserServiceImpl;
+import xyz.gestus.gestus.core.annotations.Log;
+import xyz.gestus.gestus.feature.auth.dto.LoginResponse;
+import xyz.gestus.gestus.feature.auth.dto.LoginRequest;
+import xyz.gestus.gestus.feature.auth.dto.RegistrationRequest;
+import xyz.gestus.gestus.feature.user.dto.UserResponse;
+import xyz.gestus.gestus.feature.user.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,13 +26,13 @@ public class AuthController {
 
     @PostMapping("registration")
     @Log(name = "A user has registered a new user")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequestDto registerRequestDto) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequest registerRequestDto) {
         userService.register(registerRequestDto);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<UserResponseDto> authorize() {
+    public ResponseEntity<UserResponse> authorize() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         return new ResponseEntity<>(userService.getUserByEmail(userEmail), HttpStatus.OK);
@@ -40,8 +40,8 @@ public class AuthController {
 
     @PostMapping("login")
     @Log(name = "User logged in")
-    public ResponseEntity<LoginResponseDto> loginUser(@Valid @RequestBody
-                                                      LoginRequestDto loginRequestDto) {
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody
+                                                      LoginRequest loginRequestDto) {
         return ResponseEntity.ok(userService.login(loginRequestDto));
     }
 }

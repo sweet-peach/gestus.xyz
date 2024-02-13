@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import xyz.gestus.gestus.core.user.UserRepository;
+import xyz.gestus.gestus.feature.user.UserRepository;
 
 import java.io.IOException;
 

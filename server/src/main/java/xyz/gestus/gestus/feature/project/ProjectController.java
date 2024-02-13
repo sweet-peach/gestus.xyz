@@ -1,16 +1,17 @@
 package xyz.gestus.gestus.feature.project;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.gestus.gestus.annotations.Log;
-import xyz.gestus.gestus.feature.project.dto.ProjectRequestDto;
-import xyz.gestus.gestus.feature.project.dto.ProjectResponseDto;
-import xyz.gestus.gestus.feature.project.file.service.FileService;
+import xyz.gestus.gestus.core.annotations.Log;
+import xyz.gestus.gestus.feature.project.dto.ProjectRequest;
+import xyz.gestus.gestus.feature.project.dto.ProjectResponse;
+import xyz.gestus.gestus.feature.file.service.FileService;
+import xyz.gestus.gestus.feature.project.dto.ProjectSearchResponse;
 import xyz.gestus.gestus.feature.project.service.ProjectService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,45 +21,36 @@ public class ProjectController {
     private FileService fileService;
     private ProjectService projectService;
 
-    public ProjectController(FileService fileService, ProjectService projectService, ProjectRepository projectRepository) {
+    @Autowired
+    public ProjectController(FileService fileService, ProjectService projectService) {
         this.fileService = fileService;
         this.projectService = projectService;
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectResponseDto> getProject(@PathVariable Long projectId){
+    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId){
         return new ResponseEntity<>(projectService.gerProjectById(projectId),HttpStatus.OK);
     }
+
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDto>> getProjects(
-            @RequestParam(required = false) List<Long> keywords,
-            @RequestParam(required = false) String query) {
-
-        System.out.println(keywords);
-        //TODO TO CHANGE
-        System.out.println(query);
-
-        if(keywords == null) keywords = new ArrayList<>();
-        if(query == null) query = "";
-
-        if(keywords.isEmpty()){
-            return new ResponseEntity<>(projectService.getProjectsByName(query), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(projectService.getProjectsByKeywordsAndName(keywords, query), HttpStatus.OK);
+    public ResponseEntity<List<ProjectSearchResponse>> getProject(@RequestParam(name = "name", required = false) String name,
+                                                                  @RequestParam(name = "keywords", required = false) List<String> keywords,
+                                                                  @RequestParam(name = "sortBy", required = false) String sortBy){
+        return new ResponseEntity<>(projectService.searchProjects(name,keywords,sortBy),HttpStatus.OK);
     }
 
     @PostMapping
     @Log(name = "A user has created a project")
-    public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody ProjectRequestDto projectRequestDto) {
-        ProjectResponseDto createdProject = projectService.createProject(projectRequestDto);
+    public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest projectRequestDto) {
+        ProjectResponse createdProject = projectService.createProject(projectRequestDto);
         fileService.createProjectDir(createdProject.getId().toString());
         return new ResponseEntity<>(createdProject, HttpStatus.OK);
     }
 
     @PutMapping("/{projectId}")
     @Log(name = "A user has updated the project")
-    public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectRequestDto projectRequestDto) {
-        ProjectResponseDto createdProject = projectService.updateProject(projectId, projectRequestDto);
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectRequest projectRequestDto) {
+        ProjectResponse createdProject = projectService.updateProject(projectId, projectRequestDto);
         return new ResponseEntity<>(createdProject, HttpStatus.OK);
     }
 

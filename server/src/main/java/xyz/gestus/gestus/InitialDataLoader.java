@@ -4,9 +4,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import xyz.gestus.gestus.core.user.Role;
-import xyz.gestus.gestus.core.user.User;
-import xyz.gestus.gestus.core.user.UserRepository;
+import xyz.gestus.gestus.feature.user.Role;
+import xyz.gestus.gestus.feature.user.User;
+import xyz.gestus.gestus.feature.user.UserRepository;
 
 import java.util.Optional;
 

@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import xyz.gestus.gestus.core.user.User;
-import xyz.gestus.gestus.core.user.UserRepository;
+import xyz.gestus.gestus.feature.user.User;
+import xyz.gestus.gestus.feature.user.UserRepository;
 
 import java.util.Collection;
 import java.util.Collections;

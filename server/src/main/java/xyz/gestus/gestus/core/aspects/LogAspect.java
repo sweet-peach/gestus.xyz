@@ -10,10 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import xyz.gestus.gestus.core.logs.Log;
-import xyz.gestus.gestus.core.user.User;
-import xyz.gestus.gestus.core.logs.LogRepository;
-import xyz.gestus.gestus.core.user.UserRepository;
+import xyz.gestus.gestus.feature.logs.Log;
+import xyz.gestus.gestus.feature.user.User;
+import xyz.gestus.gestus.feature.logs.LogRepository;
+import xyz.gestus.gestus.feature.user.UserRepository;
 import xyz.gestus.gestus.core.security.JwtTokenProvider;
 
 import java.util.Date;
@@ -34,10 +34,10 @@ public class LogAspect {
     }
 
     @Pointcut("@annotation(log)")
-    public void callAt(xyz.gestus.gestus.annotations.Log log) {}
+    public void callAt(xyz.gestus.gestus.core.annotations.Log log) {}
 
     @Around(value = "callAt(log)", argNames = "pjp,log")
-    public Object around(ProceedingJoinPoint pjp, xyz.gestus.gestus.annotations.Log log) throws Throwable {
+    public Object around(ProceedingJoinPoint pjp, xyz.gestus.gestus.core.annotations.Log log) throws Throwable {
         Object result = pjp.proceed();
 
 

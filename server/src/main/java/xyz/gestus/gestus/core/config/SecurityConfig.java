@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import xyz.gestus.gestus.core.user.Role;
+import xyz.gestus.gestus.feature.user.Role;
 import xyz.gestus.gestus.core.security.JwtAuthEntryPoint;
 import xyz.gestus.gestus.core.security.JwtAuthenticationFilter;
 
@@ -55,9 +55,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/registration").hasAuthority(Role.ADMIN.toString())
                         .requestMatchers("/api/logs/**").hasAuthority(Role.ADMIN.toString())
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers(HttpMethod.PUT).hasAuthority(Role.MODIFIER.toString())
-                        .requestMatchers(HttpMethod.DELETE).hasAuthority(Role.MODIFIER.toString())
-                        .requestMatchers(HttpMethod.POST).hasAuthority(Role.MODIFIER.toString())
+                        .requestMatchers(HttpMethod.PUT).hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.POST).hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((exception) ->

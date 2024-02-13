@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import xyz.gestus.gestus.core.ErrorObject;
+import xyz.gestus.gestus.core.exceptions.ErrorObject;
 import xyz.gestus.gestus.feature.project.exception.ProjectNotFoundException;
-import xyz.gestus.gestus.feature.project.file.exception.DirectoryAlreadyExistsException;
-import xyz.gestus.gestus.feature.project.file.exception.DownloadFailException;
-import xyz.gestus.gestus.feature.project.file.exception.FileNotFoundException;
-import xyz.gestus.gestus.feature.project.file.exception.UploadFailException;
-import xyz.gestus.gestus.core.user.exception.UserAlreadyExistsException;
+import xyz.gestus.gestus.feature.file.exception.DirectoryAlreadyExistsException;
+import xyz.gestus.gestus.feature.file.exception.DownloadFailException;
+import xyz.gestus.gestus.feature.file.exception.FileNotFoundException;
+import xyz.gestus.gestus.feature.file.exception.UploadFailException;
+import xyz.gestus.gestus.feature.user.exception.UserAlreadyExistsException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
