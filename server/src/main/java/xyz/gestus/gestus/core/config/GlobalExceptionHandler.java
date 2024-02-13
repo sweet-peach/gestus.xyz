@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorObject, status);
     }
 
+    private ResponseEntity<ErrorObject> buildResponseEntity(HttpStatus status, String message) {
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setCode(status.value());
+        errorObject.setMessage(message);
+
+        return new ResponseEntity<>(errorObject, status);
+    }
+
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorObject> handleUserAlreadyExists(UserAlreadyExistsException exception, WebRequest request){
         return buildResponseEntity(HttpStatus.CONFLICT,exception);
@@ -60,6 +68,6 @@ public class GlobalExceptionHandler {
         System.out.println("Unhandled exception");
         ex.printStackTrace();
 
-        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
     }
 }

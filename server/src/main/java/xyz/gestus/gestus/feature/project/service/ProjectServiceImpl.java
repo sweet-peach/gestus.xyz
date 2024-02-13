@@ -130,8 +130,9 @@ public class ProjectServiceImpl implements ProjectService {
         Project updatedProject = mapToEntityByRequest(project, projectRequest);
 
         Project savedProject = projectRepository.save(updatedProject);
-        projectSearchRepository.save(mapEntityToDocument(savedProject));
+        updatedProject.setUpdateDate(new Date());
 
+        projectSearchRepository.save(mapEntityToDocument(savedProject));
 
         return mapEntityToResponse(savedProject);
     }
