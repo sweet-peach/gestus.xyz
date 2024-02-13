@@ -1,9 +1,9 @@
 <script>
     import Navbar from "../../components/Navbar.svelte";
-    import {getContext} from "svelte";
+    import {getContext, onMount} from "svelte";
     import Header from "../../components/Header.svelte";
 
-    const user = getContext("user");
+    let user = getContext("user");
 </script>
 
 <div class="page-wrapper">
@@ -17,12 +17,13 @@
 </div>
 
 <style>
-    .page-wrapper{
+    .page-wrapper {
         height: 100%;
         padding: 25px;
         display: flex;
     }
-    .content-wrapper{
+
+    .content-wrapper {
         width: 100%;
     }
 </style>

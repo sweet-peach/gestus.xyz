@@ -1,61 +1,26 @@
 <script>
-
-
     import {getTimePassed, getTimeUntil} from "$lib/services/dataService.js";
-
-    let title = 'Crear nuevo proyecto'; // Define modalTitle here
-    let userRole = "";
-    let modalStep = 0;
-
-    function openModal() {
-        modalStep = 1; // Abre el primer modal
-    }
-
-    function nextModal() {
-        if (modalStep < 3) {
-            modalStep++;
-        } else {
-            closeModal(); // Llama a closeModal cuando estás en el último paso
-        }
-    }
-
-    function prevModal() {
-        if (modalStep > 1) {
-            modalStep--;
-        }
-    }
-
-    function closeModal() {
-        modalStep = 0; // Restablece para cerrar los modales
-    }
-
-    let showLogoutButton = false;
-
-    function handleMouseEnter() {
-        showLogoutButton = true;
-    }
-
-    function handleMouseLeave() {
-        showLogoutButton = false;
-    }
-
     import {onMount} from "svelte";
-    import {getProjects} from "$lib/services/projectService.js";
+    import {getToken} from "$lib/services/authService.js";
+    import ProjectsService from "$lib/api/ProjectsService.js";
 
     let projects = [];
-    onMount(async () => {
-        projects = await getProjects([], "");
-        if(projects == null){
-            projects = []
-        }
-        console.log(projects);
+
+    async function getProjects(){
+        const projectsService = new ProjectsService(getToken());
+        projects = await projectsService.getAll();
+    }
+
+    onMount(async ()=>{
+        await getProjects();
     })
+
 
 </script>
 
 <div class="project-wrapper">
     <header class="config-box">
-        <button class="primary-button" on:click={openModal}>Crear nuevo proyecto</button>
+<!--        <button class="primary-button" on:click={openModal}>Crear nuevo proyecto</button>-->
     </header>
     {#each projects as {name, isActive, updateDate, executionEnd}, i}
         <div class="projects-box">

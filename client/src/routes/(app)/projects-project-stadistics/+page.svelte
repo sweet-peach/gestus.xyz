@@ -21,7 +21,7 @@ let userRole = "";
     <section class="sect-derecha">
         <header>
             <div class="div-header">
-                <h2>Projects / Project</h2>
+                <h2>ProjectsApi / Project</h2>
             </div>
                 <div class="div-header div-buscador">
                     <div class="search-container">
@@ -74,7 +74,7 @@ let userRole = "";
     <section class="sect-derecha">
         <header>
             <div class="div-header">
-                <h2>Projects / Project</h2>
+                <h2>ProjectsApi / Project</h2>
             </div>
                 <div class="div-header div-buscador">
                     <div class="search-container">
@@ -127,7 +127,7 @@ let userRole = "";
     <section class="sect-derecha">
         <header>
             <div class="div-header">
-                <h2>Projects / Project</h2>
+                <h2>ProjectsApi / Project</h2>
             </div>
                 <div class="div-header div-buscador">
                     <div class="search-container">

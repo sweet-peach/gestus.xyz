@@ -4,6 +4,7 @@
     import {user} from "$lib/stores/userStore.js";
 
     export let data;
+
     $: user.set(data.user);
     setContext('user', user);
 </script>

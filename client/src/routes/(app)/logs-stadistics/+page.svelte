@@ -18,7 +18,7 @@ function handleMouseLeave() {
     <section class="sect-derecha">
         <header>
             <div class="div-header">
-                <h2>Logs</h2>
+                <h2>LogsApi</h2>
             </div>
                 <div class="div-header div-buscador">
                     <div class="search-container">
@@ -35,7 +35,7 @@ function handleMouseLeave() {
 
         <section class="files-info-options">
             <div class="vision-project">
-                <button class="button-highlight">Logs</button>
+                <button class="button-highlight">LogsApi</button>
                 <button class="button-highlight">Estadisticas</button>
             </div>
     

@@ -1,4 +1,4 @@
-import {user} from "$lib/stores/userStore.js";
+import AxiosClient, {createAxiosClient} from "$lib/axiosClient.js";
 
 export async function handle ({event, resolve}) {
     const token = event.cookies.get('token');
@@ -13,18 +13,14 @@ export async function handle ({event, resolve}) {
         }
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    ;
     if (token && event.params) {
         event.params.token = token;
     }
+    console.log("Token: ", token);
+    const axiosClient = createAxiosClient(token)
 
-    if(response.ok){
-        event.locals.user = await response.json();
+    try {
+        event.locals.user = await axiosClient.get(`/api/auth`);
 
         if (event.url.pathname === '/login') {
             return new Response(null, {
@@ -32,7 +28,8 @@ export async function handle ({event, resolve}) {
                 headers: { location: '/' }
             })
         }
-    } else {
+    } catch (e) {
+        console.log(e)
         if (event.url.pathname !== '/login') {
             return new Response(null, {
                 status: 302,

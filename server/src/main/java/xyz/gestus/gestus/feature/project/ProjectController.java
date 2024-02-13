@@ -27,16 +27,23 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId){
-        return new ResponseEntity<>(projectService.gerProjectById(projectId),HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<ProjectResponse>> getProjects(@RequestParam(name = "name", required = false) String name,
+                                                                  @RequestParam(name = "keywords", required = false) List<String> keywords,
+                                                                  @RequestParam(name = "sortBy", required = false) String sortBy){
+        return new ResponseEntity<>(projectService.getProjects(),HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProjectSearchResponse>> getProject(@RequestParam(name = "name", required = false) String name,
+    @GetMapping("/search")
+    public ResponseEntity<List<ProjectSearchResponse>> searchProjects(@RequestParam(name = "name", required = false) String name,
                                                                   @RequestParam(name = "keywords", required = false) List<String> keywords,
                                                                   @RequestParam(name = "sortBy", required = false) String sortBy){
         return new ResponseEntity<>(projectService.searchProjects(name,keywords,sortBy),HttpStatus.OK);
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId){
+        return new ResponseEntity<>(projectService.getProjectById(projectId),HttpStatus.OK);
     }
 
     @PostMapping

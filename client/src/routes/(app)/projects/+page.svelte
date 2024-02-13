@@ -97,7 +97,7 @@ function handleMouseLeave() {
         <header>
             <div class="div-header">
                 <i class="fa-solid fa-bars"></i>
-                <h2>Projects</h2>
+                <h2>ProjectsApi</h2>
             </div>
                 <div class="div-header div-buscador">
                     <div class="search-container">
@@ -154,7 +154,7 @@ function handleMouseLeave() {
         <header>
             <div class="div-header">
                 <i class="fa-solid fa-bars"></i>
-                <h2>Projects</h2>
+                <h2>ProjectsApi</h2>
             </div>
                 <div class="div-header div-buscador">
                     <div class="search-container">

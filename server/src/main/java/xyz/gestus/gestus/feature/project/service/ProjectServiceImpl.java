@@ -149,7 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse gerProjectById(Long id) {
+    public ProjectResponse getProjectById(Long id) {
         Project model = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         return mapEntityToResponse(model);
