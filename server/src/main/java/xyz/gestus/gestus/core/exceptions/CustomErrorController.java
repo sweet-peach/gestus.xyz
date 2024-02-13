@@ -22,7 +22,7 @@ public class CustomErrorController implements ErrorController {
 
         ErrorObject errorObject = new ErrorObject();
         errorObject.setCode(httpStatus.value());
-        errorObject.setMessage(request.getAttribute(RequestDispatcher.ERROR_MESSAGE).toString());
+        errorObject.setMessage("Something went wrong");
 
         return new ResponseEntity<>(errorObject, httpStatus);
     }
