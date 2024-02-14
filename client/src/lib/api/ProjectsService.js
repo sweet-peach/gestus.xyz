@@ -1,8 +1,13 @@
 import {ApiService} from "$lib/api/ApiService.js";
 
 class ProjectsService extends ApiService{
-    async getAll() {
-        return this.axiosClient.get('/api/projects');
+    async getAll(sortBy,sortDirection){
+        return this.axiosClient.get('/api/projects',{
+            params: {
+                sortBy: sortBy,
+                sortDirection: sortDirection
+            }
+        });
     }
 
     async getById(id) {

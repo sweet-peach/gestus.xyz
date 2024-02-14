@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 html {
@@ -15,32 +16,25 @@ html, head, body {
     height: 100%;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-}
-
 :root {
-    --color-secondary: #2ecc71;
-    --color-accent: #e74c3c;
-    --color-black: #000000;
-    --color-dark: #34495e;
-    --color-light: #ecf0f1;
-    --color-text-light: #777;
+    --color-primary: #CDFF3E;
 
-    --border-color: #D8D8D8;
-
-    --icon-color: #888888;
-    --selected-icon-color: #000;
+    --color-text: #000;
     --secondary-text-color: #888888;
     --selected-secondary-text-color: #000;
 
-    --color-primary: #CDFF3E;
-    --color-text: #000;
-    --color-background: #fff;
+    --icon-color: #888888;
+    --selected-icon-color: #000;
+
     --background-color: #fff;
-    --color-secondary-background: #C7CBD2;
     --secondary-background-color: #C7CBD2;
     --ternary-background-color: #EEEEEE;
+
+    --secondary-button-color:#EEEEEE;
+    --secondary-button-hover-color: #e9e9e9;
+    --secondary-button-active-color: #f8f8f8;
+
+    --border-color: #D8D8D8;
 }
 
 a {
@@ -49,33 +43,19 @@ a {
     background-color: transparent;
 }
 
-.button-hover {
-    border-radius: 20px;
-    background: red;
+button {
+    cursor: pointer;
     border: none;
-    opacity: 0;
-    color: black;
-    transition: opacity 0.3s;
-    padding: 10px;
-    position: absolute;
-    top: 40px;
+    outline: none;
+    background: none;
 }
-
-.button-hover.visible {
-    opacity: 1;
-}
-
-.button-hover.hidden {
-    opacity: 0;
-}
-
 
 .search-input{
     border-radius: 10px;
     padding: 10px;
     outline: none;
-    border: 0px;
-    box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.1);
+    border: 0;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
 }
 .search-container {
     position: relative;

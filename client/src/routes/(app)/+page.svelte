@@ -1,27 +1,38 @@
 <script>
     import {getTimePassed, getTimeUntil} from "$lib/services/dataService.js";
     import {onMount} from "svelte";
+    import {sortOptions} from "$lib/stores/projectsStore.js";
     import {getToken} from "$lib/services/authService.js";
     import ProjectsService from "$lib/api/ProjectsService.js";
+    import ProjectsActions from "../../components/Actions/ProjectsActions.svelte";
 
+    let projectsService;
     let projects = [];
-
     async function getProjects(){
-        const projectsService = new ProjectsService(getToken());
-        projects = await projectsService.getAll();
+        projectsService = new ProjectsService(getToken());
+        console.log($sortOptions.sortBy,$sortOptions.sortDirection);
+        projects = await projectsService.getAll($sortOptions.sortBy,$sortOptions.sortDirection);
+        console.log(projects);
     }
 
-    onMount(async ()=>{
-        await getProjects();
-    })
 
+
+    onMount(async () => {
+        await getProjects();
+        sortOptions.subscribe(async (value) => {
+            try {
+                await getProjects();
+            } catch (e) {
+                console.log("error");
+                console.log(e);
+            }
+        });
+    });
 
 </script>
 
 <div class="project-wrapper">
-    <header class="config-box">
-<!--        <button class="primary-button" on:click={openModal}>Crear nuevo proyecto</button>-->
-    </header>
+    <ProjectsActions />
     {#each projects as {name, isActive, updateDate, executionEnd}, i}
         <div class="projects-box">
             <div class="project">
@@ -65,6 +76,7 @@
     .project-description-box {
         display: flex;
     }
+
     .green{
         color: var(--color-primary);
     }
