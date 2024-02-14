@@ -28,22 +28,21 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponse>> getProjects(@RequestParam(name = "name", required = false) String name,
-                                                                  @RequestParam(name = "keywords", required = false) List<String> keywords,
-                                                                  @RequestParam(name = "sortBy", required = false) String sortBy){
-        return new ResponseEntity<>(projectService.getProjects(),HttpStatus.OK);
+    public ResponseEntity<List<ProjectResponse>> getProjects(@RequestParam(name = "sortBy", required = false, defaultValue = "name") String sortBy,
+                                                             @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection) {
+        return new ResponseEntity<>(projectService.getProjects(sortBy, sortDirection), HttpStatus.OK);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<ProjectSearchResponse>> searchProjects(@RequestParam(name = "name", required = false) String name,
-                                                                  @RequestParam(name = "keywords", required = false) List<String> keywords,
-                                                                  @RequestParam(name = "sortBy", required = false) String sortBy){
-        return new ResponseEntity<>(projectService.searchProjects(name,keywords,sortBy),HttpStatus.OK);
+                                                                      @RequestParam(name = "keywords", required = false) List<String> keywords,
+                                                                      @RequestParam(name = "sortBy", required = false) String sortBy) {
+        return new ResponseEntity<>(projectService.searchProjects(name, keywords, sortBy), HttpStatus.OK);
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId){
-        return new ResponseEntity<>(projectService.getProjectById(projectId),HttpStatus.OK);
+    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId) {
+        return new ResponseEntity<>(projectService.getProjectById(projectId), HttpStatus.OK);
     }
 
     @PostMapping

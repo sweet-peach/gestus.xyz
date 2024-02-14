@@ -10,7 +10,7 @@ public interface ProjectService {
     ProjectResponse createProject(ProjectRequest projectRequest);
     ProjectResponse updateProject(Long projectId, ProjectRequest projectRequest);
     ProjectResponse getProjectById(Long id);
-    List<ProjectResponse> getProjects();
+    List<ProjectResponse> getProjects(String sortBy,String sortDirection);
     void deleteProject(Long projectId);
     List<ProjectSearchResponse> searchProjects(String query, List<String> keywords, String sortBy);
 

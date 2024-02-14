@@ -11,6 +11,7 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import xyz.gestus.gestus.feature.keyword.dto.KeywordResponse;
 import xyz.gestus.gestus.feature.project.dto.ProjectRequest;
@@ -138,9 +139,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-    @Deprecated
-    public List<ProjectResponse> getProjects() {
-        List<Project> projects = projectRepository.findAll();
+    @Override
+    public List<ProjectResponse> getProjects(String sortBy,String sortDirection) {
+        String columnToSort = "";
+        if(sortBy.equalsIgnoreCase("date")){
+            columnToSort = "creationDate";
+        } else {
+            columnToSort = "name";
+        }
+
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(columnToSort).ascending() : Sort.by(columnToSort).descending();
+        List<Project> projects = projectRepository.findAll(sort);
+
         List<ProjectResponse> formattedProjects = new ArrayList<>();
         for (Project project : projects) {
             formattedProjects.add(mapEntityToResponse(project));
