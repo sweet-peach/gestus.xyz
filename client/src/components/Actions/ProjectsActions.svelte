@@ -1,6 +1,6 @@
 <script>
     import './actions.css'
-    import Dropdown from "../UI/SortDropdown.svelte";
+    import Dropdown from "../UI/SortingDropdownList.svelte";
     import {sortOptions} from "$lib/stores/projectsStore.js";
 
     let bindSortOptions = {};

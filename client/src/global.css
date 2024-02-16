@@ -10,9 +10,10 @@
 html {
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
-html, head, body {
+body,.page-wrapper {
     height: 100%;
 }
 
@@ -50,31 +51,6 @@ button {
     background: none;
 }
 
-.search-input{
-    border-radius: 10px;
-    padding: 10px;
-    outline: none;
-    border: 0;
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-}
-.search-container {
-    position: relative;
-    display: inline-block;
-}
-
-.search-container input[type="text"] {
-    width: 250px;
-}
-
-.search-container i.fa-search {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #aaa;
-    pointer-events: none;
-}
 
 .div-header {
     width: 20%;
@@ -95,7 +71,10 @@ button {
     border: 1px solid var(--border-color);
 }
 
+
 .user-action{
+    width: 100%;
+
     padding: 15px;
     gap: 15px;
     display: flex;
@@ -109,7 +88,8 @@ button {
 .user-action:hover{
     background: var(--ternary-background-color);
 }
-.user-action p{
+.user-action span{
+    font-size: 16px;
     font-weight: 500;
 }
 .no-scroll {

@@ -6,24 +6,24 @@
     let user = getContext("user");
 </script>
 
-<div class="page-wrapper">
-    {#if $user.role === "ADMIN"}
-        <Navbar/>
-    {/if}
-    <div class="content-wrapper">
-        <Header></Header>
-        <slot></slot>
-    </div>
+{#if $user.role === "ADMIN"}
+    <Navbar/>
+{/if}
+<div class="content-wrapper">
+    <Header></Header>
+    <slot></slot>
 </div>
 
 <style>
-    .page-wrapper {
+    :global(.page-wrapper) {
         height: 100%;
         padding: 25px;
         display: flex;
     }
 
     .content-wrapper {
+        display: flex;
+        flex-direction: column;
         width: 100%;
     }
 </style>

@@ -8,13 +8,13 @@
 
     let projectsService;
     let projects = [];
-    async function getProjects(){
+
+    async function getProjects() {
         projectsService = new ProjectsService(getToken());
-        console.log($sortOptions.sortBy,$sortOptions.sortDirection);
-        projects = await projectsService.getAll($sortOptions.sortBy,$sortOptions.sortDirection);
+        console.log($sortOptions.sortBy, $sortOptions.sortDirection);
+        projects = await projectsService.getAll($sortOptions.sortBy, $sortOptions.sortDirection);
         console.log(projects);
     }
-
 
 
     onMount(async () => {
@@ -31,8 +31,8 @@
 
 </script>
 
-<div class="project-wrapper">
-    <ProjectsActions />
+<ProjectsActions/>
+<div class="projects-list">
     {#each projects as {name, isActive, updateDate, executionEnd}, i}
         <div class="projects-box">
             <div class="project">
@@ -61,29 +61,39 @@
 
 
 <style>
-    .p-last{
+    .p-last {
         padding: 15px 0;
     }
+
+    .projects-list{
+        flex: 1;
+        overflow: auto;
+    }
+
     .project {
         padding: 20px 0;
         border-bottom: 1px solid var(--border-color);
     }
-    .project-description{
+
+    .project-description {
         width: max-content;
         display: flex;
         padding-right: 20px;
     }
+
     .project-description-box {
         display: flex;
     }
 
-    .green{
+    .green {
         color: var(--color-primary);
     }
-    .red{
+
+    .red {
         color: red;
     }
-    i{
+
+    i {
         padding-right: 10px;
     }
 </style>

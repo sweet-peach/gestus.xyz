@@ -1,5 +1,5 @@
-<div class="nav-bar-wrapper">
-    <div class="nav-bar">
+<div class="navbar-wrapper">
+    <nav class="navbar">
         <a href="/" class="nav-item selected">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-archive"
                  viewBox="0 0 16 16">
@@ -29,33 +29,30 @@
         <a href="/" class="nav-bottom">
             Gestus
         </a>
-    </div>
+    </nav>
     <div class="separate-line">
     </div>
 </div>
 
 
 <style lang="scss">
-   .nav-bar-wrapper {
+   .navbar-wrapper {
       display: flex;
    }
 
-   .nav-bar {
+   .navbar {
+      padding: 10px 0;
       font-size: 18px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
    }
 
    .separate-line {
       margin: 0 20px;
       border: 1px solid var(--border-color);
       border-radius: 2px;
-   }
-
-   .nav-bar {
-      padding: 10px 0;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
    }
 
    .nav-item.title {
