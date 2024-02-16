@@ -2,6 +2,7 @@
     import {page} from "$lib/stores/appStore.js";
     import {getContext, onDestroy, onMount} from "svelte";
     import {logout} from "$lib/services/authService.js";
+    import ProjectsSearch from "./ProjectsSearch.svelte";
 
     const user = getContext("user");
     const username = String($user.email).toString().split("@")[0];
@@ -36,13 +37,7 @@
 <header>
     <h2>{$page}</h2>
     <div class="right-wrapper">
-        <button class="search-control">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="search-icon"
-                 viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-            </svg>
-            <span>Search projects...</span>
-        </button>
+        <ProjectsSearch></ProjectsSearch>
         <div class="user-box">
             <button on:click={toggleUserMenu} class="username">@{username}</button>
             {#if isUserMenuVisible}
@@ -65,30 +60,9 @@
 
 <style lang="scss">
 
-
-   .search-control {
-      padding: 15px 15px;
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-
-      display: flex;
-      align-items: center;
-
-      width: 300px;
-
-      span{
-         color: var(--secondary-text-color);
-         font-size: 16px;
-         font-weight: 400;
-      }
-
-      svg{
-         color: var(--icon-color);
-         margin-right: 10px;
-      }
-   }
-
    header {
+      position: relative;
+
       padding-top: 10px;
       display: flex;
       align-items: center;
