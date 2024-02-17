@@ -5,13 +5,16 @@
     import {getToken} from "$lib/services/authService.js";
     import ProjectsService from "$lib/api/ProjectsService.js";
     import ProjectsActions from "../../components/Actions/ProjectsActions.svelte";
+    import {page} from "$lib/stores/appStore.js";
 
+    page.set("Projects");
     let projectsService;
     let projects = [];
 
     async function getProjects() {
         projectsService = new ProjectsService(getToken());
         console.log($sortOptions.sortBy, $sortOptions.sortDirection);
+        new ProjectsService(getToken());
         projects = await projectsService.getAll($sortOptions.sortBy, $sortOptions.sortDirection);
         console.log(projects);
     }

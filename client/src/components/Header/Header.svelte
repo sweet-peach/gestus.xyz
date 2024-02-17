@@ -1,6 +1,6 @@
 <script>
     import {page} from "$lib/stores/appStore.js";
-    import {getContext, onDestroy, onMount} from "svelte";
+    import {getContext, onMount} from "svelte";
     import {logout} from "$lib/services/authService.js";
     import ProjectsSearch from "./ProjectsSearch.svelte";
 

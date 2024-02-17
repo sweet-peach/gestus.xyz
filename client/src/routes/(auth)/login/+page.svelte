@@ -1,102 +1,208 @@
 <script>
-    import {login, logout} from "$lib/services/authService.js";
+    import {login} from "$lib/services/authService.js";
+    import MediumLoader from "../../../components/UI/MediumLoader.svelte";
+    import {goto} from "$app/navigation";
+
     let email = "";
     let password = "";
+    let errorText = "";
 
-    async function handleLoginButtonClick(){
-        const isAuthorized = await login(email,password);
-        if(isAuthorized){
-            location.reload();
+    let isEmailIncorrect = null;
+    let isPasswordIncorrect = null;
+    let isButtonBlocked = true;
+    let isLoading = false;
+
+    function checkPassword() {
+        isPasswordIncorrect = password.length === 0;
+    }
+
+    function checkEmail() {
+        let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        isEmailIncorrect = !emailRegex.test(email);
+    }
+
+    $: if (isEmailIncorrect === false && isPasswordIncorrect === false) {
+        isButtonBlocked = false;
+    }
+
+    let passwordTimeout;
+
+    function handlePasswordInput() {
+        errorText = "";
+        clearTimeout(passwordTimeout);
+        passwordTimeout = setTimeout(checkPassword, 200);
+    }
+
+    let emailTimeout;
+
+    function handleEmailInput() {
+        errorText = "";
+        clearTimeout(emailTimeout);
+        emailTimeout = setTimeout(checkEmail, 200);
+    }
+
+    async function handleLoginButtonClick() {
+        if (isButtonBlocked || isLoading) return;
+
+        isLoading = true;
+        isButtonBlocked = true;
+
+        let response;
+        try {
+            response = await login(email, password);
+        } catch (error) {
+            errorText = error.message;
         }
+        if (response?.success === true){
+            return goto('/');
+        }
+
+        isButtonBlocked = false;
+        isLoading = false;
     }
 
 </script>
 
 
 <div class="login-container">
-    <div class="login-box">
-        <h1>Inicia sesion</h1>
-        <div class="div-inputs">
-            <div class="inputInfo">
-                <span>e-mail</span>
-                <input bind:value={email} type="text">
+
+    <div
+            class="login-box"
+            class:faded={isLoading}
+    >
+        {#if isLoading}
+            <div class="loader">
+                <MediumLoader/>
             </div>
-            <div class="inputInfo">
-                <span>Contraseña</span>
-                <input bind:value={password} type="text">
+        {/if}
+        <h1>Welcome back</h1>
+        <div class="inputs">
+            <div class="input {isEmailIncorrect ? 'error' : ''}">
+                <div class="hint">
+                    <span>Email</span>
+                    {#if isEmailIncorrect}
+                        <span class="error-text">Incorrect email</span>
+                    {/if}
+                </div>
+                <input autocomplete="email" id="name" bind:value={email} on:input={handleEmailInput} type="text">
             </div>
-            <button on:click={handleLoginButtonClick}>Entrar</button>
+            <div class="input {isPasswordIncorrect ? 'error' : ''}">
+                <div class="hint">
+                    <span>Password</span>
+                    {#if isPasswordIncorrect}
+                        <span class="error-text">Password is obligatory</span>
+                    {/if}
+                </div>
+                <input autocomplete="current-password" id="password" bind:value={password}
+                       on:input={handlePasswordInput} type="password">
+            </div>
         </div>
-        <!--        <span>No me acuerdo de mi contraseña</span>-->
+        <button class:blocked1={isButtonBlocked}
+                class="primary-button obscured"
+                on:click={handleLoginButtonClick}>
+            Enter
+        </button>
+        <div class="error-text">{errorText} &nbsp;</div>
     </div>
 </div>
 
-<style>
-    :global(html,body) {
-        width: 100%;
-        height: 100%;
-    }
+<style lang="scss">
 
-    :global(body) {
-        background: var(--color-secondary-background);
-    }
+   .loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
 
-    .login-container {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+   .error-text {
+      color: var(--red-color);
+      font-size: 16px;
+      font-weight: 500;
+   }
 
-    .login-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 60%;
-        width: 35%;
-        border-radius: 54px;
-        background: #FFF;
-        padding: 30px;
-        gap: 10px;
-        background: var(--color-background);
-    }
+   .login-container {
+      background: var(--secondary-background-color);
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
 
-    .div-inputs {
-        height: 60%;
-        width: 80%;
-    }
+   .login-box {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 35px;
+      background: #FFF;
+      padding: 25px;
+      width: 550px;
+      background: var(--background-color);
 
-    .div-inputs > * {
-        margin-bottom: 20px;
-    }
+      gap: 10px;
 
-    .div-inputs span {
-        margin-bottom: 5px;
-    }
+      h1 {
+         text-align: left;
+         font-size: 20px;
+         font-weight: 600;
+      }
 
-    .inputInfo {
-        display: flex;
-        flex-direction: column;
-    }
+      button {
+         margin-top: 20px;
+         width: 100%;
+      }
+   }
 
-    .inputInfo span {
-        color: #686868;
-    }
 
-    button {
-        background: var(--color-primary);
-        border: none;
-        padding: 15px;
-        width: 100%;
-        border-radius: 23px;
-        font-size: 20px;
-    }
+   .inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
 
-    input {
-        outline: none;
-        border: .5px solid rgba(0, 0, 0, 0.144);
-        padding: 10px;
-        border-radius: 10px;
-    }
+      width: 100%;
+
+      .input {
+         display: flex;
+         flex-direction: column;
+         gap: 5px;
+
+         .error-text {
+            color: var(--red-color);
+            font-size: 14px;
+            font-weight: 500;
+         }
+
+         &.error {
+            input {
+               border: 1px solid var(--red-color);
+               outline: 1px solid var(--red-color);
+            }
+         }
+
+         .hint {
+            display: flex;
+            justify-content: space-between;
+         }
+
+         span {
+            color: var(--secondary-text-color);
+            font-weight: 500;
+            font-size: 14px;
+         }
+
+         input {
+            border: .5px solid rgba(0, 0, 0, 0.144);
+            padding: 10px 20px;
+            font-size: 17px;
+            font-weight: 500;
+            border-radius: 12px;
+         }
+      }
+   }
 </style>

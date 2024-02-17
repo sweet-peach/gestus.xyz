@@ -6,7 +6,7 @@
     import {goto} from "$app/navigation";
 
     let isClient = typeof window !== 'undefined';
-    let isOpen = true;
+    let isOpen = false;
     let isInFocus = false;
     let searcher = null;
     $: isSearcherDefined = searcher !== null;
@@ -219,7 +219,6 @@
             font-weight: 500;
             font-size: 14px;
             margin-bottom: 5px;
-            margin-left: 5px;
          }
 
          .result-items {
@@ -232,7 +231,7 @@
                width: 100%;
                text-align: left;
                font-weight: 500;
-               font-size: 14px;
+               font-size: 16px;
 
                &:hover {
                   background-color: var(--ternary-background-color);

@@ -22,6 +22,7 @@ body{
     --primary-color: #CDFF3E;
 
     --blue-color: #1D72F2;
+    --red-color: #FF3E3E;
 
     --color-text: #000;
     --text-color: #000;
@@ -109,17 +110,45 @@ button {
 }
 
 .primary-button{
-    border-radius: 10px;
+    border-radius: 14px;
     outline: none;
     border: none;
-    color: #fff;
-    padding: 20px;
+    color: var(--color-text);
+    font-size: 18px;
+    font-weight: 500;
+    padding: 13px 25px;
     background: var(--color-primary);
-    color: rgb(83, 71, 71);
+
+    display: flex;
+    justify-content: center;
+}
+.primary-button.blocked{
+    cursor: default;
+    opacity: 0.5;
+}
+
+.faded{
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .user-box{
     display: flex;
     position: relative;
     align-items: center;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-10px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(10px);
+    }
+}
+.shake {
+    animation: shake 0.5s ease-in-out;
 }

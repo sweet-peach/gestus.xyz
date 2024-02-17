@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export function createAxiosClient(token) {
-    console.log("Create");
     const client = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
         headers: {
@@ -24,6 +23,7 @@ export function createAxiosClient(token) {
                 // Handling HTTP status errors
                 console.error(`HTTP error: ${error.response.status} - ${error.response.statusText}`);
                 throw {
+                    success: false,
                     status: error.response.status,
                     message: error.response.data.message || error.response.statusText,
                     data: error.response.data,
@@ -31,13 +31,18 @@ export function createAxiosClient(token) {
             } else if (error.request) {
                 // The request was made, but no response was received
                 console.error('No Response error:', error.request);
-                throw {message: 'No response was received'};
+                throw {success: false, message: 'No response was received'};
             } else {
                 // Error in setting the query
                 console.error('Request Setup error:', error.message);
-                throw {message: error.message};
+                throw {success: false, message: error.message};
             }
         }
     );
     return client;
+}
+
+export async function handleError(error) {
+    console.error(error);
+    alert(error);
 }
