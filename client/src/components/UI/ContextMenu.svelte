@@ -1,7 +1,7 @@
 <script>
     import {clickOutside} from "$lib/use/clickOutside.js";
-    export let event;
-    export let show = false;
+    export let targetEvent;
+    export let isVisible = false;
 
     let dimensions;
     let position = {x: 0, y: 0}
@@ -33,9 +33,9 @@
     }
 
     function adjustPosition() {
-        if(!dimensions || !event) return;
+        if(!dimensions || !targetEvent) return;
 
-        const {width, height, x, y} = event.target.getBoundingClientRect()
+        const {width, height, x, y} = targetEvent.target.getBoundingClientRect()
         const browser = {width: window.innerWidth, height: window.innerHeight}
 
         position.x = (browser.width < x + dimensions.width) ? browser.width - dimensions.width - width: x + width;
@@ -43,25 +43,25 @@
     }
 
     let isClient = typeof window !== 'undefined';
-    $: if (isClient && show) {
+    $: if (isClient && isVisible) {
         window.addEventListener('resize', throttle(adjustPosition,250));
     } else if(isClient) {
         window.removeEventListener('resize', throttle(adjustPosition,250));
     }
 
 
-    $: if (dimensions && (event)) {
-        console.log("Adjusting position")
+    $: if (dimensions && (targetEvent)) {
         adjustPosition();
     }
 
-    function closeMenu() {
-        show = false;
+    function closeMenu(event) {
+        if(event.detail === targetEvent.target) return;
+        isVisible = false;
     }
 </script>
 
 
-{#if show}
+{#if isVisible}
     <div use:getDimensions
          use:clickOutside
          on:outclick={closeMenu}
