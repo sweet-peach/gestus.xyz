@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="https://example.com" id="link">Это ссылка. <button id="button">Кнопка</button></a>
+<script>
+    document.getElementById('button').addEventListener('click', function(event) {
+        // Действие, которое должно происходить при клике на кнопку
+        alert('Кнопка нажата!');
+
+        // Предотвращение всплытия события к родительскому элементу (ссылке)
+        event.stopPropagation();
+    });
+
+    document.getElementById('link').addEventListener('click', function() {
+        // Действие, которое должно происходить при клике на ссылку
+        alert('Ссылка нажата!');
+    });
+
+</script>
+</body>
+</html>

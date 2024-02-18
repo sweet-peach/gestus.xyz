@@ -41,10 +41,11 @@
     });
     let contextMenuVisible = false;
     let contextMenuEvent;
+
     function toggleContextMenu(toggleEvent) {
+        toggleEvent.preventDefault();
         contextMenuVisible = !contextMenuVisible;
         contextMenuEvent = toggleEvent;
-        toggleEvent.stopPropagation();
     }
 
 </script>
@@ -74,38 +75,38 @@
             <MediumLoader color="var(--primary-color)"/>
         </div>
     {:else }
-        {#each projects as {name, isActive, updateDate, executionEnd}, i}
-            <div class="projects-box">
+            {#each projects as {id, name, isActive, updateDate, executionEnd}, i}
                 <div class="project">
-                    <div class="text-box">
-                        <h2>{name}</h2>
-                        <p class="p-last">Last update {getTimePassed(updateDate)} ago</p>
-                    </div>
-                    <div class="project-description-box">
-                        <div class="project-description">
-                            {#if isActive}
-                                <div class="circle green"></div>
-                                <p>Active</p>
-                            {:else }
-                                <i class="circle red"></i>
-                                <p>Closed</p>
-                            {/if}
+                    <a href="/{id}">
+                        <div class="text-box">
+                            <h2>{name}</h2>
+                            <p class="p-last">Last update {getTimePassed(updateDate)} ago</p>
                         </div>
-                        <div class="project-description">
-                            It closes in: {getTimeUntil(executionEnd)}
+                        <div class="project-description-box">
+                            <div class="project-description">
+                                {#if isActive}
+                                    <div class="circle green"></div>
+                                    <p>Active</p>
+                                {:else }
+                                    <i class="circle red"></i>
+                                    <p>Closed</p>
+                                {/if}
+                            </div>
+                            <div class="project-description">
+                                It closes in: {getTimeUntil(executionEnd)}
+                            </div>
                         </div>
-                    </div>
-                    <div class="actions">
-                        <button on:click={toggleContextMenu}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                 class="bi bi-three-dots" viewBox="0 0 16 16">
-                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-                            </svg>
-                        </button>
-                    </div>
+                        <div class="actions">
+                            <button on:click|stopPropagation={toggleContextMenu}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                     class="bi bi-three-dots" viewBox="0 0 16 16">
+                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </a>
                 </div>
-            </div>
-        {/each}
+            {/each}
 
     {/if}
 </div>
@@ -141,13 +142,15 @@
          right: 20px;
 
          transform: translateY(-50%);
-         button{
+
+         button {
             display: flex;
             align-items: center;
             padding: 5px;
             border-radius: 50%;
-            &:hover{
-               svg{
+
+            &:hover {
+               svg {
                   color: var(--selected-icon-color);
                }
             }

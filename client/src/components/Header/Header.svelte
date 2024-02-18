@@ -3,7 +3,6 @@
     import {getContext, onMount} from "svelte";
     import {logout} from "$lib/services/authService.js";
     import ProjectsSearch from "./ProjectsSearch.svelte";
-    import ContextMenu from "../UI/ContextMenu.svelte";
 
     const user = getContext("user");
     const username = String($user.email).toString().split("@")[0];

@@ -97,7 +97,7 @@
                        on:input={handlePasswordInput} type="password">
             </div>
         </div>
-        <button class:blocked1={isButtonBlocked}
+        <button class:blocked={isButtonBlocked}
                 class="primary-button obscured"
                 on:click={handleLoginButtonClick}>
             Enter

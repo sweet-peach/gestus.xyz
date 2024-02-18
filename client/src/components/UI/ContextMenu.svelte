@@ -55,7 +55,12 @@
     }
 
     function closeMenu(event) {
-        if(event.detail === targetEvent.target) return;
+        const elClicked = event.detail;
+        const elTarget = targetEvent.target;
+
+        if (elClicked.contains(elTarget) || elTarget.contains(elClicked)) {
+            return;
+        }
         isVisible = false;
     }
 </script>
