@@ -168,7 +168,7 @@
    }
 
    .search-container {
-      z-index: 1;
+      z-index: var(--overlay-index);
 
       padding: 20px;
       background: var(--background-color);

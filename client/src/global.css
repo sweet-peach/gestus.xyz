@@ -23,6 +23,7 @@ body{
 
     --blue-color: #1D72F2;
     --red-color: #FF3E3E;
+    --green-color: #CDFF3E;
 
     --color-text: #000;
     --text-color: #000;
@@ -41,6 +42,9 @@ body{
     --secondary-button-active-color: #f8f8f8;
 
     --border-color: #D8D8D8;
+
+    --context-menu-index:1;
+    --overlay-index:5;
 }
 
 *:focus {
@@ -51,6 +55,9 @@ a {
     color: inherit;
     text-decoration: none;
     background-color: transparent;
+}
+svg{
+    color: var(--icon-color);
 }
 input{
     border: none;
@@ -72,39 +79,7 @@ button {
     justify-content: space-between;
 }
 
-.user-actions{
-    background: var(--background-color);
-    margin-top: 10px;
-    right: 0;
-    padding: 5px;
-    position: absolute;
-    width: 200px;
-    top: 100%;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
 
-
-.user-action{
-    width: 100%;
-
-    padding: 15px;
-    gap: 15px;
-    display: flex;
-    white-space: nowrap;
-    align-items: center;
-    justify-content: start;
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-.user-action:hover{
-    background: var(--ternary-background-color);
-}
-.user-action span{
-    font-size: 16px;
-    font-weight: 500;
-}
 .no-scroll {
     overflow: hidden;
 }
@@ -121,6 +96,7 @@ button {
 
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .primary-button.blocked{
     cursor: default;
@@ -151,4 +127,36 @@ button {
 }
 .shake {
     animation: shake 0.5s ease-in-out;
+}
+
+.context-menu{
+    background: var(--background-color);
+    margin-top: 10px;
+    padding: 5px;
+    width: 200px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+
+    z-index: var(--context-menu-index);
+
+    .menu-item{
+        width: 100%;
+
+        padding: 15px;
+        gap: 15px;
+        display: flex;
+        white-space: nowrap;
+        align-items: center;
+        justify-content: start;
+        border-radius: 6px;
+
+        cursor: pointer;
+    }
+    .menu-item:hover{
+        background: var(--ternary-background-color);
+    }
+    .menu-item span{
+        font-size: 16px;
+        font-weight: 500;
+    }
 }

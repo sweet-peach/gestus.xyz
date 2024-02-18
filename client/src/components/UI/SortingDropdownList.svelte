@@ -16,10 +16,16 @@
     const toggleAscending = () => sortOptions.ascending = !sortOptions.ascending;
     const clearSelection = () => {
         isOpen = false
+        options.push(sortOptions.sortBy);
         sortOptions.sortBy = '';
     }
 
     function selectOption(option) {
+        options = options.filter(o => o !== option);
+
+        if(sortOptions.sortBy){
+            options.push(sortOptions.sortBy);
+        }
         sortOptions.sortBy = option;
         isOpen = false;
     }
@@ -145,6 +151,9 @@
 
          span:hover,svg:hover{
             background: var(--secondary-button-hover-color);
+         }
+         svg{
+            padding: 10px;
          }
          svg,span {
             border-radius: 8px;

@@ -3,6 +3,7 @@
     import {getContext, onMount} from "svelte";
     import {logout} from "$lib/services/authService.js";
     import ProjectsSearch from "./ProjectsSearch.svelte";
+    import ContextMenu from "../UI/ContextMenu.svelte";
 
     const user = getContext("user");
     const username = String($user.email).toString().split("@")[0];
@@ -41,8 +42,8 @@
         <div class="user-box">
             <button on:click={toggleUserMenu} class="username">@{username}</button>
             {#if isUserMenuVisible}
-                <div class="user-actions">
-                    <button class="user-action" on:click={handleLogout}>
+                <div class="context-menu">
+                    <button class="menu-item" on:click={handleLogout}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                              class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -59,6 +60,12 @@
 </header>
 
 <style lang="scss">
+
+   .context-menu{
+      position: absolute;
+      top: 100%;
+      right: 0;
+   }
 
    header {
       position: relative;
