@@ -12,6 +12,6 @@ public interface ProjectService {
     ProjectResponse getProjectById(Long id);
     List<ProjectResponse> getProjects(String sortBy,String sortDirection);
     void deleteProject(Long projectId);
-    List<ProjectSearchResponse> searchProjects(String query, List<String> keywords, String sortBy);
+    List<ProjectSearchResponse> searchProjects(String query, List<Long> keywords, String sortBy);
 
 }

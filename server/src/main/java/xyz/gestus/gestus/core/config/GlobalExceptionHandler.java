@@ -2,10 +2,14 @@ package xyz.gestus.gestus.core.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import xyz.gestus.gestus.core.exceptions.ErrorObject;
+import xyz.gestus.gestus.core.security.JwtAuthenticationFilter;
 import xyz.gestus.gestus.feature.project.exception.ProjectNotFoundException;
 import xyz.gestus.gestus.feature.file.exception.DirectoryAlreadyExistsException;
 import xyz.gestus.gestus.feature.file.exception.DownloadFailException;
@@ -40,7 +44,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProjectNotFoundException.class)
     public ResponseEntity<ErrorObject> handleUserAlreadyExists(ProjectNotFoundException exception, WebRequest request){
         return buildResponseEntity(HttpStatus.NOT_FOUND,exception);
-
     }
 
     @ExceptionHandler(DirectoryAlreadyExistsException.class)
@@ -61,6 +64,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DownloadFailException.class)
     public ResponseEntity<ErrorObject> handleUploadFail(DownloadFailException exception, WebRequest request){
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,exception);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorObject> handleBadCredentialsException(BadCredentialsException exception, WebRequest request){
+        return buildResponseEntity(HttpStatus.UNAUTHORIZED,"Password or email is incorrect");
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorObject> handleBadRequest(MethodArgumentNotValidException exception, WebRequest request){
+        return buildResponseEntity(HttpStatus.BAD_REQUEST,"Invalid request format. Please check your request data.");
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorObject> handleBadRequest(HttpMessageNotReadableException exception, WebRequest request){
+        return buildResponseEntity(HttpStatus.BAD_REQUEST,"Invalid request format. Please check your request data.");
     }
 
     @ExceptionHandler(Exception.class)

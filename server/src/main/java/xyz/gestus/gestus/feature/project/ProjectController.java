@@ -35,7 +35,7 @@ public class ProjectController {
 
     @GetMapping("/search")
     public ResponseEntity<List<ProjectSearchResponse>> searchProjects(@RequestParam(name = "name", required = false) String name,
-                                                                      @RequestParam(name = "keywords", required = false) List<String> keywords,
+                                                                      @RequestParam(name = "keywords", required = false) List<Long> keywords,
                                                                       @RequestParam(name = "sortBy", required = false) String sortBy) {
         return new ResponseEntity<>(projectService.searchProjects(name, keywords, sortBy), HttpStatus.OK);
     }

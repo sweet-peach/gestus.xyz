@@ -5,11 +5,10 @@ import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import co.elastic.clients.json.JsonData;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,9 @@ import xyz.gestus.gestus.feature.project.ProjectRepository;
 import xyz.gestus.gestus.feature.file.service.FileService;
 
 import java.io.IOException;
+import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectSearchResponse> searchProjects(String searchText, List<String> keywords, String sortBy) {
+    public List<ProjectSearchResponse> searchProjects(String searchText, List<Long> keywords, String sortBy) {
         try {
             Query searchQuery = getSearchQuery(searchText, keywords);
 
@@ -70,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
             SearchResponse<ProjectDocument> searchResponse = elasticsearchClient.search(s -> s
                             .index("projects")
                             .query(searchQuery)
+                            .size(5)
                             .sort(sortOptions),
                     ProjectDocument.class
             );
@@ -86,7 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-    private static Query getSearchQuery(String searchText, List<String> keywords) {
+    private static Query getSearchQuery(String searchText, List<Long> keywords) {
         BoolQuery.Builder boolQuery = new BoolQuery.Builder();
 
         if (searchText != null && !searchText.isBlank()) {
@@ -140,10 +143,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
-    public List<ProjectResponse> getProjects(String sortBy,String sortDirection) {
+    public List<ProjectResponse> getProjects(String sortBy, String sortDirection) {
         String columnToSort = "";
-        if(sortBy.equalsIgnoreCase("date")){
-            columnToSort = "creationDate";
+        if (sortBy.equalsIgnoreCase("date")) {
+            columnToSort = "updateDate";
         } else {
             columnToSort = "name";
         }
@@ -204,8 +207,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private Project mapToEntityByRequest(Project project, ProjectRequest projectRequest) {
-        project.setExecutionStart(projectRequest.getExecutionStart());
-        project.setExecutionEnd(projectRequest.getExecutionEnd());
+        project.setExecutionStart(localDateTimeToDate(projectRequest.getExecutionStart()));
+        project.setExecutionEnd(localDateTimeToDate(projectRequest.getExecutionEnd()));
         project.setRating(projectRequest.getRating());
         project.setName(projectRequest.getName());
         project.setType(projectRequest.getType());
@@ -215,10 +218,34 @@ public class ProjectServiceImpl implements ProjectService {
         project.setIsActive(projectRequest.getIsActive());
         project.setInCooperation(projectRequest.getInCooperation());
 
-        List<Keyword> keywords = keywordRepository.findAllById(projectRequest.getKeywords());
+        List<Keyword> keywords = findAllByNameOrCreate(projectRequest.getKeywords());
         project.setKeywords(keywords);
 
         return project;
+    }
+
+    private Date localDateTimeToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    private LocalDateTime dateToLocalDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime();
+    }
+
+    private List<Keyword> findAllByNameOrCreate(List<String> keywordNames) {
+        List<Keyword> foundKeywords = keywordRepository.findAllByNameIn(keywordNames);
+        List<Keyword> result = new ArrayList<>(foundKeywords);
+
+        List<String> foundKeywordNames = foundKeywords.stream().map(Keyword::getName).toList();
+        keywordNames.removeAll(foundKeywordNames);
+        for (String name : keywordNames) {
+            Keyword newKeyword = new Keyword();
+            newKeyword.setName(name);
+
+            result.add(keywordRepository.save(newKeyword));
+        }
+
+        return result;
     }
 
 
@@ -226,10 +253,10 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectResponse projectResponse = new ProjectResponse();
         projectResponse.setId(projectModel.getId());
         projectResponse.setName(projectModel.getName());
-        projectResponse.setCreationDate(projectModel.getCreationDate());
-        projectResponse.setUpdateDate(projectModel.getUpdateDate());
-        projectResponse.setExecutionStart(projectModel.getExecutionStart());
-        projectResponse.setExecutionEnd(projectModel.getExecutionEnd());
+        projectResponse.setCreationDate(dateToLocalDateTime(projectModel.getCreationDate()));
+        projectResponse.setUpdateDate(dateToLocalDateTime(projectModel.getUpdateDate()));
+        projectResponse.setExecutionStart(dateToLocalDateTime(projectModel.getExecutionStart()));
+        projectResponse.setExecutionEnd(dateToLocalDateTime(projectModel.getExecutionEnd()));
         projectResponse.setRating(projectModel.getRating());
         projectResponse.setType(projectModel.getType());
         projectResponse.setPhase(projectModel.getPhase());
@@ -238,8 +265,8 @@ public class ProjectServiceImpl implements ProjectService {
         projectResponse.setCode(projectModel.getCode());
         projectResponse.setInCooperation(projectModel.getInCooperation());
 
-        List<KeywordResponse> keywords = projectModel.getKeywords().stream()
-                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getName()))
+        List<String> keywords = projectModel.getKeywords().stream()
+                .map(Keyword::getName)
                 .collect(Collectors.toList());
 
         projectResponse.setKeywords(keywords);
