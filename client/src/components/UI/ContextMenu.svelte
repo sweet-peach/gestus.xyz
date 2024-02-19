@@ -1,6 +1,6 @@
 <script>
     import {clickOutside} from "$lib/use/clickOutside.js";
-    export let targetEvent;
+    export let causerClickEvent;
     export let isVisible = false;
 
     let dimensions;
@@ -33,9 +33,9 @@
     }
 
     function adjustPosition() {
-        if(!dimensions || !targetEvent) return;
+        if(!dimensions || !causerClickEvent) return;
 
-        const {width, height, x, y} = targetEvent.target.getBoundingClientRect()
+        const {width, height, x, y} = causerClickEvent.target.getBoundingClientRect()
         const browser = {width: window.innerWidth, height: window.innerHeight}
 
         position.x = (browser.width < x + dimensions.width) ? browser.width - dimensions.width - width: x + width;
@@ -50,15 +50,15 @@
     }
 
 
-    $: if (dimensions && (targetEvent)) {
+    $: if (dimensions && (causerClickEvent)) {
         adjustPosition();
     }
 
     function closeMenu(event) {
         const elClicked = event.detail;
-        const elTarget = targetEvent.target;
+        const elCauser = causerClickEvent.target;
 
-        if (elClicked.contains(elTarget) || elTarget.contains(elClicked)) {
+        if (elClicked.contains(elCauser) || elCauser.contains(elClicked)) {
             return;
         }
         isVisible = false;

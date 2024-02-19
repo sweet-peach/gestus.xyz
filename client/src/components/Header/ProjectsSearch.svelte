@@ -203,34 +203,7 @@
 
       pointer-events: all;
 
-      .keywords {
-         display: flex;
-         align-items: center;
-         gap: 10px;
 
-         .keyword {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-
-            padding: 10px;
-            border-radius: 9px;
-            background-color: var(--ternary-background-color);
-            color: var(--secondary-text-color);
-            font-weight: 500;
-            font-size: 14px;
-
-            button {
-               display: flex;
-               align-items: center;
-            }
-
-            svg {
-               color: var(--icon-color);
-            }
-         }
-      }
 
       .result-container {
          h3 {

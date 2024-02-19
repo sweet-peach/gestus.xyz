@@ -14,12 +14,15 @@ class ProjectsService extends ApiService{
         return this.axiosClient.get(`/api/projects/${id}`);
     }
 
-    async create() {
+    async create(projectData) {
         return this.axiosClient.post('/api/projects', projectData);
     }
 
     async delete(id) {
         return this.axiosClient.delete(`/api/projects/${id}`);
+    }
+    async update(id, projectData) {
+        return this.axiosClient.put(`/api/projects/${id}`, projectData);
     }
 }
 export default ProjectsService;

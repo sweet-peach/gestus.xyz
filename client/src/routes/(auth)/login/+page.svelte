@@ -84,7 +84,7 @@
                         <span class="error-text">Incorrect email</span>
                     {/if}
                 </div>
-                <input autocomplete="email" id="name" bind:value={email} on:input={handleEmailInput} type="text">
+                <input class="primary-input" autocomplete="email" id="name" bind:value={email} on:input={handleEmailInput} type="text">
             </div>
             <div class="input {isPasswordIncorrect ? 'error' : ''}">
                 <div class="hint">
@@ -93,7 +93,7 @@
                         <span class="error-text">Password is obligatory</span>
                     {/if}
                 </div>
-                <input autocomplete="current-password" id="password" bind:value={password}
+                <input class="primary-input" autocomplete="current-password" id="password" bind:value={password}
                        on:input={handlePasswordInput} type="password">
             </div>
         </div>
@@ -194,14 +194,6 @@
             color: var(--secondary-text-color);
             font-weight: 500;
             font-size: 14px;
-         }
-
-         input {
-            border: .5px solid rgba(0, 0, 0, 0.144);
-            padding: 10px 20px;
-            font-size: 17px;
-            font-weight: 500;
-            border-radius: 12px;
          }
       }
    }

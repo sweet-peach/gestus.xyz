@@ -4,3 +4,5 @@ export const sortOptions = writable({
     sortBy: 'name',
     sortDirection: 'asc',
 });
+
+export const projects = writable([]);
