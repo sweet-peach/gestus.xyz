@@ -43,6 +43,13 @@
         })
     }
 
+    async function handleProjectDelete(event) {
+        const deleteProject = event.detail.project;
+        projects.update(projects => {
+            return projects.filter(project => project.id !== deleteProject.id);
+        })
+    }
+
     onMount(async () => {
         projectsService = new ProjectsService(getToken());
 
@@ -61,7 +68,7 @@
             <MediumLoader color="var(--primary-color)"/>
         </div>
     {:then response}
-        <ProjectsList projects={$projects}></ProjectsList>
+        <ProjectsList on:delete={handleProjectDelete} projects={$projects}></ProjectsList>
     {:catch error}
         <p>{error.message}</p>
     {/await}
