@@ -8,12 +8,12 @@
     }
 
     export function check(){
+        console.log("check");
         error = value === "";
         return !error;
     }
 
 </script>
-
 <div
         class:error={error}
         class="item">
@@ -25,7 +25,3 @@
     </header>
     <input bind:value={value} class="primary-input" type="text">
 </div>
-
-<style>
-
-</style>

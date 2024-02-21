@@ -3,6 +3,7 @@
     import MediumLoader from "../../../components/UI/MediumLoader.svelte";
     import {goto} from "$app/navigation";
 
+
     let email = "";
     let password = "";
     let errorText = "";
@@ -23,6 +24,8 @@
 
     $: if (isEmailIncorrect === false && isPasswordIncorrect === false) {
         isButtonBlocked = false;
+    } else {
+        isButtonBlocked = true;
     }
 
     let passwordTimeout;
@@ -53,7 +56,7 @@
         } catch (error) {
             errorText = error.message;
         }
-        if (response?.success === true){
+        if (response?.success === true) {
             return goto('/');
         }
 
@@ -84,7 +87,8 @@
                         <span class="error-text">Incorrect email</span>
                     {/if}
                 </div>
-                <input class="primary-input" autocomplete="email" id="name" bind:value={email} on:input={handleEmailInput} type="text">
+                <input class="primary-input" autocomplete="email" id="name" bind:value={email}
+                       on:input={handleEmailInput} type="text">
             </div>
             <div class="input {isPasswordIncorrect ? 'error' : ''}">
                 <div class="hint">
@@ -102,7 +106,6 @@
                 on:click={handleLoginButtonClick}>
             Enter
         </button>
-        <div class="error-text">{errorText} &nbsp;</div>
     </div>
 </div>
 
@@ -117,12 +120,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-   }
-
-   .error-text {
-      color: var(--red-color);
-      font-size: 16px;
-      font-weight: 500;
    }
 
    .login-container {

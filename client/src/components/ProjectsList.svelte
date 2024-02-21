@@ -22,7 +22,7 @@
     function openForm() {
         contextMenuVisible = false;
         isOpen.set(true);
-        formType.set(TYPE.EDIT);
+        formType.set(TYPE.UPDATE);
         formData.set(selectedProject);
     }
 </script>

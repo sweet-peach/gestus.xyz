@@ -1,9 +1,8 @@
-import AxiosClient, {createAxiosClient} from "$lib/axiosClient.js";
+import {createAxiosClient} from "$lib/axiosClient.js";
 
 export async function handle ({event, resolve}) {
     const token = event.cookies.get('token');
 
-    console.log("Hook triggered");
     if(!token){
         if (event.url.pathname !== '/login') {
             return new Response(null, {

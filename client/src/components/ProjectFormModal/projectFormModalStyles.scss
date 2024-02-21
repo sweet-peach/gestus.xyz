@@ -185,7 +185,15 @@
    }
 
    .action-buttons {
+      position: relative;
       display: flex;
       justify-content: flex-end;
+
+      .error-text{
+         position: absolute;
+         right: 0;
+         bottom: calc(100% + 5px);
+         font-size: 14px;
+      }
    }
 }

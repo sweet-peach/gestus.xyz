@@ -1,33 +1,39 @@
 <script>
 import {formData} from "$lib/stores/projectFormStore.js";
-import NotEmptyInput from "../Items/NotEmptyInput.svelte";
+import ValidatedTextInput from "../Items/ValidatedTextInput.svelte";
+import {createEventDispatcher} from "svelte";
+
+const dispatch = createEventDispatcher();
 
 $: toCheck = {};
-export function check(){
+export function validate(){
     let isAllValid = true;
     for(const key in toCheck){
         if(!toCheck[key]()){
             isAllValid = false;
         }
     }
-    return isAllValid;
+    if (isAllValid) {
+        dispatch('validationPassed');
+    }
 }
+
 </script>
 
 
-<NotEmptyInput
+<ValidatedTextInput
         title="Project type"
         bind:check={toCheck.isProjectTypeValid}
         bind:value={$formData.type} />
-<NotEmptyInput
+<ValidatedTextInput
         title="Project code"
         bind:check={toCheck.isProjectCodeValid}
         bind:value={$formData.code} />
-<NotEmptyInput
+<ValidatedTextInput
         title="Auditor"
         bind:check={toCheck.isAuditorValid}
         bind:value={$formData.auditor} />
-<NotEmptyInput
+<ValidatedTextInput
         title="Rating"
         bind:check={toCheck.isRatingValid}
         bind:value={$formData.rating} />

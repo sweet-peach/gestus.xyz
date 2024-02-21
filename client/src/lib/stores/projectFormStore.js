@@ -23,5 +23,5 @@ export function resetFormDateStore() {
 
 export const TYPE = Object.freeze({
     CREATE: 'CREATE',
-    EDIT: 'UPDATE',
+    UPDATE: 'UPDATE',
 });

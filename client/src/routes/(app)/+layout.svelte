@@ -2,7 +2,6 @@
     import Navbar from "../../components/Navbar.svelte";
     import {getContext, onMount} from "svelte";
     import Header from "../../components/Header/Header.svelte";
-
     let user = getContext("user");
 </script>
 <div class="page-wrapper">

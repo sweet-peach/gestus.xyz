@@ -1,127 +1,98 @@
 <script>
     import "./projectFormModalStyles.scss";
     import {isOpen, formType, formData, TYPE, resetFormDateStore} from "$lib/stores/projectFormStore.js";
-    import {projects} from "$lib/stores/projectsStore.js";
     import {clickOutside} from "$lib/use/clickOutside.js";
     import FirstStage from "./Stages/FirstStage.svelte";
     import SecondStage from "./Stages/SecondStage.svelte";
     import ThirdStage from "./Stages/ThirdStage.svelte";
-    import MediumLoader from "../UI/MediumLoader.svelte";
-    import Error from "../UI/Error.svelte";
     import ProjectsService from "$lib/api/ProjectsService.js";
-    import {onMount} from "svelte";
+    import {createEventDispatcher, onMount} from "svelte";
     import {getToken} from "$lib/services/authService.js";
+    import SmallLoader from "../UI/SmallLoader.svelte";
 
-    let projectsService;
-    let stage = 2;
-    let lastFormType = null;
+    const dispatch = createEventDispatcher();
+    const stages = [FirstStage, SecondStage, ThirdStage];
+    let projectsService, lastFormType, currentStageIndex = 0, stage = null;
     let isLoading = false;
-    let error = null;
-
-    const TEXT = {}
-
-    $: if ($isOpen) {
-        if ($formType === TYPE.CREATE) {
-            stage = 0;
-            TEXT.title = "Create new project";
-            TEXT.confirm = "Create";
-        }
-        if ($formType === TYPE.EDIT) {
-            stage = 0;
-            TEXT.title = "Edit project";
-            TEXT.confirm = "Save";
-        }
-
-        if (lastFormType === TYPE.EDIT && $formType === TYPE.CREATE) {
-            error = null;
-            resetFormDateStore();
-        }
-
-        lastFormType = $formType;
-    }
-
-
-    const STAGES = [{
-        component: FirstStage,
-    }, {
-        component: SecondStage,
-    }, {
-        component: ThirdStage,
-    }]
-
-    function closeForm() {
-        isOpen.set(false);
-    }
-
-
-    let lastCalledMethod = null;
-
-    async function apiCallWrapper(apiCall) {
-        isLoading = true;
-        try {
-            let response = await apiCall();
-            closeForm();
-            return response;
-        } catch (e) {
-            error = e;
-        } finally {
-            isLoading = false;
-        }
-    }
-
-    async function createProject() {
-        lastCalledMethod = createProject;
-        const response = await apiCallWrapper(() =>projectsService.create($formData));
-        projects.update(projects => {
-            projects.push(response);
-            return projects;
-        })
-    }
-
-    async function updateProject() {
-        lastCalledMethod = updateProject;
-        const response = await apiCallWrapper(()=> projectsService.update($formData.id, $formData));
-        $projects = $projects.map(project => {
-            if (project.id === response.id) {
-                return response;
-            }
-            return project;
-        })
-
-    }
-
-    let checkFormValidity;
-    async function handleConfirmButtonClick() {
-        if (!checkFormValidity()) return;
-        if ($formType === TYPE.CREATE) {
-            createProject();
-        } else if ($formType === TYPE.EDIT) {
-            updateProject();
-        }
-    }
+    let error = "";
+    const text = {title: '', confirm: ''};
 
     onMount(() => {
         projectsService = new ProjectsService(getToken());
     })
 
+    $: if ($isOpen) {
+        const titles = {CREATE: "Create new project", UPDATE: "Edit project"};
+        const confirms = {CREATE: "Create", UPDATE: "Save"};
+
+        text.title = titles[$formType];
+        text.confirm = confirms[$formType];
+
+        console.log("formType", $formType);
+
+        if (lastFormType === TYPE.UPDATE && $formType === TYPE.CREATE) {
+            resetFormDateStore();
+        }
+
+        lastFormType = $formType;
+        currentStageIndex = 0;
+    }
+
+    function closeModal() {
+        isOpen.set(false);
+    }
+
+
+    async function createProject() {
+        const response = await projectsService.create($formData);
+
+        dispatch('create', {
+            project: response
+        })
+    }
+
+    async function updateProject() {
+        const response = await projectsService.update($formData.id, $formData);
+
+        dispatch('update', {
+            project: response
+        })
+    }
+
+    async function handleValidationPassed() {
+        if (currentStageIndex < stages.length - 1) {
+            return currentStageIndex += 1;
+        }
+        error = "";
+        isLoading = true
+        try {
+            if ($formType === TYPE.CREATE) {
+                await createProject();
+            }
+            if ($formType === TYPE.UPDATE) {
+                await updateProject();
+            }
+            closeModal();
+        } catch (e) {
+            console.log("error");
+            error = e.message;
+        }
+        isLoading = false;
+    }
+
+    async function validateCurrentStage() {
+        stage?.validate();
+    }
+
+
 </script>
 
 {#if $isOpen}
     <div class="modal-container">
-        <div use:clickOutside on:outclick={closeForm} class="modal-box">
-            {#if isLoading}
-                <div class="overlay-container">
-                    <MediumLoader color="var(--primary-color)"/>
-                </div>
-            {/if}
-            {#if error}
-                <div class="overlay-container">
-                    <Error close={()=>{ error = null}} confirm={lastCalledMethod} message={error.message}/>
-                </div>
-            {/if}
+        <div use:clickOutside on:outclick={closeModal} class="modal-box">
             <header>
-                <h1>{TEXT.title}</h1>
-                <button on:click={closeForm}>
+                <h1>{text.title}</h1>
+                <button on:click={closeModal}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
                          viewBox="0 0 384 512">
                         <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
@@ -129,10 +100,10 @@
                 </button>
             </header>
             <div class="progress-bar">
-                {#each STAGES as step, i}
+                {#each stages as step, i}
                     <div
-                            class:passed={i < stage}
-                            class:active={i === stage}
+                            class:passed={i < currentStageIndex}
+                            class:active={i === currentStageIndex}
                             class="step">
                         <div class="stepper">
                             <div class="circle"></div>
@@ -142,21 +113,28 @@
                 {/each}
             </div>
             <div class="editor">
-                <svelte:component bind:check={checkFormValidity} this={STAGES[stage].component}/>
+                <svelte:component
+                        on:validationPassed={handleValidationPassed}
+                        bind:this={stage}
+                        this={stages[currentStageIndex]}
+                />
             </div>
             <div class="action-buttons">
-                {#if stage > 0}
-                    <button on:click={() => stage--} class="secondary-button">
+                <div class="error-text">{error} &nbsp;</div>
+                {#if currentStageIndex > 0}
+                    <button on:click={() => currentStageIndex--} class="secondary-button">
                         Back
                     </button>
                 {/if}
-                {#if stage === STAGES.length - 1 }
-                    <button on:click={handleConfirmButtonClick} class="primary-button">
-                        {TEXT.confirm}
-                    </button>
-                {:else}
-                    <button on:click={() => {stage++}} class="primary-button">Continue</button>
-                {/if}
+                <button on:click={validateCurrentStage} class="primary-button">
+                    {#if isLoading}
+                        <SmallLoader/>
+                    {:else if error}
+                        Retry
+                    {:else}
+                        {currentStageIndex === stages.length - 1 ? text.confirm : "Continue"}
+                    {/if}
+                </button>
             </div>
         </div>
     </div>
