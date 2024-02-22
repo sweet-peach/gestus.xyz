@@ -180,6 +180,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.getKeywords().forEach(keyword -> keyword.getProjects().remove(project));
         fileService.deleteProjectDir(projectId);
         projectRepository.delete(project);
+        projectSearchRepository.deleteById(String.valueOf(projectId));
     }
 
     private ProjectSearchResponse mapDocumentToSearchResponse(ProjectDocument document) {
