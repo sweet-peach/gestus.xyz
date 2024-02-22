@@ -13,8 +13,6 @@
 
     let contextMenuVisible = false;
 
-    console.log($project);
-
     let contextMenuCauserEvent, deletePromise, projectsService;
 
     onMount(() => {
@@ -39,7 +37,7 @@
 
     async function deleteProject() {
         try {
-            deletePromise = projectsService.delete(project.id);
+            deletePromise = projectsService.delete($project.id);
             await deletePromise;
             await goto("/")
         } catch (e) {

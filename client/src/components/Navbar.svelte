@@ -2,7 +2,6 @@
     import { page } from '$app/stores';
 </script>
 
-
 <div class="navbar-wrapper">
     <nav class="navbar">
         <a href="/" class="nav-item" aria-current={$page.url.pathname === '/'}>

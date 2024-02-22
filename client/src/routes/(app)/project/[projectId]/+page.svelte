@@ -1,7 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import {files, page} from "$lib/stores/appStore.js";
-    import ProjectView from "./ProjectView.svelte";
+    import ProjectAboutView from "./ProjectAboutView.svelte";
     import FilesView from "./FilesView.svelte";
     import {project} from '$lib/stores/projectStore.js';
     export let data;
@@ -11,8 +11,8 @@
 
     const navigations = [
         {
-            title: "Project",
-            component: ProjectView
+            title: "About project",
+            component: ProjectAboutView
         },
         {
             title: "Files",
