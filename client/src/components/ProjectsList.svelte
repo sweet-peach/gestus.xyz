@@ -75,7 +75,7 @@
 
 {#each projects as project}
     <div class="project">
-        <a href="/{project.id}">
+        <a href="/project/{project.id}">
             <div class="text-box">
                 <h2>{project.name}</h2>
                 <p class="p-last">Last update {getTimePassed(project.updateDate)} ago</p>
