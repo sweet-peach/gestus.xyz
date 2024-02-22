@@ -133,6 +133,8 @@
 
          .keywords-input {
             display: flex;
+            flex-wrap: wrap;
+            cursor: text;
             gap: 10px;
             border: 1px solid var(--border-color);
             padding: 10px 15px;
@@ -141,7 +143,6 @@
             input {
                font-size: 17px;
                font-weight: 500;
-               width: 100%;
             }
          }
 
