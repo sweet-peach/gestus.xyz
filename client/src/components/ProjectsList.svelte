@@ -6,6 +6,7 @@
     import {createEventDispatcher, onMount} from "svelte";
     import {getToken} from "$lib/services/authService.js";
     import SmallLoader from "./UI/SmallLoader.svelte";
+    import "$lib/styles/projectCard.scss";
 
     export let projects = [];
     let selectedProject = {};
@@ -48,6 +49,7 @@
     }
 </script>
 
+
 <ContextMenu causerClickEvent={contextMenuCauserEvent} bind:isVisible={contextMenuVisible}>
     <button on:click={openForm} class="menu-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square"
@@ -74,7 +76,7 @@
 </ContextMenu>
 
 {#each projects as project}
-    <div class="project">
+    <div class="project hover">
         <a href="/project/{project.id}">
             <div class="text-box">
                 <h2>{project.name}</h2>
@@ -116,69 +118,5 @@
       font-size: 16px;
       font-weight: 500;
       text-align: center;
-   }
-   .project {
-      position: relative;
-      padding: 20px;
-      border-bottom: 1px solid var(--border-color);
-
-      cursor: pointer;
-
-      .text-box {
-         p {
-            padding: 15px 0;
-         }
-      }
-
-      .actions {
-         position: absolute;
-         top: 50%;
-         right: 20px;
-
-         transform: translateY(-50%);
-
-         button {
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            border-radius: 50%;
-
-            &:hover {
-               svg {
-                  color: var(--selected-icon-color);
-               }
-            }
-         }
-      }
-
-      &:hover {
-         background: var(--ternary-background-color);
-      }
-   }
-
-   .project-description {
-      width: max-content;
-      display: flex;
-      padding-right: 20px;
-      align-items: center;
-      gap: 5px;
-   }
-
-   .project-description-box {
-      display: flex;
-   }
-
-   .circle {
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-
-      &.green {
-         background: var(--green-color);
-      }
-
-      &.red {
-         background: var(--red-color);
-      }
    }
 </style>

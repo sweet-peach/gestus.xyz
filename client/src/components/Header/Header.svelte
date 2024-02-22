@@ -60,7 +60,7 @@
 
 <style lang="scss">
 
-   .context-menu{
+   .context-menu {
       position: absolute;
       top: 100%;
       right: 0;
@@ -69,11 +69,15 @@
    header {
       position: relative;
 
+      h2 {
+         font-weight: 600;
+      }
+
       padding-top: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 40px;
+      padding-bottom: 20px;
    }
 
    .right-wrapper {
