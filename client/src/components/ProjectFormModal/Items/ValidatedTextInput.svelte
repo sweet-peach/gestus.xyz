@@ -8,7 +8,6 @@
     }
 
     export function check(){
-        console.log("check");
         error = value === "";
         return !error;
     }

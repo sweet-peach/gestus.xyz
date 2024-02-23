@@ -25,6 +25,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+       flex: 1;
 
        .loader {
           border: 4px solid rgba(0, 0, 0, 0.1);

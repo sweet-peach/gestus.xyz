@@ -1,0 +1,104 @@
+<script>
+    import SmallLoader from "../UI/SmallLoader.svelte";
+    import {clickOutside} from "$lib/use/clickOutside.js";
+    import {formType, isOpen, resetFormDateStore, TYPE, formData} from "$lib/stores/userFormStore.js";
+    import {createEventDispatcher, onMount} from "svelte";
+    import UsersService from "$lib/api/UsersService.js";
+    import {getToken} from "$lib/services/authService.js";
+    import ValidatedTextInput from "../UserFormModal/Items/ValidatedTextInput.svelte";
+    import Password from "./Items/Password.svelte";
+    import RolePicker from "./Items/RolePicker.svelte";
+    import "./userFormModal.scss";
+
+    let lastFormType, usersService;
+    const dispatch = createEventDispatcher();
+
+    let text = {
+        title: "",
+        confirm: ""
+    };
+
+    $: if ($isOpen) {
+        const titles = {CREATE: "Create new user", UPDATE: "Edit user details"};
+        const confirms = {CREATE: "Create", UPDATE: "Save"};
+
+        text.title = titles[$formType];
+        text.confirm = confirms[$formType];
+
+        if (lastFormType === TYPE.UPDATE && $formType === TYPE.CREATE) {
+            resetFormDateStore();
+        }
+
+        lastFormType = $formType;
+    }
+    $: toCheck = {};
+
+    function validate () {
+        let isAllValid = true;
+        for (const key in toCheck) {
+            if (!toCheck[key]()) {
+                isAllValid = false;
+            }
+        }
+        if (isAllValid) {
+            handleValidationPassed()
+        }
+    }
+    async function handleValidationPassed() {
+        console.log('validation passed')
+        try {
+            if ($formType === TYPE.CREATE) {
+                actionPromise = usersService.create($formData);
+                const response = await actionPromise;
+                dispatch('create',response);
+            } else {
+                actionPromise = usersService.update($formData.id,$formData);
+                const response = await actionPromise;
+
+                dispatch('update',response);
+            }
+            $isOpen = false;
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+
+    let actionPromise;
+    function handleSubmitButton(){
+        validate()
+    }
+
+
+    onMount(()=>{
+        console.log($formData);
+        usersService = new UsersService(getToken());
+    })
+
+</script>
+{#if $isOpen}
+    <div class="modal-container">
+        <div class="modal-box" use:clickOutside on:outclick={()=> $isOpen = false}>
+            <h1>{text.title}</h1>
+            <ValidatedTextInput bind:check={toCheck.isFirstNameValid} bind:value={$formData.firstName} title="First name"/>
+            <ValidatedTextInput bind:check={toCheck.isLastNameValid} bind:value={$formData.lastName} title="Last name"/>
+            <ValidatedTextInput bind:check={toCheck.isEmailValid} bind:value={$formData.email} title="Email"/>
+            <RolePicker bind:check={toCheck.isRoleValid} title="User role" bind:value={$formData.role}></RolePicker>
+            <Password bind:check={toCheck.isPasswordValid} bind:value={$formData.password} title="Password"></Password>
+            <div class="buttons">
+                <button class="secondary-button" on:click={()=>{$isOpen = false}}>Cancel</button>
+                <button
+                        on:click={handleSubmitButton}
+                        class="primary-button">
+                    {#await actionPromise}
+                        <SmallLoader></SmallLoader>
+                    {:then response}
+                        {text.confirm}
+                    {:catch error}
+                        Retry
+                    {/await}
+                </button>
+            </div>
+        </div>
+    </div>
+{/if}

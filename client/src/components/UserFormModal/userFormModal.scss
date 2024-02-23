@@ -1,0 +1,47 @@
+.modal-container {
+   .modal-box {
+      gap: 10px;
+
+      h1 {
+         font-size: 20px;
+         font-weight: 500;
+      }
+
+      .buttons {
+         display: flex;
+         justify-content: flex-end;
+         margin-top: 20px;
+      }
+   }
+}
+
+.input {
+   margin-top: 10px;
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
+
+   .error-text {
+      color: var(--red-color);
+      font-size: 16px;
+      font-weight: 500;
+   }
+
+   &.error {
+      input {
+         border: 1px solid var(--red-color);
+         outline: 1px solid var(--red-color);
+      }
+   }
+
+   .hint {
+      display: flex;
+      justify-content: space-between;
+   }
+
+   span {
+      color: var(--secondary-text-color);
+      font-weight: 500;
+      font-size: 16px;
+   }
+}
