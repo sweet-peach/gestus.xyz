@@ -1,0 +1,36 @@
+.actions-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    .general-actions,.disk-view {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        .primary-button{
+            padding: 13px 30px;
+        }
+    }
+    .disk-view{
+        .view-option{
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &.selected{
+                border: none;
+                background: var(--ternary-background-color);
+                svg{
+                    color: var(--selected-icon-color);
+                }
+            }
+            svg{
+                max-width: 20px;
+                max-height: 20px;
+            }
+        }
+    }
+}

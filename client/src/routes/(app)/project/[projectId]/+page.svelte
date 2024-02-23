@@ -1,9 +1,11 @@
 <script>
     import {onMount} from "svelte";
     import {files, page} from "$lib/stores/appStore.js";
-    import ProjectAboutView from "./ProjectAboutView.svelte";
+    import ProjectAboutView from "./AboutView.svelte";
     import FilesView from "./FilesView.svelte";
     import {project} from '$lib/stores/projectStore.js';
+    import ProjectCard from "./ProjectCard.svelte";
+    import FileUploadsStatus from "../../../../components/FileUploadsStatus.svelte";
     export let data;
     $project = data;
 
@@ -11,7 +13,7 @@
 
     const navigations = [
         {
-            title: "About project",
+            title: "About",
             component: ProjectAboutView
         },
         {
@@ -20,13 +22,12 @@
         }
     ];
 
-    let selectedNavigation = navigations[0];
+    let selectedNavigation = navigations[1];
 
-    onMount(async () => {
-        console.log($files);
-    })
 </script>
 
+
+<ProjectCard></ProjectCard>
 
 <div class="files-wrapper">
     <div class="navigation">
@@ -45,6 +46,14 @@
 
 <style lang="scss">
    .files-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      .content{
+         height: 100%;
+         display: flex;
+         flex-direction: column;
+      }
       .navigation {
          display: flex;
          width: 100%;
@@ -60,7 +69,7 @@
          }
 
          .navigator {
-            padding: 15px 50px;
+            padding: 10px 50px;
             cursor: pointer;
             display: flex;
             justify-content: center;

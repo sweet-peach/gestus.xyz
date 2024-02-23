@@ -33,6 +33,10 @@
     async function handleProjectUpdate(event) {
         const updatedProject = event.detail.project;
 
+        // onUploadProgress
+        // console.log("Upload progress: " + Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%");
+
+
         projects.update(projects => {
             return projects.map(project => {
                 if (updatedProject.id === project.id) {
@@ -53,7 +57,7 @@
     onMount(async () => {
         projectsService = new ProjectsService(getToken());
 
-        sortOptions.subscribe(async () => {
+        return sortOptions.subscribe(async () => {
             projectsPromise = getProjects();
         });
     });

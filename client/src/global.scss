@@ -107,6 +107,10 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    svg{
+        color: var(--text-color);
+        margin-right: 5px;
+    }
 }
 
 .primary-checkbox{
@@ -192,7 +196,7 @@ button {
     background: var(--background-color);
     margin-top: 10px;
     padding: 5px;
-    width: 200px;
+    min-width: 200px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
 
@@ -238,6 +242,11 @@ button {
     font-size: 17px;
     font-weight: 500;
     border-radius: 14px;
+    &::placeholder{
+        font-weight: 400;
+        font-size: 17px;
+        color: var(--secondary-text-color);
+    }
 }
 
 .modal-box{
