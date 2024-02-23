@@ -108,7 +108,7 @@
             <MediumLoader color="var(--primary-color)"/>
         {:then response}
             {#each $users as user }
-                <div class="user">
+                <a href="/users/{user.id}" class="user">
                     <div class="text-box">
                         <p>{user.firstName} {user.lastName} <span>({user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()})</span></p>
                         <span>{user.email}</span>
@@ -124,7 +124,7 @@
                             <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                         </svg>
                     </button>
-                </div>
+                </a>
             {/each}
         {:catch error}
             <p>{error.message}</p>
@@ -144,6 +144,10 @@
          padding: 20px;
          border-top: 1px solid var(--border-color);
          align-items: center;
+
+         &:hover{
+            background: var(--ternary-background-color);
+         }
 
          .text-box {
             p {
