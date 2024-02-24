@@ -23,8 +23,9 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getUsers() {
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(name = "sortBy", required = false, defaultValue = "firstName") String sortBy,
+                                                       @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection) {
+        return new ResponseEntity<>(userService.getUsers(sortBy, sortDirection), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

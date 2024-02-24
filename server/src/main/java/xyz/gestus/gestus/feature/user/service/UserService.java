@@ -10,11 +10,12 @@ import java.util.List;
 
 public interface UserService {
     LoginResponse login(LoginRequest loginRequestDto);
-    void register(RegistrationRequest registrationRequestDto);
+    UserResponse register(RegistrationRequest registrationRequestDto);
     UserResponse getUserByEmail(String email);
     UserResponse getUserById(Long id);
 
     List<UserResponse> getUsers();
+    List<UserResponse> getUsers(String sortBy, String sortDirection);
 
     UserResponse updateUser(Long userId, UserUpdateRequest updateDto);
 

@@ -17,7 +17,7 @@ import xyz.gestus.gestus.feature.file.dto.DirRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/project/{projectId}/files")
+@RequestMapping("/api/projects/{projectId}/files")
 public class FileController {
 
     private FileService fileService;
@@ -39,9 +39,13 @@ public class FileController {
     @Log(name = "A user has uploaded a file")
     public ResponseEntity<FileResponse> uploadFile(@PathVariable Long projectId,
                                                    @RequestParam("file")MultipartFile file,
-                                                   @RequestParam("parentId") Long parentId){
+                                                   @RequestParam("parentId") String parentId){
+        Long parentIdLong = null;
+        if(!parentId.equals("null")){
+            parentIdLong = Long.parseLong(parentId);
+        }
 
-        return ResponseEntity.ok(fileService.uploadFile(projectId,parentId,file));
+        return ResponseEntity.ok(fileService.uploadFile(projectId,parentIdLong,file));
     }
 
     @DeleteMapping("{fileId}")

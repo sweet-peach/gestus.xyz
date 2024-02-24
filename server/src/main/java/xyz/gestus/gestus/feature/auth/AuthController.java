@@ -11,6 +11,7 @@ import xyz.gestus.gestus.core.annotations.Log;
 import xyz.gestus.gestus.feature.auth.dto.LoginResponse;
 import xyz.gestus.gestus.feature.auth.dto.LoginRequest;
 import xyz.gestus.gestus.feature.auth.dto.RegistrationRequest;
+import xyz.gestus.gestus.feature.user.User;
 import xyz.gestus.gestus.feature.user.dto.UserResponse;
 import xyz.gestus.gestus.feature.user.service.UserServiceImpl;
 
@@ -26,9 +27,9 @@ public class AuthController {
 
     @PostMapping("registration")
     @Log(name = "A user has registered a new user")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequest registerRequestDto) {
-        userService.register(registerRequestDto);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegistrationRequest registerRequestDto) {
+
+        return new ResponseEntity<>(userService.register(registerRequestDto), HttpStatus.OK);
     }
 
     @GetMapping

@@ -20,9 +20,15 @@ public class CustomErrorController implements ErrorController {
             httpStatus = HttpStatus.valueOf(statusCode);
         }
 
+        Object error = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
+        String errorMessage = "Something went wrong";
+        if (error != null) {
+            errorMessage = error.toString();
+        }
+
         ErrorObject errorObject = new ErrorObject();
         errorObject.setCode(httpStatus.value());
-        errorObject.setMessage("Something went wrong");
+        errorObject.setMessage(errorMessage);
 
         return new ResponseEntity<>(errorObject, httpStatus);
     }

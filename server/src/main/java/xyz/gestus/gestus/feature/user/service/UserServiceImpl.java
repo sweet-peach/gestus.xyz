@@ -3,6 +3,7 @@ package xyz.gestus.gestus.feature.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(RegistrationRequest registerDto) {
+    public UserResponse register(RegistrationRequest registerDto) {
         if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new UsernameNotFoundException("A username associated with this email already exists");
         }
@@ -76,7 +77,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setRole(Role.valueOf(registerDto.getRole()));
 
-        userRepository.save(user);
+        User createdUser =  userRepository.save(user);
+        return mapEntityToResponse(createdUser);
     }
 
     @Override
@@ -93,9 +95,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getUsers() {
-        List<User> userModels = userRepository.findAll();
-
         List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(this::mapEntityToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserResponse> getUsers(String sortBy, String sortDirection) {
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+
         return users.stream()
                 .map(this::mapEntityToResponse)
                 .collect(Collectors.toList());
