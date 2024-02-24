@@ -3,16 +3,16 @@
     export let value;
     let error = false;
 
-    $: if(value){
+    $: if (value) {
         error = false;
     }
 
-    export function check(){
+    export function check() {
         error = value === "";
         return !error;
     }
-
 </script>
+
 <div
         class:error={error}
         class="item">

@@ -19,7 +19,7 @@
 
 </script>
 <header class="actions-box">
-    <SortingDropdownList placeholder="Sort by" on:sort={handleSortChange} options={["Name", "Date"]}/>
+    <SortingDropdownList placeholder="Sort by" on:sort={handleSortChange} options={[{label: "Name",value: "name"},{label: "Date",value: "date"}]}/>
     <button on:click={openForm} class="primary-button">Create new project</button>
 </header>
 

@@ -15,7 +15,6 @@ export async function handle ({event, resolve}) {
     if (token && event.params) {
         event.params.token = token;
     }
-    console.log("Token: ", token);
     const axiosClient = createAxiosClient(token)
 
     try {
@@ -28,7 +27,6 @@ export async function handle ({event, resolve}) {
             })
         }
     } catch (e) {
-        console.log(e)
         if (event.url.pathname !== '/login') {
             return new Response(null, {
                 status: 302,

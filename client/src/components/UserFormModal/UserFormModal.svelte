@@ -19,6 +19,7 @@
     };
 
     $: if ($isOpen) {
+        toCheck = {}
         const titles = {CREATE: "Create new user", UPDATE: "Edit user details"};
         const confirms = {CREATE: "Create", UPDATE: "Save"};
 
@@ -31,8 +32,8 @@
 
         lastFormType = $formType;
     }
-    $: toCheck = {};
 
+    $: toCheck = {};
     function validate () {
         let isAllValid = true;
         for (const key in toCheck) {
@@ -45,7 +46,6 @@
         }
     }
     async function handleValidationPassed() {
-        console.log('validation passed')
         try {
             if ($formType === TYPE.CREATE) {
                 actionPromise = usersService.create($formData);
@@ -59,7 +59,7 @@
             }
             $isOpen = false;
         } catch (e) {
-            console.log(e);
+            throw new Error(e.message)
         }
 
     }
@@ -71,7 +71,7 @@
 
 
     onMount(()=>{
-        console.log($formData);
+        console.log("mounted")
         usersService = new UsersService(getToken());
     })
 

@@ -18,15 +18,12 @@
 
 
     async function getFiles() {
-        console.log('currentDir');
-        console.log($currentDir);
         try {
             filesPromise = filesService.getFiles($project.id, $currentDir);
             const response = await filesPromise;
-            console.log(response);
             $files = response;
         } catch (e) {
-            console.log('error', e);
+            throw new Error(e.message);
         }
     }
 

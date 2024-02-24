@@ -101,11 +101,14 @@
                        on:input={handlePasswordInput} type="password">
             </div>
         </div>
-        <button class:blocked={isButtonBlocked}
-                class="primary-button obscured"
-                on:click={handleLoginButtonClick}>
-            Enter
-        </button>
+        <div class="actions">
+            <button class:blocked={isButtonBlocked}
+                    class="primary-button obscured"
+                    on:click={handleLoginButtonClick}>
+                Enter
+            </button>
+            <p class="error-text">{errorText} &nbsp;</p>
+        </div>
     </div>
 </div>
 
@@ -153,6 +156,16 @@
       button {
          margin-top: 20px;
          width: 100%;
+      }
+
+      .actions {
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         gap: 5px;
+         .error-text{
+            text-align: center;
+         }
       }
    }
 

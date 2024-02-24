@@ -12,7 +12,7 @@
     $page = "Projects"
 
     let projectsService;
-    let projectsPromise;
+    let projectsPromise = new Promise(() => {});
 
     async function getProjects() {
         try {

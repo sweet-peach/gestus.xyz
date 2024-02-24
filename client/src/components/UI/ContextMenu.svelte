@@ -1,7 +1,7 @@
 <script>
     import {clickOutside} from "$lib/use/clickOutside.js";
-    export let causerClickEvent;
     export let isVisible = false;
+    export let toggleElement;
 
     let dimensions;
     let position = {x: 0, y: 0}
@@ -33,9 +33,9 @@
     }
 
     function adjustPosition() {
-        if(!dimensions || !causerClickEvent) return;
+        if(!dimensions || !toggleElement) return;
 
-        const {width, height, x, y} = causerClickEvent.target.getBoundingClientRect()
+        const {width, height, x, y} = toggleElement.getBoundingClientRect()
         const browser = {width: window.innerWidth, height: window.innerHeight}
 
         position.x = (browser.width < x + dimensions.width) ? browser.width - dimensions.width - width: x + width;
@@ -50,15 +50,12 @@
     }
 
 
-    $: if (dimensions && (causerClickEvent)) {
+    $: if (dimensions && (toggleElement)) {
         adjustPosition();
     }
 
     function closeMenu(event) {
-        const elClicked = event.detail;
-        const elCauser = causerClickEvent.target;
-
-        if (elClicked.contains(elCauser) || elCauser.contains(elClicked)) {
+        if (toggleElement.contains(event.detail)) {
             return;
         }
         isVisible = false;
@@ -69,7 +66,7 @@
 {#if isVisible}
     <div use:getDimensions
          use:clickOutside
-         on:outclick={closeMenu}
+             on:outclick={closeMenu}
          class="context-menu"
          style="top: {position.y}px; left: {position.x}px;">
         <slot></slot>

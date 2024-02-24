@@ -11,7 +11,7 @@
     export let projects = [];
     let selectedProject = {};
     const dispatch = createEventDispatcher();
-    let contextMenuCauserEvent, deletePromise, projectsService;
+    let contextMenuToggleElement, deletePromise, projectsService;
     let contextMenuVisible = false;
 
     onMount(() => {
@@ -20,7 +20,7 @@
 
     function toggleContextMenu(event) {
         contextMenuVisible = !contextMenuVisible;
-        contextMenuCauserEvent = event;
+        contextMenuToggleElement = event.currentTarget;
     }
 
     function handleContextMenuClick(event, project) {
@@ -50,7 +50,7 @@
 </script>
 
 
-<ContextMenu causerClickEvent={contextMenuCauserEvent} bind:isVisible={contextMenuVisible}>
+<ContextMenu toggleElement={contextMenuToggleElement} bind:isVisible={contextMenuVisible}>
     <button on:click={openForm} class="menu-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square"
              viewBox="0 0 16 16">

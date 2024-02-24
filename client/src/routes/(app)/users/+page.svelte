@@ -13,52 +13,53 @@
 
     page.set('Users')
     let users = writable([]);
-    let usersPromise, usersService;
+    let usersPromise = new Promise(()=>{});
+    let usersService;
 
     let isContextMenuVisible = false;
-    let contextMenuCauserEvent;
+    let contextMenuToggleElement;
     let selectedUser;
 
-    async function getUsers(){
-        usersPromise = usersService.getAll();
+
+    async function getUsers(sortBy, sortDirection) {
+        usersPromise = usersService.getAll(sortBy, sortDirection);
 
         $users = await usersPromise;
     }
 
 
-
-    function toggleContextMenu(event){
-        contextMenuCauserEvent = event;
+    function toggleContextMenu(event) {
+        contextMenuToggleElement = event.currentTarget;
         isContextMenuVisible = !isContextMenuVisible;
     }
 
     let deletePromise;
-    async function handleDeleteUser(event){
+
+    async function handleDeleteUser(event) {
         try {
             deletePromise = usersService.delete(selectedUser.id);
             const response = await deletePromise;
             users.update(users => users.filter(u => u.id !== selectedUser.id));
             isContextMenuVisible = false;
-        }catch (e) {
+        } catch (e) {
             throw new Error(e);
         }
     }
 
-    function showFormUpdate(event){
+    function showFormUpdate(event) {
         $formData = selectedUser;
         $formType = TYPE.UPDATE;
         isOpen.set(true);
         isContextMenuVisible = false;
     }
 
-    function handleUserCreate(event){
+    function handleUserCreate(event) {
         const user = event.detail;
-        console.log("Created");
 
         users.update(users => [...users, user]);
     }
 
-    function handleUserUpdate(event){
+    function handleUserUpdate(event) {
         const user = event.detail;
 
         users.update(users => {
@@ -68,6 +69,12 @@
         });
     }
 
+    function handleSort(event){
+        const {sortBy, ascending} = event.detail;
+        console.log(event.detail);
+        getUsers(sortBy, ascending ? 'asc' : 'desc');
+    }
+
     onMount(() => {
         usersService = new UsersService(getToken());
         getUsers();
@@ -75,7 +82,9 @@
 </script>
 
 
-<ContextMenu causerClickEvent={contextMenuCauserEvent} bind:isVisible={isContextMenuVisible}>
+<ContextMenu
+        toggleElement={contextMenuToggleElement}
+        bind:isVisible={isContextMenuVisible}>
     <button on:click={showFormUpdate} class="menu-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square"
              viewBox="0 0 16 16">
@@ -101,43 +110,67 @@
 </ContextMenu>
 
 <UserFormModal on:create={handleUserCreate} on:update={handleUserUpdate}/>
-<UsersViewActions/>
+<UsersViewActions on:sort={handleSort}/>
 
 <div class="users-list">
-        {#await usersPromise}
-            <MediumLoader color="var(--primary-color)"/>
-        {:then response}
-            {#each $users as user }
-                <a href="/users/{user.id}" class="user">
-                    <div class="text-box">
-                        <p>{user.firstName} {user.lastName} <span>({user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()})</span></p>
-                        <span>{user.email}</span>
-                    </div>
-                    <button
-                            on:click={(event)=>{
+    {#await usersPromise}
+        <MediumLoader color="var(--primary-color)"/>
+    {:then response}
+        {#each $users as user }
+            <a href="/users/{user.id}" class="user">
+                <div class="text-box">
+                    <p>{user.firstName} {user.lastName}
+                        <span>({user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()})</span></p>
+                    <span>{user.email}</span>
+                </div>
+                <button
+                        on:click|preventDefault={(event)=>{
                                 toggleContextMenu(event);
                                 selectedUser = user;
                             }}
-                            class="action">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                             class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                        </svg>
-                    </button>
-                </a>
-            {/each}
-        {:catch error}
-            <p>{error.message}</p>
-            <button class="primary-button">Retry</button>
-        {/await}
+                        class="action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                         class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                    </svg>
+                </button>
+            </a>
+        {:else}
+            <p> No users found </p>
+        {/each}
+    {:catch error}
+        <div class="error-container">
+            <div class="error-box">
+                <p class="message">{error.message}</p>
+                <button class="primary-button" on:click={getUsers}>Retry</button>
+            </div>
+        </div>
+    {/await}
 </div>
 
 <style lang="scss">
-   .users-list{
+   .error-container{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .error-box{
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         .message{
+            font-weight: 500;
+            font-size: 22px;
+            margin-bottom: 10px;
+         }
+      }
+   }
+   .users-list {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: auto;
+
       .user {
          display: flex;
          justify-content: space-between;
@@ -145,7 +178,7 @@
          border-top: 1px solid var(--border-color);
          align-items: center;
 
-         &:hover{
+         &:hover {
             background: var(--ternary-background-color);
          }
 
@@ -162,7 +195,7 @@
                padding-bottom: 20px;
             }
 
-            h4{
+            h4 {
                color: var(--secondary-text-color);
                font-size: 18px;
             }
@@ -175,10 +208,11 @@
          .action {
             display: flex;
             cursor: pointer;
+
             &:hover {
-                svg {
-                    fill: var(--selected-icon-color);
-                }
+               svg {
+                  fill: var(--selected-icon-color);
+               }
             }
          }
       }

@@ -27,7 +27,7 @@ export function getTimePassed(specificDate) {
 export function getTimeUntil(specificDate) {
     const futureDateTime = new Date(specificDate);
     const now = new Date();
-    const differenceInTime = futureDateTime - now; // разница в миллисекундах
+    const differenceInTime = futureDateTime - now;
 
     if (differenceInTime < 0) {
         return 'The date has already passed';
@@ -36,8 +36,8 @@ export function getTimeUntil(specificDate) {
     const minutesUntil = Math.floor(differenceInTime / (1000 * 60));
     const hoursUntil = Math.floor(minutesUntil / 60);
     const daysUntil = Math.floor(hoursUntil / 24);
-    const monthsUntil = Math.floor(daysUntil / 30); // приблизительное значение
-    const yearsUntil = Math.floor(daysUntil / 365); // приблизительное значение
+    const monthsUntil = Math.floor(daysUntil / 30);
+    const yearsUntil = Math.floor(daysUntil / 365);
 
     if (yearsUntil > 0) {
         return `more than (${yearsUntil} years)`;
@@ -53,6 +53,3 @@ export function getTimeUntil(specificDate) {
         return 'right now';
     }
 }
-
-// Пример использования:
-console.log(getTimeUntil("2024-12-25T00:00:00.000+00:00"));

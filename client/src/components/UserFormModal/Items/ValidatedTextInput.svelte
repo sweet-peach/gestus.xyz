@@ -1,13 +1,15 @@
 <script>
+    import {onMount} from "svelte";
+
     export let title;
     export let value;
     let error = false;
 
-    $: if(value){
+    $: if (value) {
         error = false;
     }
 
-    export function check(){
+    export function check() {
         error = value === "";
         return !error;
     }
@@ -22,7 +24,7 @@
             <span class="error-text">Cannot be empty</span>
         {/if}
     </div>
-    <input class="primary-input" type="text" bind:value={value}/>
+    <input bind:value={value} class="primary-input" type="text">
 </div>
 
 

@@ -5,9 +5,11 @@
     export let options = [];
     export let placeholder = "Sort by...";
 
+    let internalOptions = [...options];
     let isOpen = false;
     let sortOptions = {
         sortBy: '',
+        label:'',
         ascending: true
     };
     $: dispatch('sort', sortOptions);
@@ -16,17 +18,17 @@
     const toggleAscending = () => sortOptions.ascending = !sortOptions.ascending;
     const clearSelection = () => {
         isOpen = false
-        options.push(sortOptions.sortBy);
+        internalOptions = [...options]
         sortOptions.sortBy = '';
+        sortOptions.label = '';
     }
 
     function selectOption(option) {
-        options = options.filter(o => o !== option);
+        internalOptions = [...options];
+        internalOptions = internalOptions.filter(o => o !== option);
 
-        if(sortOptions.sortBy){
-            options.push(sortOptions.sortBy);
-        }
-        sortOptions.sortBy = option;
+        sortOptions.sortBy = option.value;
+        sortOptions.label = option.label;
         isOpen = false;
     }
 
@@ -70,7 +72,7 @@
             </svg>
         {/if}
 
-        <span>{sortOptions.sortBy || placeholder}</span>
+        <span>{sortOptions.label || placeholder}</span>
         {#if sortOptions.sortBy}
             <svg
                     tabindex="0"
@@ -96,9 +98,9 @@
     </button>
     {#if isOpen}
         <div class="dropdown-content">
-            {#each options as option}
+            {#each internalOptions as option}
                 <button class="dropdown-item" on:click={() => selectOption(option)}>
-                    {option}
+                    {option.label}
                 </button>
             {/each}
         </div>

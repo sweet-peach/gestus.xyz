@@ -10,7 +10,6 @@
     }
 
     export function check(){
-        console.log(firstDate, secondDate);
         error = !(firstDate && secondDate);
         return !error;
     }

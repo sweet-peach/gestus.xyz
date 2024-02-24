@@ -28,8 +28,6 @@
         text.title = titles[$formType];
         text.confirm = confirms[$formType];
 
-        console.log("formType", $formType);
-
         if (lastFormType === TYPE.UPDATE && $formType === TYPE.CREATE) {
             resetFormDateStore();
         }
@@ -74,7 +72,6 @@
             }
             closeModal();
         } catch (e) {
-            console.log("error");
             error = e.message;
         }
         isLoading = false;
