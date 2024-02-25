@@ -1,17 +1,21 @@
 <script>
     import "../userFormModal.scss";
+    import DropdownList from "../../UI/DropdownList.svelte";
 
     export let title;
     export let value;
     export const roles = [
         {value: 'ADMIN', label: 'Admin'},
         {value: 'MODIFIER', label: 'Modifier'},
-        {value: 'READER', label: 'User'},
+        {value: 'READER', label: 'Reader'},
     ];
+
+    let option;
 
     let error = false;
 
-    $: if (value) {
+    $: if (option) {
+        value = option.value;
         error = false;
     }
 
@@ -26,14 +30,12 @@
         class:error={error}
         class="input">
     <div class="hint">
-        <span>Role</span>
+        <span>{title}</span>
         {#if error}
             <span class="error-text">Select a user role</span>
         {/if}
     </div>
-    <select bind:value={value}>
-        {#each roles as {value, label}}
-            <option value={value}>{label}</option>
-        {/each}
-    </select>
+    <DropdownList
+            selectedOption={option}
+            options={roles}/>
 </div>

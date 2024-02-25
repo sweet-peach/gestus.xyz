@@ -9,6 +9,7 @@
     import Password from "./Items/Password.svelte";
     import RolePicker from "./Items/RolePicker.svelte";
     import "./userFormModal.scss";
+    import DropdownList from "../UI/DropdownList.svelte";
 
     let lastFormType, usersService;
     const dispatch = createEventDispatcher();
