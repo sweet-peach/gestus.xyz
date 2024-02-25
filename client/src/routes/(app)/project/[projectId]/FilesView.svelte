@@ -9,7 +9,7 @@
     import MediumLoader from "../../../../components/UI/MediumLoader.svelte";
     import SmallLoader from "../../../../components/UI/SmallLoader.svelte";
     import ContextMenu from "../../../../components/UI/ContextMenu.svelte";
-    import axios from "axios";
+    import {getFileSizeFromBytes} from "$lib/services/fileSizeService.js";
 
 
     let filesService, filesPromise, deletePromise;
@@ -227,7 +227,7 @@
                         </div>
                         <span class="name">{file.name}</span>
                         <span class="date">{file.date.replace('T', ' ').slice(0, 10)}</span>
-                        <span class="size">{file.size}</span>
+                        <span class="size">{getFileSizeFromBytes(file.size)}</span>
                         <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                  class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
