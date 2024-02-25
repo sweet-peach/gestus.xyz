@@ -4,11 +4,6 @@
     export let selectedOption;
     let placeholder = 'Select an option';
 
-    if (!selectedOption) {
-        selectedOption = options[0];
-    }
-
-
     function selectOption(option) {
         selectedOption = option;
         toggleDropdown();
@@ -23,7 +18,7 @@
 
 
 <div class="dropdown">
-    <button class="label {selectedOption ? 'selected' : ''}" on:click={toggleDropdown}>
+    <button class="label" on:click={toggleDropdown}>
 
         <span class="text">{selectedOption ? selectedOption.label : placeholder}</span>
 
@@ -54,12 +49,13 @@
 <style lang="scss">
    .dropdown {
       position: relative;
+
       .label {
          font-size: 17px;
          font-weight: 500;
          width: 100%;
 
-         background: var(--secondary-button-color);
+         background: var(--background-color);
          padding: 5px;
          border-radius: 14px;
          cursor: pointer;
@@ -67,7 +63,7 @@
          display: flex;
          align-items: stretch;
 
-         border: 1px solid var(--secondary-button-color);
+         border: 1px solid var(--border-color);
 
          .arrow.rotated {
             transform: rotate(180deg);
@@ -86,17 +82,12 @@
             margin-right: auto;
          }
 
-         &.selected {
+         svg {
+            padding: 10px;
+         }
+
+         span:active, svg:active {
             background: var(--background-color);
-            border: 1px solid var(--border-color);
-
-            svg {
-               padding: 10px;
-            }
-
-            span:active, svg:active {
-               background: var(--background-color);
-            }
          }
       }
 

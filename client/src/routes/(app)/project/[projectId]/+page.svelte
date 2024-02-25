@@ -51,6 +51,7 @@
       display: flex;
       flex-direction: column;
       height: 100%;
+      margin-top: 20px;
       .content{
          height: 100%;
          display: flex;

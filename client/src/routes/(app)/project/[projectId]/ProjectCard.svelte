@@ -104,6 +104,9 @@ function handleContextMenuClick(event) {
 
 <style>
     .project{
+        background: var(--card-background-color);
+        padding: 25px;
+        border-radius: 14px;
         cursor: default;
         border-bottom: none;
     }

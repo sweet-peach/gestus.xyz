@@ -1,75 +1,109 @@
 <script>
     import {page} from "$lib/stores/appStore.js"
-    import {onMount} from "svelte";
-    import LogsService from "$lib/api/LogsService.js";
-    import {getToken} from "$lib/services/authService.js";
-    import MediumLoader from "../../../../components/UI/MediumLoader.svelte";
+    import StatisticsView from "./StatisticsView.svelte";
+    import LogsView from "./LogsView.svelte";
+    import UserCard from "./UserCard.svelte";
 
-    page.set("Use logs");
+    page.set("Browsing user");
 
     export let data;
     const user = data;
 
-
-    let logs = [];
-    let logsService;
-
-    let logsPromise;
-
-    async function getLogs() {
-        try {
-            logsPromise = logsService.getByUserId(user.id)
-            logs = await logsPromise;
-        } catch (e) {
-            throw new Error(e.message);
+    const navigations = [
+        {
+            title: "Logs",
+            component: LogsView
+        },
+        {
+            title: "Statistics",
+            component: StatisticsView
         }
-    }
+    ];
 
-    onMount(() => {
-        logsService = new LogsService(getToken());
-        getLogs()
-    })
+    let selectedNavigation = navigations[1];
+
 </script>
 
+<UserCard {user}></UserCard>
 
-{#await logsPromise}
-    <MediumLoader color="var(--primary-color)"/>
-{:then response}
-    <div class="logs-list">
-        {#each logs as log}
-            <div class="log">
-                <p class="name">{log.name}</p>
-                <p class="date">{log.date.slice(0, 22).replace("T"," ")}</p>
-            </div>
-        {:else }
-            <p>No logs found</p>
+<div class="views-wrapper">
+    <div class="navigation">
+        {#each navigations as navigation}
+            <button
+                    on:click={() => selectedNavigation = navigation}
+                    class:selected={selectedNavigation === navigation}
+                    class="navigator"><span>{navigation.title}</span></button>
         {/each}
+        <div class="line"></div>
     </div>
-{:catch error}
-    <p>There was an error</p>
-    <button on:click={getLogs} class="primary-button">Retry</button>
-{/await}
-
+    <div class="content">
+        <svelte:component {user} this={selectedNavigation.component}/>
+    </div>
+</div>
 
 <style lang="scss">
-   .logs-list {
+   .views-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-
-      .log {
-         padding: 20px 0;
+      height: 100%;
+      margin-top: 20px;
+      overflow: hidden;
+      .content{
+         height: 100%;
          display: flex;
-         justify-content: space-between;
-         align-items: center;
-         border-top: 1px solid var(--border-color);
+         flex-direction: column;
+         overflow: auto;
+      }
+      .navigation {
+         display: flex;
+         width: 100%;
+         position: relative;
 
-         .name{
-            font-weight: 500;
+         .line {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: 0;
+            z-index: var(--back-index);
+            background-color: var(--ternary-background-color);
          }
-         .date{
-            color: var(--secondary-text-color);
+
+         .navigator {
+            padding: 10px 50px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4px;
+
+            span {
+               color: var(--secondary-text-color);
+               font-weight: 500;
+               font-size: 18px;
+            }
+
+            &:hover {
+               span {
+                  color: var(--text-color);
+               }
+            }
+
+            &.selected {
+               margin-bottom: 0;
+               border-bottom: 4px solid var(--primary-color);
+
+               span {
+                  color: var(--text-color);
+               }
+            }
          }
       }
+
    }
 </style>
+
+
+
+
+
+

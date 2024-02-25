@@ -109,7 +109,7 @@
     </button>
 </ContextMenu>
 
-<UserFormModal on:create={handleUserCreate} on:update={handleUserUpdate}/>
+<UserFormModal bind:form={$formData} bind:type={$formType} bind:isOpen={$isOpen} on:create={handleUserCreate} on:update={handleUserUpdate}/>
 <UsersViewActions on:sort={handleSort}/>
 
 <div class="users-list">
@@ -121,7 +121,7 @@
                 <div class="text-box">
                     <p>{user.firstName} {user.lastName}
                         <span>({user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()})</span></p>
-                    <span>{user.email}</span>
+                    <span class="email">{user.email}</span>
                 </div>
                 <button
                         on:click|preventDefault={(event)=>{
@@ -186,14 +186,21 @@
             p {
                font-size: 20px;
                font-weight: 500;
+               span {
+                  color: var(--secondary-text-color);
+                  font-size: 18px;
+                  font-weight: 400;
+                  padding-bottom: 20px;
+               }
+               margin-bottom: 5px;
+            }
+            .email{
+               color: var(--secondary-text-color);
+               font-size: 18px;
+               font-weight: 400;
             }
 
-            span {
-               color: var(--secondary-text-color);
-               font-size: 20px;
-               font-weight: 400;
-               padding-bottom: 20px;
-            }
+
 
             h4 {
                color: var(--secondary-text-color);

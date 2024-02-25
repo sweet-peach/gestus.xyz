@@ -11,8 +11,11 @@
     ];
 
     let option;
-
     let error = false;
+
+    if(value){
+        option = roles.find(role => role.value === value);
+    }
 
     $: if (option) {
         value = option.value;
@@ -20,6 +23,11 @@
     }
 
     export function check() {
+        console.log(option, value, error)
+        if(!option || !value){
+            error = true;
+            return false;
+        }
         error = value === "";
         return !error;
     }
@@ -36,6 +44,6 @@
         {/if}
     </div>
     <DropdownList
-            selectedOption={option}
+            bind:selectedOption={option}
             options={roles}/>
 </div>
