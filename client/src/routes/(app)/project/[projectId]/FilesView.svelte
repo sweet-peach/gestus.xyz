@@ -210,7 +210,7 @@
                         <span class="name">{file.name}</span>
                         <span class="date">{file.date.replace('T', ' ').slice(0, 10)}</span>
                         <span class="size">---</span>
-                        <button on:click|stopPropagation={(event)=>toggleContextModal(event,file.id)} class="action">
+                        <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                  class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
@@ -281,7 +281,7 @@
                                 <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
                             </svg>
                             <span class="name">{file.name}</span>
-                            <button on:click|stopPropagation={(event)=>toggleContextModal(event,file.id)} class="action">
+                            <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                      class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
@@ -298,8 +298,8 @@
                 {:else}
                     <div
                             class="file grid-item"
-                            on:click={()=>{openFolder(file.id)}}
-                            on:keydown={()=> openFolder(file.id)}
+                            on:click={()=>{openFolder(file)}}
+                            on:keydown={()=> openFolder(file)}
                             aria-label="Open folder"
                             tabindex="0"
                             role="button"
