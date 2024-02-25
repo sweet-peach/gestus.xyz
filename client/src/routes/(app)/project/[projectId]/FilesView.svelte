@@ -241,7 +241,91 @@
         </div>
     {:else if $view === 'grid'}
         <div class="files-grid">
-
+            {#if $currentDir}
+                <div
+                        class="back grid-item"
+                        on:click={goBack}
+                        on:keydown={goBack}
+                        aria-label="Go back"
+                        tabindex="0"
+                        role="button"
+                >
+                    <div class="header">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                             class="file-type bi bi-folder-fill" viewBox="0 0 16 16">
+                            <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
+                        </svg>
+                        <span class="name">Go back</span>
+                    </div>
+                    <div class="preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                             class="bi bi-folder-fill" viewBox="0 0 16 16">
+                            <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
+                        </svg>
+                    </div>
+                </div>
+            {/if}
+            {#each $files as file}
+                {#if file.type === 'dir'}
+                    <div
+                            class="folder grid-item"
+                            on:click={()=>{openFolder(file.id)}}
+                            on:keydown={()=> openFolder(file.id)}
+                            aria-label="Open folder"
+                            tabindex="0"
+                            role="button"
+                    >
+                        <div class="header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="file-type bi bi-folder-fill" viewBox="0 0 16 16">
+                                <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
+                            </svg>
+                            <span class="name">{file.name}</span>
+                            <button on:click|stopPropagation={(event)=>toggleContextModal(event,file.id)} class="action">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="preview">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                 class="bi bi-folder-fill" viewBox="0 0 16 16">
+                                <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
+                            </svg>
+                        </div>
+                    </div>
+                {:else}
+                    <div
+                            class="file grid-item"
+                            on:click={()=>{openFolder(file.id)}}
+                            on:keydown={()=> openFolder(file.id)}
+                            aria-label="Open folder"
+                            tabindex="0"
+                            role="button"
+                    >
+                        <div class="header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="file-type bi bi-file-earmark-fill" viewBox="0 0 16 16">
+                                <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z"/>
+                            </svg>
+                            <span class="name">{file.name}</span>
+                            <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="preview">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                 class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+                                <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                {/if}
+            {/each}
 
         </div>
     {/if}
@@ -256,6 +340,77 @@
       justify-content: center;
       align-items: center;
       height: 100%;
+   }
+
+   .files-grid {
+      display: grid;
+      grid-gap: 25px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+      .grid-item {
+
+         &.folder {
+            cursor: pointer;
+         }
+
+         &.back {
+            cursor: pointer;
+
+            svg {
+               color: var(--blue-color);
+            }
+         }
+
+         display: flex;
+         flex-direction: column;
+         padding: 20px;
+         border: 1px solid var(--border-color);
+         border-radius: 14px;
+
+         .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+            .name {
+               text-overflow: ellipsis;
+               white-space: nowrap;
+               overflow: hidden;
+               margin-right: auto;
+               font-weight: 500;
+            }
+
+            .file-type {
+               margin-right: 10px;
+               min-width: 25px;
+               min-height: 25px;
+            }
+
+            .action {
+               &:hover {
+                  svg {
+                     color: var(--selected-icon-color);
+                  }
+               }
+            }
+         }
+
+      }
+
+      .preview {
+         position: relative;
+         width: 100%;
+         padding-top: 100%;
+         background: var(--ternary-background-color);
+         border-radius: 12px;
+
+         svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+         }
+      }
    }
 
    .files-list {
