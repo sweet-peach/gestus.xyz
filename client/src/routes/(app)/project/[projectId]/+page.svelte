@@ -6,6 +6,8 @@
     import {project} from '$lib/stores/projectStore.js';
     import ProjectCard from "./ProjectCard.svelte";
     import FileUploadsStatus from "../../../../components/FileUploadsStatus.svelte";
+    import {createAxiosClient} from "$lib/axiosClient.js";
+    import {getToken} from "$lib/services/authService.js";
     export let data;
     $project = data;
 
@@ -24,7 +26,7 @@
 
     let selectedNavigation = navigations[1];
 
-</script>
+    </script>
 
 
 <ProjectCard></ProjectCard>

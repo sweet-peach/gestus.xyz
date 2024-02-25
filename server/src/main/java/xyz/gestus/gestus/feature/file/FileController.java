@@ -64,6 +64,7 @@ public class FileController {
         Resource resource = fileService.downloadFile(projectId, fileId);
         String contentType = "application/octet-stream";
         String fileName = resource.getFilename();
+        System.out.println(fileName);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

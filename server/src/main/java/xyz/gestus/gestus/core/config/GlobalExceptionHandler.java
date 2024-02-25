@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -104,6 +105,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorObject> handleArgumentException(IllegalArgumentException exception, WebRequest request){
         return buildResponseEntity(HttpStatus.BAD_REQUEST,exception);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorObject> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException exception, WebRequest request){
+        return buildResponseEntity(HttpStatus.METHOD_NOT_ALLOWED,exception);
     }
 
     @ExceptionHandler(Exception.class)

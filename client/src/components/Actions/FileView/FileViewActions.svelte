@@ -15,10 +15,10 @@
         $view = newView;
     }
 
-    let contextMenuCauserEvent, isContextMenuVisible, isFolderModalVisible = false;
+    let contextMenuToggleElement, isContextMenuVisible, isFolderModalVisible = false;
 
     function handleActionClick(event) {
-        contextMenuCauserEvent = event;
+        contextMenuToggleElement = event.currentTarget;
         isContextMenuVisible = !isContextMenuVisible;
     }
 
@@ -40,7 +40,7 @@
 
 <FileUploadsStatus></FileUploadsStatus>
 
-<ContextMenu causerClickEvent={contextMenuCauserEvent} bind:isVisible={isContextMenuVisible}>
+<ContextMenu toggleElement={contextMenuToggleElement} bind:isVisible={isContextMenuVisible}>
     <button on:click={handleCreateFolderClick} class="menu-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-plus"
              viewBox="0 0 16 16">

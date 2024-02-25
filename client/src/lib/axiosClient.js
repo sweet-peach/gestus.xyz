@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let isClient = typeof window !== 'undefined';
 
-export function createAxiosClient(token) {
+export function createAxiosClient(token, returnResponse = false) {
     const client = axios.create({
         baseURL: import.meta.env.VITE_API_URL
     });
@@ -16,7 +16,13 @@ export function createAxiosClient(token) {
     }
 
     client.interceptors.response.use(
-        response => response.data,
+        (response) => {
+            if(returnResponse){
+                return response;
+            } else {
+                return response.data;
+            }
+        },
         error => {
             if (error.response) {
                 // Handling HTTP status errors

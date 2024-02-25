@@ -2,8 +2,8 @@ import {createAxiosClient} from "$lib/axiosClient.js";
 
 
 export class ApiService{
-    constructor(token) {
+    constructor(token, returnResponse = false){
         this.token = token;
-        this.axiosClient = createAxiosClient(token);
+        this.axiosClient = createAxiosClient(token, returnResponse);
     }
 }

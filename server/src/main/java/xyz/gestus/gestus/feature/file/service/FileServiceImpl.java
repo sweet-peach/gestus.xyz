@@ -165,7 +165,7 @@ public class FileServiceImpl implements FileService {
         System.out.println(projectId);
         File file = fileRepository.findByIdAndProjectId(fileId, projectId);
         if (file == null) {
-            new FileNotFoundException("File not found");
+            throw new FileNotFoundException("File not found");
         }
 
         Path filePath = Paths.get(storageDirectory, projectId.toString(), file.getPath()).normalize();

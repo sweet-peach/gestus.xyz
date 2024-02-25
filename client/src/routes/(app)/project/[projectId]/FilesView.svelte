@@ -9,25 +9,25 @@
     import MediumLoader from "../../../../components/UI/MediumLoader.svelte";
     import SmallLoader from "../../../../components/UI/SmallLoader.svelte";
     import ContextMenu from "../../../../components/UI/ContextMenu.svelte";
+    import axios from "axios";
 
 
-    let filesService,filesPromise,deletePromise;
+    let filesService, filesPromise, deletePromise;
     let isContextMenuVisible = false;
-    let contextMenuCauserEvent;
-    let selectedFileId;
+    let contextMenuToggleElement;
+    let selectedFile;
 
 
     async function getFiles() {
         try {
             filesPromise = filesService.getFiles($project.id, $currentDir);
-            const response = await filesPromise;
-            $files = response;
+            $files = await filesPromise;
         } catch (e) {
             throw new Error(e.message);
         }
     }
 
-    function openFolder(folderId){
+    function openFolder(folderId) {
         dirStack.update(stack => {
             stack.push($currentDir);
             return stack;
@@ -35,7 +35,8 @@
         $currentDir = folderId;
 
     }
-    function goBack(){
+
+    function goBack() {
         $currentDir = $dirStack[$dirStack.length - 1];
         dirStack.update(stack => {
             stack.pop();
@@ -43,29 +44,29 @@
         });
     }
 
-    async function handleDeleteFile(){
+    async function handleDeleteFile() {
         try {
-            deletePromise = filesService.deleteFile($project.id,selectedFileId);
+            deletePromise = filesService.deleteFile($project.id, selectedFile.id);
             const response = await deletePromise;
-            $files = $files.filter(file => file.id !== selectedFileId);
+            $files = $files.filter(file => file.id !== selectedFile.id);
             isContextMenuVisible = false;
         } catch (e) {
             throw new Error(e.message);
         }
     }
 
-    async function toggleContextModal(event, fileId){
-        contextMenuCauserEvent = event;
-        isContextMenuVisible = true;
-        selectedFileId = fileId
+    async function toggleContextModal(event, file) {
+        contextMenuToggleElement = event.currentTarget;
+        isContextMenuVisible = !isContextMenuVisible;
+        selectedFile = file;
     }
 
-    function onUploadProgress(progressEvent,fileName){
+    function onUploadProgress(progressEvent, fileName) {
         const percentage = Math.round((progressEvent.loaded / progressEvent.total) * 100);
 
         uploads.update(uploads => {
             uploads.forEach(upload => {
-                if(upload.name === fileName){
+                if (upload.name === fileName) {
                     upload.progress = percentage;
                 }
             });
@@ -73,7 +74,24 @@
         });
     }
 
-    async function uploadFile(event){
+    let downloadPromise;
+
+    async function handleDownloadFile() {
+        try {
+            const link = document.createElement('a');
+            link.href = `${import.meta.env.VITE_API_URL}/api/projects/${$project.id}/files/${selectedFile.id}/download`
+            link.download = selectedFile.name
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            isContextMenuVisible = false;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+
+    }
+
+    async function uploadFile(event) {
         try {
             const file = {
                 name: event.detail.name,
@@ -85,12 +103,12 @@
                 uploads.push(file);
                 return uploads;
             });
-            const response = await filesService.uploadFile($project.id, $currentDir, event.detail,(event)=>onUploadProgress(event,file.name));
+            const response = await filesService.uploadFile($project.id, $currentDir, event.detail, (event) => onUploadProgress(event, file.name));
             $files = [...$files, response];
         } catch (e) {
             uploads.update(uploads => {
                 uploads.forEach(upload => {
-                    if(upload.name === event.detail.name){
+                    if (upload.name === event.detail.name) {
                         upload.error = true;
                         upload.message = e.message;
                     }
@@ -110,7 +128,23 @@
     })
 </script>
 
-<ContextMenu causerClickEvent={contextMenuCauserEvent} bind:isVisible={isContextMenuVisible}>
+<ContextMenu toggleElement={contextMenuToggleElement} bind:isVisible={isContextMenuVisible}>
+    {#if selectedFile.type !== 'dir'}
+        <button on:click={handleDownloadFile} class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download"
+                 viewBox="0 0 16 16">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+            </svg>
+            {#await downloadPromise}
+                <SmallLoader/>
+            {:then response}
+                <span>Download</span>
+            {:catch error}
+                <span>Retry</span>
+            {/await}
+        </button>
+    {/if}
     <button on:click={handleDeleteFile} class="menu-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3"
              viewBox="0 0 16 16">
@@ -166,7 +200,7 @@
                             aria-label="Open folder"
                             tabindex="0"
                             role="button"
-                            >
+                    >
                         <div class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                                  class="bi bi-folder-fill" viewBox="0 0 16 16">
@@ -177,7 +211,8 @@
                         <span class="date">{file.date.replace('T', ' ').slice(0, 10)}</span>
                         <span class="size">---</span>
                         <button on:click|stopPropagation={(event)=>toggleContextModal(event,file.id)} class="action">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                             </svg>
                         </button>
@@ -193,8 +228,9 @@
                         <span class="name">{file.name}</span>
                         <span class="date">{file.date.replace('T', ' ').slice(0, 10)}</span>
                         <span class="size">{file.size}</span>
-                        <button on:click|stopPropagation={(event)=>toggleContextModal(event,file.id)} class="action">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                        <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                 class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                             </svg>
                         </button>
@@ -253,19 +289,22 @@
 
          border-bottom: 1px solid var(--border-color);
 
-         &.folder{
+         &.folder {
             cursor: pointer;
-            &:hover{
+
+            &:hover {
                background: var(--ternary-background-color);
             }
          }
 
-         &.back{
+         &.back {
             cursor: pointer;
-            svg{
-                color: var(--blue-color);
+
+            svg {
+               color: var(--blue-color);
             }
-            &:hover{
+
+            &:hover {
                background: var(--ternary-background-color);
             }
          }
@@ -296,9 +335,10 @@
             grid-column-start: 5;
             justify-self: center;
             display: flex;
-            &:hover{
-               svg{
-                  color:var(--selected-icon-color);
+
+            &:hover {
+               svg {
+                  color: var(--selected-icon-color);
                }
             }
          }

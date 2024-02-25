@@ -11,14 +11,14 @@ import {onMount} from "svelte";
 import ProjectsService from "$lib/api/ProjectsService.js";
 import {getToken} from "$lib/services/authService.js";
 
-let contextMenuCauserEvent, deletePromise, projectsService, contextMenuVisible = false;
+let contextMenuToggleElement, deletePromise, projectsService, contextMenuVisible = false;
 
 onMount(() => {
     projectsService = new ProjectsService(getToken());
 });
 function toggleContextMenu(event) {
     contextMenuVisible = !contextMenuVisible;
-    contextMenuCauserEvent = event;
+    contextMenuToggleElement = event.currentTarget;
 }
 
 function openForm() {
@@ -48,7 +48,7 @@ function handleContextMenuClick(event) {
 </script>
 
 <ProjectFormModal on:update={handleProjectUpdate}></ProjectFormModal>
-<ContextMenu causerClickEvent={contextMenuCauserEvent} bind:isVisible={contextMenuVisible}>
+<ContextMenu toggleElement={contextMenuToggleElement} bind:isVisible={contextMenuVisible}>
     <button on:click={openForm} class="menu-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square"
              viewBox="0 0 16 16">
