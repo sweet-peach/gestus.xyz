@@ -1,7 +1,7 @@
 <script>
 
 import {project} from "$lib/stores/projectStore.js";
-import {getTimePassed, getTimeUntil} from "$lib/services/dataService.js";
+import {getTimePassed, getTimeUntil} from "$lib/services/datesService.js";
 import ProjectFormModal from "../../../../components/ProjectFormModal/ProjectFormModal.svelte";
 import ContextMenu from "../../../../components/UI/ContextMenu.svelte";
 import SmallLoader from "../../../../components/UI/SmallLoader.svelte";

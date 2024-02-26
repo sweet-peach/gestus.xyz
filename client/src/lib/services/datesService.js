@@ -53,3 +53,58 @@ export function getTimeUntil(specificDate) {
         return 'right now';
     }
 }
+
+export function getDaysOfMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate();
+}
+
+export function generateCalendar(year) {
+    const ROWS = 7;
+    const MONTHS = 12;
+
+    let calendar = new Array(ROWS).fill(null).map(() => []);
+    let lastExtraDay = null;
+    for (let month = 0; month < MONTHS; month++) {
+        const daysOfMonth = getDaysOfMonth(year, month);
+        const columnsNumber = Math.floor(daysOfMonth / ROWS);
+        const extraDays = daysOfMonth % ROWS;
+
+        for (let i = 0; i < ROWS; i++) {
+            let row = i;
+
+            if (lastExtraDay) {
+                row += lastExtraDay;
+                row %= ROWS;
+            }
+            let startDay = i + 1;
+
+            for (let column = 0; column < columnsNumber; column++) {
+                let day = startDay + (column * ROWS);
+                calendar[row].push({day, month: month});
+            }
+            if (extraDays > i) {
+                let day = startDay + (columnsNumber * ROWS) + 1;
+                calendar[row].push({day: day - 1, month: month});
+            }
+        }
+        lastExtraDay = (lastExtraDay + extraDays) % ROWS;
+    }
+    return calendar;
+}
+
+export const months = {
+    0: 'January',
+    1: 'February',
+    2: 'March',
+    3: 'April',
+    4: 'May',
+    5: 'June',
+    6: 'July',
+    7: 'August',
+    8: 'September',
+    9: 'October',
+    10: 'November',
+    11: 'December'
+}
+
+export const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

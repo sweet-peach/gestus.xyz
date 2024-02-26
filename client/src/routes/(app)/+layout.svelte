@@ -25,6 +25,8 @@
     .content-wrapper {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        flex-grow: 1;
+        flex-basis: 0;
+        overflow: auto;
     }
 </style>

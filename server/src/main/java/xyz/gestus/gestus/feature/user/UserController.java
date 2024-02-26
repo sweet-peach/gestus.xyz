@@ -1,4 +1,4 @@
-package xyz.gestus.gestus.feature.user.controller;
+package xyz.gestus.gestus.feature.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

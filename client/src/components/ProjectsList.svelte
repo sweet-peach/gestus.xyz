@@ -1,5 +1,5 @@
 <script>
-    import {getTimePassed, getTimeUntil} from "$lib/services/dataService.js";
+    import {getTimePassed, getTimeUntil} from "$lib/services/datesService.js";
     import ContextMenu from "./UI/ContextMenu.svelte";
     import {formData, formType, isOpen, TYPE} from "$lib/stores/projectFormStore.js";
     import ProjectsService from "$lib/api/ProjectsService.js";

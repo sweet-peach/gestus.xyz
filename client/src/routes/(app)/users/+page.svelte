@@ -71,7 +71,6 @@
 
     function handleSort(event){
         const {sortBy, ascending} = event.detail;
-        console.log(event.detail);
         getUsers(sortBy, ascending ? 'asc' : 'desc');
     }
 

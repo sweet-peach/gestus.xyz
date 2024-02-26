@@ -32,7 +32,7 @@
     <div class="logs-list">
         {#each logs as log}
             <div class="log">
-                <p class="name">{log.name}</p>
+                <p class="title">{log.name}</p>
                 <p class="date">{log.date.slice(0, 22).replace("T"," ")}</p>
             </div>
         {:else }
@@ -51,14 +51,15 @@
       gap: 5px;
 
       .log {
-         padding: 20px 0;
+         padding: 20px 10px;
          display: flex;
          justify-content: space-between;
          align-items: center;
-         border-top: 1px solid var(--border-color);
+         border-bottom: 1px solid var(--border-color);
 
-         .name{
-            font-weight: 500;
+         .title{
+            font-weight: 400;
+            font-size: 18px;
          }
          .date{
             color: var(--secondary-text-color);

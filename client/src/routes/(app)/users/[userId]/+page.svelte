@@ -3,6 +3,7 @@
     import StatisticsView from "./StatisticsView.svelte";
     import LogsView from "./LogsView.svelte";
     import UserCard from "./UserCard.svelte";
+    import Activity from "./Activity/Activity.svelte";
 
     page.set("Browsing user");
 
@@ -15,7 +16,7 @@
             component: LogsView
         },
         {
-            title: "Statistics",
+            title: "User statistics",
             component: StatisticsView
         }
     ];
@@ -25,6 +26,7 @@
 </script>
 
 <UserCard {user}></UserCard>
+
 
 <div class="views-wrapper">
     <div class="navigation">

@@ -6,8 +6,9 @@ import xyz.gestus.gestus.feature.logs.dto.LogResponse;
 import xyz.gestus.gestus.feature.logs.Log;
 import xyz.gestus.gestus.feature.logs.LogRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LogServiceImpl implements LogService {

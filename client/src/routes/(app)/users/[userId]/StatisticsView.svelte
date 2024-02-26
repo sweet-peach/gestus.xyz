@@ -1,7 +1,6 @@
 <script>
+    import Activity from "./Activity/Activity.svelte";
     export let user;
-
 </script>
 
-
-Stitistics
+<Activity {user}></Activity>

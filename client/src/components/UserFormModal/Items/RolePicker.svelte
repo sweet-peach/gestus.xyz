@@ -23,7 +23,6 @@
     }
 
     export function check() {
-        console.log(option, value, error)
         if(!option || !value){
             error = true;
             return false;

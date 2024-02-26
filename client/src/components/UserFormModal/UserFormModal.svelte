@@ -51,7 +51,6 @@
     }
     async function handleValidationPassed() {
         try {
-            console.log(form);
             if (type === TYPE.CREATE) {
                 actionPromise = usersService.create(form);
                 const response = await actionPromise;
@@ -76,7 +75,6 @@
 
 
     onMount(()=>{
-        console.log("mounted")
         usersService = new UsersService(getToken());
     })
 
