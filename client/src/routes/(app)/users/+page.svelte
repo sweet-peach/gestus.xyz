@@ -11,11 +11,13 @@
     import ContextMenu from "../../../components/UI/ContextMenu.svelte";
     import {formData, formType, isOpen, TYPE} from "$lib/stores/userFormStore.js";
     import {project} from "$lib/stores/projectStore.js";
+    import {user} from "$lib/stores/userStore.js";
 
     page.set([{'title': 'Users', 'url': '/users'}]);
 
     let users = writable([]);
-    let usersPromise = new Promise(()=>{});
+    let usersPromise = new Promise(() => {
+    });
     let usersService;
 
     let isContextMenuVisible = false;
@@ -71,7 +73,7 @@
         });
     }
 
-    function handleSort(event){
+    function handleSort(event) {
         const {sortBy, ascending} = event.detail;
         getUsers(sortBy, ascending ? 'asc' : 'desc');
     }
@@ -95,22 +97,26 @@
         </svg>
         <span>Edit</span>
     </button>
-    <button on:click={handleDeleteUser} class="menu-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3"
-             viewBox="0 0 16 16">
-            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-        </svg>
-        {#await deletePromise}
-            <SmallLoader/>
-        {:then response}
-            <span>Delete</span>
-        {:catch error}
-            <span>Retry</span>
-        {/await}
-    </button>
+    {#if selectedUser.id !== $user.id}
+        <button on:click={handleDeleteUser} class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3"
+                 viewBox="0 0 16 16">
+                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+            </svg>
+            {#await deletePromise}
+                <SmallLoader/>
+            {:then response}
+                <span>Delete</span>
+            {:catch error}
+                <span>Retry</span>
+            {/await}
+        </button>
+    {/if}
+
 </ContextMenu>
 
-<UserFormModal bind:form={$formData} bind:type={$formType} bind:isOpen={$isOpen} on:create={handleUserCreate} on:update={handleUserUpdate}/>
+<UserFormModal bind:form={$formData} bind:type={$formType} bind:isOpen={$isOpen} on:create={handleUserCreate}
+               on:update={handleUserUpdate}/>
 <UsersViewActions on:sort={handleSort}/>
 
 <div class="users-list">
@@ -150,22 +156,25 @@
 </div>
 
 <style lang="scss">
-   .error-container{
+   .error-container {
       height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      .error-box{
+
+      .error-box {
          display: flex;
          flex-direction: column;
          align-items: center;
-         .message{
+
+         .message {
             font-weight: 500;
             font-size: 22px;
             margin-bottom: 10px;
          }
       }
    }
+
    .users-list {
       flex: 1;
       display: flex;
@@ -187,25 +196,21 @@
             p {
                font-size: 20px;
                font-weight: 500;
+
                span {
                   color: var(--secondary-text-color);
                   font-size: 18px;
                   font-weight: 400;
                   padding-bottom: 20px;
                }
+
                margin-bottom: 5px;
             }
-            .email{
+
+            .email {
                color: var(--secondary-text-color);
                font-size: 18px;
                font-weight: 400;
-            }
-
-
-
-            h4 {
-               color: var(--secondary-text-color);
-               font-size: 18px;
             }
          }
 

@@ -48,10 +48,6 @@
 </div>
 
 <style lang="scss">
-   .tooltip {
-      position: absolute;
-   }
-
    .activity {
       margin-top: 20px;
       display: flex;

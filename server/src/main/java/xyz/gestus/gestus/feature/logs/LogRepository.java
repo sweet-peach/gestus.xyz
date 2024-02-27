@@ -1,7 +1,9 @@
 package xyz.gestus.gestus.feature.logs;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import xyz.gestus.gestus.feature.user.User;
@@ -18,4 +20,5 @@ public interface LogRepository extends JpaRepository<Log,Long> {
     @Query("SELECT new map(DATE(l.date) as date, COUNT(l) as count) FROM Log l WHERE l.user.id = :userId AND YEAR(l.date) = :year GROUP BY DATE(l.date)")
     List<Map<String, Object>> findUserActivityByYear(@Param("userId") Long userId, @Param("year") int year);
 
+    void deleteAllByUserId(Long userId);
 }

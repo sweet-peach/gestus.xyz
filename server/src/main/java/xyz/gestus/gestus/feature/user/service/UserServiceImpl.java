@@ -1,5 +1,6 @@
 package xyz.gestus.gestus.feature.user.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -135,10 +136,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UsernameNotFoundException("User not found with id: " + userId);
         }
+        logRepository.deleteAllByUserId(userId);
         userRepository.deleteById(userId);
     }
 }

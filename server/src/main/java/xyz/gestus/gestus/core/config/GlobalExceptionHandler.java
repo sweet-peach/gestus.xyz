@@ -117,6 +117,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorObject> handleAll(Exception ex, WebRequest request) {
         System.out.println("Unhandled exception");
+        ex.printStackTrace();
 
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
     }

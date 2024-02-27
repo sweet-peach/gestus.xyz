@@ -47,6 +47,10 @@ public class LogAspect {
         String email = userDetails.getUsername();
         User user = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found")); // Предполагается, что у вас есть метод для получения пользователя по email
 
+        if(user == null){
+            throw new UsernameNotFoundException("User not found");
+        }
+
         Log logEntity = new Log();
         logEntity.setName(log.name());
         logEntity.setDate(new Date());
