@@ -28,9 +28,9 @@ export function createAxiosClient(token, returnResponse = false) {
                 // Handling HTTP status errors
                 console.error(`HTTP error: ${error.response.status} - ${error.response.statusText}`);
 
-                if(error.response.status === 409 && isClient) {
-                    window.location.href = '/login';
-                }
+                // if(error.response.status === 409 && isClient) {
+                //     window.location.href = '/login';
+                // }
 
                 throw {
                     success: false,

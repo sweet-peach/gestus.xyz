@@ -18,7 +18,9 @@ export async function handle ({event, resolve}) {
     const axiosClient = createAxiosClient(token)
 
     try {
-        event.locals.user = await axiosClient.get(`/api/auth`);
+        const user = await axiosClient.get(`/api/auth`);
+        event.locals.user = user;
+        event.params.user = user;
 
         if (event.url.pathname === '/login') {
             return new Response(null, {

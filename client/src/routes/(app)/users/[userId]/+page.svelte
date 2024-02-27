@@ -5,10 +5,10 @@
     import UserCard from "./UserCard.svelte";
     import Activity from "./Activity/Activity.svelte";
 
-    page.set("Browsing user");
 
     export let data;
     const user = data;
+    page.set([{'title': 'Users', 'url': '/users'},{'title': `${user.email}`, 'url': `/users/${user.id}`}]);
 
     const navigations = [
         {

@@ -10,6 +10,7 @@ import {goto} from "$app/navigation";
 import {onMount} from "svelte";
 import ProjectsService from "$lib/api/ProjectsService.js";
 import {getToken} from "$lib/services/authService.js";
+import {user} from "$lib/stores/userStore.js";
 
 let contextMenuToggleElement, deletePromise, projectsService, contextMenuVisible = false;
 
@@ -93,12 +94,14 @@ function handleContextMenuClick(event) {
         </div>
     </div>
     <div class="actions">
-        <button on:click|stopPropagation|preventDefault={handleContextMenuClick}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                 class="bi bi-three-dots" viewBox="0 0 16 16">
-                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-            </svg>
-        </button>
+        {#if $user.role === "ADMIN" || $user.role === "MODIFIER"}
+            <button on:click|stopPropagation|preventDefault={handleContextMenuClick}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                </svg>
+            </button>
+        {/if}
     </div>
 </div>
 

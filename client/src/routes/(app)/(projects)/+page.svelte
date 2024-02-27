@@ -9,7 +9,7 @@
     import ProjectsList from "../../../components/ProjectsList.svelte";
     import ProjectFormModal from "../../../components/ProjectFormModal/ProjectFormModal.svelte";
 
-    $page = "Projects"
+    $page = [{'title': 'Projects', 'url': '/'}]
 
     let projectsService;
     let projectsPromise = new Promise(() => {});

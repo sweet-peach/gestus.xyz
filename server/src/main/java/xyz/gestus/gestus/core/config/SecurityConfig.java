@@ -51,17 +51,18 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/registration").hasAuthority(Role.ADMIN.toString())
-                        .requestMatchers("/api/logs/**").hasAuthority(Role.ADMIN.toString())
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers(HttpMethod.PUT).hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
-                        .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
-                        .requestMatchers(HttpMethod.POST).hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/auth").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/search/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/projects/**").hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.DELETE, "/api/projects/**").hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.POST, "/api/projects/**").hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
+                        .anyRequest().hasAnyAuthority(Role.ADMIN.toString())
                 )
                 .exceptionHandling((exception) ->
-                        exception.authenticationEntryPoint(authEntryPoint) // Use the autowired authEntryPoint
+                        exception.authenticationEntryPoint(authEntryPoint)
                 )
                 .httpBasic(Customizer.withDefaults());
 

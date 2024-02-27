@@ -35,7 +35,16 @@
 </script>
 
 <header>
-    <h2>{$page}</h2>
+    <h2>
+        {#each $page as segment, index}
+            <span>
+                {#if index > 0}
+                    <span> / </span>
+                {/if}
+                <a href={segment.url}>{segment.title}</a>
+            </span>
+        {/each}
+    </h2>
     <div class="right-wrapper">
         <ProjectsSearch></ProjectsSearch>
         <div class="user-box">

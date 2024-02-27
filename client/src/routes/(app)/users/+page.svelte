@@ -10,8 +10,10 @@
     import SmallLoader from "../../../components/UI/SmallLoader.svelte";
     import ContextMenu from "../../../components/UI/ContextMenu.svelte";
     import {formData, formType, isOpen, TYPE} from "$lib/stores/userFormStore.js";
+    import {project} from "$lib/stores/projectStore.js";
 
-    page.set('Users')
+    page.set([{'title': 'Users', 'url': '/users'}]);
+
     let users = writable([]);
     let usersPromise = new Promise(()=>{});
     let usersService;

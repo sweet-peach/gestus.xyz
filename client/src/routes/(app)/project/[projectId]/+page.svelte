@@ -1,17 +1,13 @@
 <script>
-    import {onMount} from "svelte";
-    import {files, page} from "$lib/stores/appStore.js";
+    import {page} from "$lib/stores/appStore.js";
     import ProjectAboutView from "./AboutView.svelte";
     import FilesView from "./FilesView.svelte";
     import {project} from '$lib/stores/projectStore.js';
     import ProjectCard from "./ProjectCard.svelte";
-    import FileUploadsStatus from "../../../../components/FileUploadsStatus.svelte";
-    import {createAxiosClient} from "$lib/axiosClient.js";
-    import {getToken} from "$lib/services/authService.js";
     export let data;
     $project = data;
 
-    page.set('Browsing project');
+    page.set([{'title': 'Projects', 'url': '/'},{'title': $project.name, 'url': '/projects/' + $project.id}]);
 
     const navigations = [
         {

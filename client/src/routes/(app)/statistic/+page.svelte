@@ -5,14 +5,9 @@
     import {getToken} from "$lib/services/authService.js";
     import LogsService from "$lib/api/LogsService.js";
 
-    page.set('Statistic | Most Active Users');
+    page.set([{'title': 'Statistic', 'url': '/statistic'}]);
 
     let users = [
-        {userName: "admin@example.com", logCount: 292},
-        {userName: "user1@example.com", logCount: 280},
-        {userName: "user2@example.com", logCount: 270},
-        {userName: "user3@example.com", logCount: 260},
-        {userName: "user4@example.com", logCount: 250}
     ];
     let logsService;
 

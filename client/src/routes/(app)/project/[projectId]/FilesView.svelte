@@ -10,6 +10,7 @@
     import SmallLoader from "../../../../components/UI/SmallLoader.svelte";
     import ContextMenu from "../../../../components/UI/ContextMenu.svelte";
     import {getFileSizeFromBytes} from "$lib/services/fileSizeService.js";
+    import {user} from "$lib/stores/userStore.js";
 
 
     let filesService, filesPromise, deletePromise;
@@ -78,17 +79,29 @@
 
     async function handleDownloadFile() {
         try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${$project.id}/files/${selectedFile.id}/download`, {
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`,
+                },
+            });
+
+            const blob = await response.blob();
+
+            const downloadUrl = window.URL.createObjectURL(blob);
+
             const link = document.createElement('a');
-            link.href = `${import.meta.env.VITE_API_URL}/api/projects/${$project.id}/files/${selectedFile.id}/download`
-            link.download = selectedFile.name
+            link.href = downloadUrl;
+            link.download = selectedFile.name;
             document.body.appendChild(link);
             link.click();
-            link.remove();
+
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(downloadUrl);
+
             isContextMenuVisible = false;
         } catch (e) {
-            throw new Error(e.message);
+            throw new Error(e);
         }
-
     }
 
     async function uploadFile(event) {
@@ -145,19 +158,22 @@
             {/await}
         </button>
     {/if}
-    <button on:click={handleDeleteFile} class="menu-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3"
-             viewBox="0 0 16 16">
-            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-        </svg>
-        {#await deletePromise}
-            <SmallLoader/>
-        {:then response}
-            <span>Delete</span>
-        {:catch error}
-            <span>Retry</span>
-        {/await}
-    </button>
+    {#if $user.role === "ADMIN" || $user.role === "MODIFIER"}
+        <button on:click={handleDeleteFile} class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3"
+                 viewBox="0 0 16 16">
+                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+            </svg>
+            {#await deletePromise}
+                <SmallLoader/>
+            {:then response}
+                <span>Delete</span>
+            {:catch error}
+                <span>Retry</span>
+            {/await}
+        </button>
+    {/if}
+
 </ContextMenu>
 
 <ProjectFileViewActions on:uploadFile={uploadFile}/>
@@ -210,12 +226,15 @@
                         <span class="name">{file.name}</span>
                         <span class="date">{file.date.replace('T', ' ').slice(0, 10)}</span>
                         <span class="size">---</span>
-                        <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                            </svg>
-                        </button>
+                        {#if $user.role === "ADMIN" || $user.role === "MODIFIER"}
+                            <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                </svg>
+                            </button>
+                        {/if}
+
                     </div>
                 {:else}
                     <div class="file list-item">
@@ -281,12 +300,14 @@
                                 <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
                             </svg>
                             <span class="name">{file.name}</span>
-                            <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                                </svg>
-                            </button>
+                            {#if $user.role === "ADMIN" || $user.role === "MODIFIER"}
+                                <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                    </svg>
+                                </button>
+                            {/if}
                         </div>
                         <div class="preview">
                             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
