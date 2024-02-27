@@ -34,12 +34,4 @@ public class LogController {
         return new ResponseEntity<>(logService.getLogsByUserId(userId), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserLogResponse>> getTopUsersWithMostLogs() {
-        List<Object[]> usersWithLogs = userService.findTop5UsersWithMostLogs();
-        List<UserLogResponse> userLogDTOS = usersWithLogs.stream()
-                .map(obj -> new UserLogResponse(((User) obj[0]).getId(), ((User) obj[0]).getEmail(), (Long) obj[1]))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(userLogDTOS);
-    }
 }

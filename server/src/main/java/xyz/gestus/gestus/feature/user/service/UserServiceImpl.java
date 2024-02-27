@@ -141,10 +141,4 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteById(userId);
     }
-
-    @Override
-    public List<Object[]> findTop5UsersWithMostLogs() {
-        Pageable pageable = PageRequest.of(0, 5);
-        return logRepository.findTopUsersWithMostLogs(pageable);
-    }
 }

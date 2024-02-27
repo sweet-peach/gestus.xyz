@@ -1,133 +1,131 @@
 <script>
-    import {scaleLinear, scaleBand} from 'd3-scale';
-    import {page} from '$lib/stores/appStore.js'
+    import {page} from '$lib/stores/appStore.js';
     import {onMount} from "svelte";
+    import StatisticService from "$lib/api/StatisticService.js";
     import {getToken} from "$lib/services/authService.js";
-    import LogsService from "$lib/api/LogsService.js";
+    import MediumLoader from "../../../components/UI/MediumLoader.svelte";
+    import {Pie, Bar} from "svelte-chartjs";
+    import Chart from 'chart.js/auto';
 
     page.set([{'title': 'Statistic', 'url': '/statistic'}]);
 
-    let users = [
-    ];
-    let logsService;
+    let statisticService;
 
-    async function getStats() {
-        users = await logsService.getAll();
+    let pieData = {
+        datasets: [{
+            data: [],
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 1,
+        }],
+        labels: [],
+    };
+
+    let graphData = {};
+
+    let pieOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+        }
+    };
+
+    let graphOptions = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    let statisticPromise = new Promise(() => {});
+    async function getStatistic() {
+        statisticPromise = Promise.all([
+            statisticService.getMostActiveUsers(),
+            statisticService.getAllProjectsExtensions()
+        ]);
+        const [mostActiveUsers, allProjectsExtensions] = await statisticPromise;
+
+        console.log(mostActiveUsers);
+
+        allProjectsExtensions.forEach((part) => {
+            pieData.labels.push("." + part.extension);
+            pieData.datasets[0].data.push(part.count);
+            const color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.5)`;
+            pieData.datasets[0].backgroundColor.push(color);
+            pieData.datasets[0].borderColor.push(color.replace('0.5', '1'));
+        });
+
+        graphData = {
+            labels: mostActiveUsers.map(user => user.email),
+            datasets: [{
+                label: mostActiveUsers.map(user => user.email),
+                data: mostActiveUsers.map(user => user.count),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
     }
 
     onMount(() => {
-        logsService = new LogsService(getToken());
-        getStats();
-    })
-
-    let isServer = typeof window === 'undefined';
-    let width, height;
-    if (!isServer) {
-        width = window.innerWidth * 0.9;
-        height = window.innerHeight * 0.5;
-    }
-    const padding = {top: 20, right: 15, bottom: 100, left: 60};
-
-    let xScale, yScale
-    $: {
-        try {
-            xScale = scaleBand()
-                .domain(users.map(user => user.userName))
-                .range([padding.left, width - padding.right])
-                .padding(0.1);
-
-            yScale = scaleLinear()
-                .domain([0, Math.max(...users.map(user => user.logCount)) + 50])
-                .range([height - padding.bottom, padding.top]);
-        } catch (e) {
-
-        }
-
-    }
-
-
+        statisticService = new StatisticService(getToken());
+        getStatistic();
+    });
 </script>
 
-<h2>Top 5 Most Active Users</h2>
 
-{#if !isServer}
-    <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
-        <svg width={width} height={height}>
-            <g class="axis y-axis">
-                {#each Array.from({length: Math.ceil(yScale.domain()[1] / 50)}).map((_, i) => i * 50) as tick}
-                    <g class="tick" transform="translate(0, {yScale(tick)})">
-                        <line x2={width - padding.left - padding.right}/>
-                        <text x="-10" y="0">{tick}</text>
-                    </g>
-                {/each}
-            </g>
+<div class="statistics-grid">
+    {#await statisticPromise}
+        <div class="loader">
+            <MediumLoader color="var(--primary-color)"/>
+        </div>
+    {:then [mostActiveUsers, allProjectsExtensions]}
+        <div class="pie">
+            <h2>All projects extensions</h2>
+            {#if allProjectsExtensions.length === 0}
+                <p>Insufficient data to compile statistics</p>
+            {:else}
+                <Pie data={pieData} options={pieOptions}/>
+            {/if}
+        </div>
+        <div class="graph">
+            <h2>Most active users</h2>
+            {#if mostActiveUsers.length === 0}
+                <p>Insufficient data to compile statistics</p>
+            {:else}
+                <Bar bind:data={graphData} options={graphOptions} />
+            {/if}
+        </div>
+    {:catch error}
+        <p>{error.message}</p>
+    {/await}
+</div>
 
-            <g class="axis x-axis" transform="translate(0,{height - padding.bottom})">
-                {#each users as user}
-                    <g class="tick" transform="translate({xScale(user.userName) + xScale.bandwidth() / 2},0)">
-                        <text style="text-anchor: middle;" dy="0.75em">{user.userName}</text>
-                    </g>
-                {/each}
-            </g>
+<style lang="scss">
+   .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+   }
 
-            <g class="bars">
-                {#each users as user}
-                    <rect
-                            x={xScale(user.userName)}
-                            y={yScale(user.logCount)}
-                            width={xScale.bandwidth()}
-                            height={height - padding.bottom - yScale(user.logCount)}
-                    />
-                {/each}
-            </g>
-        </svg>
-    </div>
-{/if}
+   .statistics-grid {
+      padding: 40px;
+      display: grid;
+      grid-gap: 25px;
+      grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
 
-<style>
-    h2 {
-        text-align: center;
-        font-family: 'Arial', sans-serif;
-        color: #333;
-    }
+      p{
+         font-size: 18px;
+         color: var(--secondary-text-color);
+      }
 
-    .chart {
-        width: auto;
-        margin: 20px auto;
-    }
-
-    svg {
-        display: block;
-        max-width: 100%;
-        height: auto;
-    }
-
-    .tick {
-        font-family: 'Arial', sans-serif;
-        font-size: 0.75em;
-        color: #666;
-    }
-
-    .tick line {
-        stroke: #e2e2e2;
-    }
-
-    .tick text {
-        fill: #666;
-    }
-
-    .bars rect {
-        fill: #4a90e2;
-        stroke: #3182bd;
-        opacity: 0.75;
-    }
-
-    .y-axis text {
-        text-anchor: end;
-    }
-
-    .x-axis text {
-        text-anchor: middle;
-    }
-
+      h2 {
+         font-weight: 600;
+         font-size: 24px;
+      }
+   }
 </style>

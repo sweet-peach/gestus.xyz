@@ -206,6 +206,10 @@
                     </div>
                     <span class="name">...</span>
                 </div>
+            {:else if $files.length === 0}
+                <div class="no-files">
+                    <h2>No files found</h2>
+                </div>
             {/if}
             {#each $files as file}
                 {#if file.type === 'dir'}
@@ -283,6 +287,10 @@
                         </svg>
                     </div>
                 </div>
+            {:else if $files.length === 0}
+                <div class="no-files">
+                    <h2>No files found</h2>
+                </div>
             {/if}
             {#each $files as file}
                 {#if file.type === 'dir'}
@@ -301,7 +309,8 @@
                             </svg>
                             <span class="name">{file.name}</span>
                             {#if $user.role === "ADMIN" || $user.role === "MODIFIER"}
-                                <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)} class="action">
+                                <button on:click|stopPropagation={(event)=>toggleContextModal(event,file)}
+                                        class="action">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                          class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                         <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
@@ -347,7 +356,6 @@
                     </div>
                 {/if}
             {/each}
-
         </div>
     {/if}
 {:catch error}
@@ -361,6 +369,19 @@
       justify-content: center;
       align-items: center;
       height: 100%;
+   }
+
+   .no-files {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+
+      h2 {
+         padding: 40px 0;
+         font-weight: 400;
+         font-size: 20px;
+         color: var(--secondary-text-color);
+      }
    }
 
    .files-grid {

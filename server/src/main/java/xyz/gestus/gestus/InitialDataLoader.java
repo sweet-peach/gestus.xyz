@@ -1,5 +1,6 @@
 package xyz.gestus.gestus;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,9 +16,15 @@ public class InitialDataLoader {
 
     private boolean alreadySetup = false;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    @Value("${ROOT_USER_EMAIL}")
+    private String rootUserEmail;
+
+    @Value("${ROOT_USER_PASSWORD}")
+    private String rootUserPassword;
 
     public InitialDataLoader(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -30,7 +37,7 @@ public class InitialDataLoader {
             return;
         }
 
-        createAdminUserIfNotFound("admin@example.com", "admin");
+        createAdminUserIfNotFound(rootUserEmail, rootUserPassword);
 
         alreadySetup = true;
     }

@@ -14,11 +14,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import xyz.gestus.gestus.core.exceptions.ErrorObject;
 import xyz.gestus.gestus.core.security.JwtAuthenticationFilter;
+import xyz.gestus.gestus.feature.file.exception.*;
 import xyz.gestus.gestus.feature.project.exception.ProjectNotFoundException;
-import xyz.gestus.gestus.feature.file.exception.DirectoryAlreadyExistsException;
-import xyz.gestus.gestus.feature.file.exception.DownloadFailException;
-import xyz.gestus.gestus.feature.file.exception.FileNotFoundException;
-import xyz.gestus.gestus.feature.file.exception.UploadFailException;
 import xyz.gestus.gestus.feature.user.exception.UserAlreadyExistsException;
 
 import java.util.HashMap;
@@ -112,11 +109,17 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatus.METHOD_NOT_ALLOWED,exception);
     }
 
+    @ExceptionHandler(NoMoreSpaceException.class)
+    public ResponseEntity<ErrorObject> handleUserAlreadyExists(NoMoreSpaceException exception, WebRequest request){
+        return buildResponseEntity(HttpStatus.CONFLICT,exception);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorObject> handleAll(Exception ex, WebRequest request) {
         System.out.println("Unhandled exception");
-        ex.printStackTrace();
 
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
     }
+
+
 }

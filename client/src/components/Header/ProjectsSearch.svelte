@@ -28,7 +28,7 @@
 
     function goToProject(projectId) {
         isOpen = false;
-        goto(`/projects/${projectId}`)
+        goto(`/project/${projectId}`)
     }
 
     async function search(query, keywords) {

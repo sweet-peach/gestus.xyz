@@ -2,6 +2,7 @@ package xyz.gestus.gestus.feature.file.service;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import xyz.gestus.gestus.feature.file.dto.FileResponse;
 import xyz.gestus.gestus.feature.file.exception.DirectoryAlreadyExistsException;
 import xyz.gestus.gestus.feature.file.exception.FileNotFoundException;
 import xyz.gestus.gestus.feature.file.dto.DirRequest;
+import xyz.gestus.gestus.feature.file.exception.NoMoreSpaceException;
 import xyz.gestus.gestus.feature.project.exception.ProjectNotFoundException;
 import xyz.gestus.gestus.feature.file.File;
 import xyz.gestus.gestus.feature.project.Project;
@@ -33,6 +35,10 @@ public class FileServiceImpl implements FileService {
     private String storageDirectory;
     private FileRepository fileRepository;
     private ProjectRepository projectRepository;
+
+    @Value("${STORAGE_LIMIT}")
+    private Long storageLimit;
+
 
     @Autowired
     public FileServiceImpl(FileRepository fileRepository, ProjectRepository projectRepository) {
@@ -114,6 +120,13 @@ public class FileServiceImpl implements FileService {
 
         if (fileRepository.existsByPath(filePath)) {
             throw new DirectoryAlreadyExistsException("Directory already exists");
+        }
+
+        java.io.File storageFolder = new java.io.File(storageDirectory);
+        Long storageFolderSize = getFolderSize(storageFolder);
+
+        if(file.getSize() > storageLimit - storageFolderSize){
+            throw new NoMoreSpaceException("Not enough space to upload the file");
         }
 
         Path absolutePath = Paths.get(storageDirectory + java.io.File.separator + projectId.toString() + java.io.File.separator + filePath);
@@ -280,6 +293,23 @@ public class FileServiceImpl implements FileService {
         response.setDate(file.getDate());
         response.setParentId(Optional.ofNullable(file.getParent()).map(File::getId).orElse(null));
         return response;
+    }
+
+    public static long getFolderSize(java.io.File folder) {
+        long length = 0;
+        java.io.File[] files = folder.listFiles();
+
+        if (files != null) {
+            for (java.io.File file : files) {
+                if (file.isFile()) {
+                    length += file.length();
+                } else {
+                    length += getFolderSize(file);
+                }
+            }
+        }
+
+        return length;
     }
 
     private Path constructPath(String... parts) {

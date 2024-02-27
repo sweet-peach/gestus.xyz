@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FileStatisticResponse {
+public class ExtensionCountResponse {
     private String extension;
     private long count;
 }

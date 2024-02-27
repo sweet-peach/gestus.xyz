@@ -1,6 +1,7 @@
 package xyz.gestus.gestus.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,7 +30,10 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private JwtAuthEntryPoint authEntryPoint;
+
+    @Value("${CORS_ALLOWED_ORIGIN}")
+    private String corsAllowedOrigin;
+    private final JwtAuthEntryPoint authEntryPoint;
 
     @Autowired
     public SecurityConfig(JwtAuthEntryPoint authEntryPoint) {
@@ -74,12 +78,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173")); // Specify your front-end app's URL
+
+        configuration.setAllowedOrigins(Collections.singletonList(corsAllowedOrigin));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Apply CORS configuration to all paths
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

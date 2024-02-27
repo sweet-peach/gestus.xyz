@@ -20,6 +20,4 @@ public interface UserService {
     UserResponse updateUser(Long userId, UserUpdateRequest updateDto);
 
     void deleteUser(Long userId);
-
-    List<Object[]> findTop5UsersWithMostLogs();
 }
