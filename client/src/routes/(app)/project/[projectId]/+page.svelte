@@ -4,6 +4,8 @@
     import FilesView from "./FilesView.svelte";
     import {project} from '$lib/stores/projectStore.js';
     import ProjectCard from "./ProjectCard.svelte";
+    import {user} from '$lib/stores/userStore.js';
+    import ProjectStatisticView from "./ProjectStatisticView.svelte";
     export let data;
     $project = data;
 
@@ -19,6 +21,13 @@
             component: FilesView
         }
     ];
+
+    if($user.role === 'ADMIN'){
+        navigations.push({
+            title: "Statistic",
+            component: ProjectStatisticView
+        });
+    }
 
     let selectedNavigation = navigations[1];
 
