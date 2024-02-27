@@ -68,7 +68,7 @@
 
 {#if isOpen}
     <div class="search-wrapper" >
-        <div on:click={closeSearchBar} class="dark-background"></div>
+        <div aria-label="Close search bar" tabindex="0" role="button" on:keypress={closeSearchBar} on:click={closeSearchBar} class="dark-background"></div>
         <div class="search-container">
             <div class="search-bar-container">
                 <div class="search-bar {isInFocus ? 'focus' : ''}">

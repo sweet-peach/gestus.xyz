@@ -59,11 +59,6 @@
       border-radius: 2px;
    }
 
-   .nav-item.title {
-      font-size: 18px;
-      font-weight: 600;
-   }
-
    .nav-item {
       display: flex;
       flex-direction: column;

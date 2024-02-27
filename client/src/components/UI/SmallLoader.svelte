@@ -32,11 +32,6 @@
           animation: spin 0.65s linear infinite;
 
        }
-
-       span{
-          font-size: 20px;
-          font-weight: 500;
-       }
     }
 </style>
 
