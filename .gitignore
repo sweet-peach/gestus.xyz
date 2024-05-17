@@ -1,0 +1,9 @@
+# IDE
+/.idea
+*.swp
+*.swo
+*.swn
+*.bak
+*.sublime-project
+*.sublime-workspace
+.vscode/
