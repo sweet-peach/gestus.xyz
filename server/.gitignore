@@ -68,6 +68,7 @@ local.properties
 *.tar.gz
 *.rar
 hs_err_pid*
+env
 env.properties
 
 # Log files #

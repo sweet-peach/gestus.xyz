@@ -1,3 +1,6 @@
+# General
+.env
+
 # IDE
 /.idea
 *.swp
