@@ -9,7 +9,7 @@
     export let data;
     $project = data;
 
-    page.set([{'title': 'Projects', 'url': '/'},{'title': $project.name, 'url': '/projects/' + $project.id}]);
+    page.set([{'title': 'Projects', 'url': '/'},{'title': $project.name, 'url': '/project/' + $project.id}]);
 
     const navigations = [
         {
