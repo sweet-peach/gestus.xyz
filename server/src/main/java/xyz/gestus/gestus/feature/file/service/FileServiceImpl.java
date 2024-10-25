@@ -164,6 +164,7 @@ public class FileServiceImpl implements FileService {
         File file = fileRepository.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("File not found"));
 
+
         File parent = file.getParent();
         if (parent != null) {
             parent.removeChild(parent);
@@ -234,6 +235,10 @@ public class FileServiceImpl implements FileService {
         List<File> childFiles = file.getChilds();
         for (File child : childFiles) {
             deleteFileAndChildren(child, projectId);
+        }
+
+        if (file.getParent() != null) {
+            file.getParent().removeChild(file);
         }
 
         fileRepository.delete(file);
