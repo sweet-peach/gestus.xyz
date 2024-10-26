@@ -3,6 +3,8 @@ package xyz.gestus.gestus.feature.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import xyz.gestus.gestus.core.annotations.Log;
 import xyz.gestus.gestus.feature.user.dto.UserResponse;
@@ -10,6 +12,7 @@ import xyz.gestus.gestus.feature.user.dto.UserUpdateRequest;
 import xyz.gestus.gestus.feature.user.service.UserService;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/users")
@@ -34,14 +37,21 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Log(name = "A user has updated the project")
+    @Log(name = "A user has updated a user")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest updateDto) {
         return new ResponseEntity<>(userService.updateUser(id, updateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Log(name = "A user has deleted the project")
+    @Log(name = "A user has deleted a user")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String callerEmail = authentication.getName();
+        UserResponse callerUser = userService.getUserByEmail(callerEmail);
+
+        if(Objects.equals(callerUser.getId(), id)) {
+            return new ResponseEntity<>("You cannot delete yourself", HttpStatus.FORBIDDEN);
+        }
         userService.deleteUser(id);
         return new ResponseEntity<>("User deleted", HttpStatus.OK);
     }

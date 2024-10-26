@@ -10,7 +10,6 @@
     import SmallLoader from "../../../components/UI/SmallLoader.svelte";
     import ContextMenu from "../../../components/UI/ContextMenu.svelte";
     import {formData, formType, isOpen, TYPE} from "$lib/stores/userFormStore.js";
-    import {project} from "$lib/stores/projectStore.js";
     import {user} from "$lib/stores/userStore.js";
 
     page.set([{'title': 'Users', 'url': '/users'}]);

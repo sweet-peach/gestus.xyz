@@ -40,7 +40,6 @@ public class LogAspect {
     public Object around(ProceedingJoinPoint pjp, xyz.gestus.gestus.core.annotations.Log log) throws Throwable {
         Object result = pjp.proceed();
 
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
