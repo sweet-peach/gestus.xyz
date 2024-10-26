@@ -48,8 +48,6 @@
         ]);
         const [mostActiveUsers, allProjectsExtensions] = await statisticPromise;
 
-        console.log(mostActiveUsers);
-
         allProjectsExtensions.forEach((part) => {
             pieData.labels.push("." + part.extension);
             pieData.datasets[0].data.push(part.count);
