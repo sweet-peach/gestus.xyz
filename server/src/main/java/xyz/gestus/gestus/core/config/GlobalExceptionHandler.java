@@ -16,6 +16,7 @@ import xyz.gestus.gestus.core.exceptions.ErrorObject;
 import xyz.gestus.gestus.core.security.JwtAuthenticationFilter;
 import xyz.gestus.gestus.feature.file.exception.*;
 import xyz.gestus.gestus.feature.project.exception.ProjectNotFoundException;
+import xyz.gestus.gestus.feature.user.exception.CannotModifyUserRoleException;
 import xyz.gestus.gestus.feature.user.exception.UserAlreadyExistsException;
 
 import java.util.HashMap;
@@ -114,6 +115,11 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatus.CONFLICT,exception);
     }
 
+    @ExceptionHandler(CannotModifyUserRoleException.class)
+    public ResponseEntity<ErrorObject> handleCannotModifyUserRoleException(CannotModifyUserRoleException exception, WebRequest request){
+        return buildResponseEntity(HttpStatus.FORBIDDEN,exception);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorObject> handleAll(Exception ex, WebRequest request) {
         System.out.println("Unhandled exception");
@@ -121,6 +127,5 @@ public class GlobalExceptionHandler {
 
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
     }
-
 
 }

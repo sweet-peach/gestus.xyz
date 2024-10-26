@@ -3,7 +3,6 @@
     import StatisticsView from "./StatisticsView.svelte";
     import LogsView from "./LogsView.svelte";
     import UserCard from "./UserCard.svelte";
-    import Activity from "./Activity/Activity.svelte";
 
 
     export let data;

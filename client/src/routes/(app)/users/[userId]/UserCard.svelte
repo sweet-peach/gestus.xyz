@@ -29,6 +29,7 @@
             const response = await deletePromise;
             await goto('/users');
         } catch (e) {
+            alert("Error while deleting user: " + e.data);
             throw new Error(e);
         }
     }

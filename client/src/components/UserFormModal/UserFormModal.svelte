@@ -17,6 +17,7 @@
     export let type;
     export let isOpen;
 
+    let errorText = "";
     let text = {
         title: "",
         confirm: ""
@@ -50,6 +51,7 @@
         }
     }
     async function handleValidationPassed() {
+        errorText = "";
         try {
             if (type === TYPE.CREATE) {
                 actionPromise = usersService.create(form);
@@ -63,6 +65,7 @@
             }
             isOpen = false;
         } catch (e) {
+            errorText = e.message;
             throw new Error(e.message)
         }
 
@@ -101,6 +104,9 @@
                         Retry
                     {/await}
                 </button>
+            </div>
+            <div class="error-text">
+                {errorText}
             </div>
         </div>
     </div>

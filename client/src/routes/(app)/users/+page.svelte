@@ -45,6 +45,7 @@
             users.update(users => users.filter(u => u.id !== selectedUser.id));
             isContextMenuVisible = false;
         } catch (e) {
+            alert("Error while deleting user: " + e.data);
             throw new Error(e);
         }
     }
