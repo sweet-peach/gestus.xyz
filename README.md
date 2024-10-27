@@ -176,7 +176,10 @@ node build
 ```bash
 ./gradlew build
 ```
-
+- If you encounter the error ./gradlew: Permission denied, you can resolve it by granting execute permissions to gradlew. Run the following command in your terminal:
+```bash     
+chmod +x gradlew
+```
 - After a successful build, you can start the server:
 
 ```bash     
