@@ -23,9 +23,9 @@ Before working with this project, ensure you have the following installed:
 - Elasticsearch
 - Git
 
-### Clon the project
+### Clone the project
 
-### Bakend setup - Spring Boot
+### Backend setup - Spring Boot
 1. Clone the project repository and navigate to its root directory
 ```bash
 git clone https://github.com/sweet-peach/gestus.xyz.git
@@ -43,7 +43,7 @@ cd ./server
 
 4. In `env.properties`, set the `PROFILE` field to specify the environment:
 
-   - **Development**: Using the development profile server will **enable CORS**, allowing requests from the origin specified in the ```CORS_ALLOWED_ORIGIN``` field. For development you should enter your the default client server value: http://localhost:5173/.
+   - **Development**: Using the development profile server will **enable CORS**, allowing requests from the origin specified in the ```CORS_ALLOWED_ORIGIN``` field. For development, you should enter the default client server value: http://localhost:5173/.
    - **Production**: Using the production profile server will **disable CORS** by default. However, you can enable it if needed by modifying the project and creating a ProductionCorsConfig file in ```/server/src/main/java/xyz/gestus/gestus/core/config/security/```.
 
 5. Copy your PostgreSQL server connection information and update the following fields in your env.properties file accordingly:
@@ -198,12 +198,12 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install nginx -y
 ```
 
-8. Install cerbot to use Let's Encrypt:
+8. Install certbot to use Let's Encrypt:
 ```bash
 sudo apt install certbot python3-certbot-nginx
 ```
 
-9. Obrain an SSL certificate:
+9. Obtain an SSL certificate:
 ```bash
 sudo certbot --nginx
 ```
@@ -211,7 +211,7 @@ sudo certbot --nginx
 - Instructions: Follow the interactive prompts to select your domain and agree to the terms of service.
 - Note: Ensure that your domain's DNS records point to your server's IP address before running this command.
 
-10. Create a new Nginx configuration file for your domain and add the configuration.
+10. Create a new Nginx configuration file for your domain and add the following configuration.
 ```bash
 sudo nano /etc/nginx/sites-available/yourdomain.com
 ```
@@ -290,11 +290,11 @@ sudo ufw allow ssh
 ```bash
 sudo ufw enable
 ```
-- To check the status of your firewall and confirm the changes:
+- Check the status of your firewall and confirm the changes:
 ```bash
 sudo ufw status
 ```
-15. Turn on certificate auto renew:
+15. Turn on auto-renewal for the SSL certificate:
 ```bash
 sudo certbot renew --dry-run
 ```
