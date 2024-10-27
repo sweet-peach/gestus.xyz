@@ -90,7 +90,7 @@ cd ./client
      VITE_API_URL=[protocol (http/https)]://[domain or IP]:[port]
      ```
 Examples:
-- VITE_API_URL=http://127.0.0.1:8000
+- VITE_API_URL=http://127.0.0.1:8080
 - VITE_API_URL=https://yourdomain.com
 
 3. Install dependencies:
@@ -127,7 +127,7 @@ npm run dev
 ./gradlew bootRun
 ```
 
-- The server will start on the default port **8000**.
+- The server will start on the default port **8080**.
 
 ## Deployment
 
@@ -183,7 +183,7 @@ node build
 ./gradlew bootRun
 ```
 
-- The server will start on the default port **8000**.
+- The server will start on the default port **8080**.
 
 Now to serve both the frontend and backend from the same domain in a production environment, you can use **Nginx** as a reverse proxy. All server requests that start with `/api/` will be redirected to your backend server, while other requests will be served by the frontend. 
 
@@ -238,7 +238,7 @@ server {
 
     # Reverse Proxy for Spring Boot Backend
     location /api/ {
-        proxy_pass http://localhost:8000;
+        proxy_pass http://localhost:8080;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -262,7 +262,7 @@ server {
    - Port 443 Server Block: Handles HTTPS traffic and specifies SSL settings.
    - SSL Certificates: Points to the SSL certificates obtained from Let's Encrypt.
    - Reverse Proxy Settings:
-      - `/api/`: Proxies requests to the Spring Boot backend on port `8000`.
+      - `/api/`: Proxies requests to the Spring Boot backend on port `8080`.
       - `/`: Proxies all other requests to the SvelteKit frontend on port `3000`.
 
 11. Create a symbolic link to enable the site configuration:
