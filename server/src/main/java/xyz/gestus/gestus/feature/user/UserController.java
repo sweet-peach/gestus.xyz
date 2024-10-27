@@ -47,6 +47,10 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest updateDto) {
         UserResponse rootUser = userService.getUserByEmail(rootUserEmail);
         Role newRole = updateDto.getRole().orElse(null);
+        String newPassword = updateDto.getPassword().orElse(null);
+        if(rootUser.getId().equals(id) && newPassword != null){
+            throw new CannotModifyUserRoleException("You cannot modify password of root user in preview");
+        }
         if(rootUser.getId().equals(id) && (newRole != null && !newRole.equals(Role.ADMIN))){
             throw new CannotModifyUserRoleException("You cannot modify role of root user");
         }

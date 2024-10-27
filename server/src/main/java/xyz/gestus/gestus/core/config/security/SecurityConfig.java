@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/auth").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/preview/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/projects/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/search/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/projects/**").hasAnyAuthority(Role.MODIFIER.toString(),Role.ADMIN.toString())
